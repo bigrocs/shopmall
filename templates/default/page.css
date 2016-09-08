@@ -1411,12 +1411,7 @@ em {
     background-position: -96px 0;
 }
 
-.login .item a.weixin i {
-    background-position: -160px 0;
-}
-.login .item a.weixin {
-    color: #07aa26
-}
+
 .login .item a.sina {
     color: #F66C5B
 }
