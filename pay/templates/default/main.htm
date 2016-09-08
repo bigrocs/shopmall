@@ -1,0 +1,99 @@
+<div class="block fn-clear">
+	<div class="balance account">
+    	<p>
+        账户余额
+        <!--<a target="_blank" href="">百度金融火热抢购中！</a>-->
+        </p>
+        <div>
+            <span class="wallet">
+                <em><strong><{$de.cash}></strong></em>
+                <span> 元</span>
+            </span>
+            <a class="btn" href="<{$config.weburl}>/?m=payment&s=recharge">充 值</a>
+            <a class="btn" href="<{$config.weburl}>/?m=payment&s=withdraw">提 现</a>
+            <a class="btn1" href="<{$config.weburl}>/?m=payment&s=transfer">转 账</a>
+        </div>
+    </div>
+	<div class="message"><p>Mall 帐户: 1个</p></div>
+</div>
+<div class="block">
+	<div class="record">
+        <p>
+            交易记录
+            <a href="<{$config.weburl}>/?m=payment&s=record">收支明细</a></li>
+            <a href="<{$config.weburl}>/?m=payment&s=record&mold=1">充值记录</a>
+            <a href="<{$config.weburl}>/?m=payment&s=record&mold=2">提现记录</a>
+        </p>
+    	<table width="100%" cellpadding="0" cellspacing="0">
+        	<tr>
+            	<th class="al" width="80">创建时间</th>
+                <th class="al">名称 | 交易号</td>
+                <th width="200">金额(元)</th>
+                <th width="80">状态</th>
+                <th width="80">操作</th>
+            </tr>
+        	<{foreach item=list from=$re}>
+            <tr>
+            	<td class="al" <{if $list.is_refund=='true'}>rowspan="2"<{/if}>><{$list.time|date_format:"%Y-%m-%d"}></td>
+            	<td class="al"><{$list.note}></td>
+            	<td class="price <{if $list.minus=='T'}> minus<{/if}>">
+                	<{if $list.minus!='T'}>+<{/if}><{$list.price}>
+                </td>
+            	<td <{if $list.is_refund=='true'}>rowspan="2"<{/if}>>
+                <{if $list.statu==1}>
+                	<{if $list.mold==8}>进行中<{else}>等待付款<{/if}>
+                <{elseif $list.statu==2}>
+                    <{if $list.buyer_email==''}>
+                    已付款
+                    <{else}>
+                    等待发货
+                    <{/if}>
+                <{elseif $list.statu==3}>
+                <{if $list.buyer_email==''}>
+                等待确认收货
+                <{else}>
+                已发货
+                <{/if}>
+                <{elseif $list.statu==4}>交易成功
+                <{elseif $list.statu==5}>
+                <{if $list.buyer_email==''}>
+                已审请退货
+                <{else}>
+                要求退货
+                <{/if}>
+                	<{elseif $list.statu==6}>
+                	已退货
+                	<{else}>已取消
+                <{/if}>
+                </td>
+            	<td <{if $list.is_refund=='true'}>rowspan="2"<{/if}>>
+                <{if $list.statu==1&&$list.seller_email&&($list.mold==3||$list.mold==0)}>
+                	<a href="<{$config.weburl}>?m=payment&s=pay&tradeNo=<{$list.order_id}>">付款</a>
+                <{else}>
+                    <{if $list.mold!=9}>
+                        <a target="_blank" href="<{if $list.return_url}><{$list.return_url}><{else}><{$config.weburl}>?m=payment&s=detail&tradeNo=<{$list.flow_id}><{/if}>">详情</a>
+                    <{/if}>
+                <{/if}>
+                </td>
+            </tr>
+            <{if $list.is_refund=='true'}>
+            <tr>
+            	<td class="al">退款</td>
+            	<td class="price <{if $list.minus!='T'}> minus<{/if}>">
+                	<{if $list.minus=='T'}>+<{else}>-<{/if}><{$list.refund_amount}>
+                </td>
+            </tr>
+            <{/if}>
+            <{foreachelse}>
+            <tr>
+                <td colspan="5">
+                <div class="none">
+                    <img src="templates/default/image/none.jpg" />
+                    <span>没有找到记录</span>
+                </div>   
+                </td>
+            </tr>
+            <{/foreach}>
+        </table>
+    </div> 
+</div>

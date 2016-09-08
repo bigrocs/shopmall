@@ -1,0 +1,59 @@
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=1">我的商城</a> <span>&gt;</span>我的会员卡 
+    </div>
+</div>
+
+<div class="main">
+    <div class="wrap">
+        <div class="searchbar">
+            <form method="post">
+                <div>
+                <input type="text" name="serial" value="" class="w250" placeholder="请输入商家提供的序列号"/>
+                <input type="hidden" name="act" value="add_bind_card"/>
+                <span class="search-btn"><input type="submit" name="submit" value="搜索"/></span>
+                </div>
+            </form>
+            <script>
+                $("input[name='submit']").click(function(){
+                    if(!$("input[name='serial']").val())
+                    {
+                        $("input[name='serial']").focus();
+                        return false;
+                    }
+                })
+            </script>
+        </div>
+       <table class="table-list-style order voucher_list">
+            <thead>
+                <tr>
+                    <th width="82"></th>
+                    <th width="200" class="al">会员卡序列号</th>
+                    <th width="80">折扣</th>
+                    <th width="100">激活日期</th>
+                    <th width="80">状态</th>
+                    <th width="80">操作</th>
+                </tr>
+            </thead>
+            <{foreach from=$list.list item=vo}>
+            <tr>
+                <td><img src="<{$vo.logo}>" class="w70b1"/></td>
+                <td class="al">会员卡名：<{$vo.name}><br/>发放店铺：<{$vo.shop_name}>　<br/>卡序列号：<{$vo.serial}></td>
+                <td><{$vo.discounts}></td>
+                <td><{$vo.used_time|date_format:"%Y-%m-%d %H:%I:%S"}></td>
+                <td><{if $vo.status eq 1}>正常<{else}>不可用<{/if}></td>
+                <td><a href="<{$config.weburl}>/shop.php?uid=<{$vo.shop_id}>" target="_blank">使用</a> <a onclick="return confirm('确定吗？')" href="<{$config.weburl}>/main.php?m=member&s=admin_buyer_card&del_v_id=<{$vo.id}>">删除</a></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td colspan="6" class="norecord"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+            <{if $list.page}>
+            <tr>
+                <td colspan="6"><div class="pagination"><{$list.page}></div></td>
+            </tr>
+            <{/if}>
+       </table>
+    </div>
+</div>

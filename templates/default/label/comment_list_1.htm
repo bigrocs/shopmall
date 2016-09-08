@@ -1,0 +1,16 @@
+<table width="100%" cellpadding="0" cellspacing="0">
+    <{foreach item=list from=$comment}>
+    <tr>
+        <td align="center">
+            <p class="pic"><a href="home.php?uid=<{$list.userid}>"><img width="40" height="40" src="<{$list.logo}>"></a></p>
+            <p><a href="home.php?uid=<{$list.userid}>"><{$list.user}></a></p>
+        </td>
+        <td width="85%" valign="top">
+            <p><{$list.con}></p>
+            <span><{$list.uptime|date_format}></span>
+        </td>
+    </tr>
+    <{foreachelse}>
+    <tr><td height="70" class="pt0">没有找到结果</td></tr>
+    <{/foreach}>
+</table>

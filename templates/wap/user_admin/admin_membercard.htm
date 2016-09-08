@@ -1,0 +1,110 @@
+<link href="<{$config.weburl}>/templates/wap/css/index.css" rel="stylesheet" type="text/css" />
+<header>
+	<div class="nav-w">
+    	<section class="nav-s iconfont"><a href="javascript:history.back(-1)"><font>&#xe60d</font></a></section>
+    	<section class="nav-c"><span>会员卡管理</span></section>
+    	<section class="nav-e"><a href="main.php?m=member&s=admin_member_card&type=add">　添　加</a></section>
+    </div>
+</header>
+<section class="center wrap">
+	<{if $smarty.get.type eq 'add' or $smarty.get.type eq 'edit'}>
+	<form method="post" id="pro_from">
+	<p>* 会员卡名称：</p>
+	<p><input type="text" style="width:90%" name="name" value="<{$de.name}>"/></p>
+	<p>* 折扣比例：</p>
+	<p><input type="text" onblur="this.value=isNaN(this.value*1)?0:this.value*1" value="<{if $de.discounts}><{$de.discounts}><{else}>0<{/if}>" style="width:90%" name="discounts" value="<{$de.discounts}>"/></p>
+	<p>* 生成张数：</p>
+	<p><input type="text" onblur="this.value=isNaN(this.value*1)?1:this.value*1" <{if $de.total}>disabled="disabled"<{/if}>  style="width:90%" name="total" value="<{if $de.total}><{$de.total}><{else}>1<{/if}>"/></p>
+	<p>* 会员卡图标：</p>
+	<p><input id="logo"  style="width:80%" name="logo"<{if $de.logo}> value="<{$de.logo}>" type="hidden" <{else}>type="text"<{/if}>/><{if $de.logo}><img src="<{$de.logo}>" width="160px" id="logo_img" /> <{/if}> [<a href="javascript:uploadfile('会员卡图标','logo',170,110,'')">上传</a>] </p>
+	<p>* 会员卡状态：</p>
+	<p><input type="radio" <{if $de.status eq 1}>checked<{/if}> name="status" value="1"> 正常　<input type="radio" onclick="return confirm('取消后所有已绑定会员均不能享受本卡带来的优惠！')" <{if $de.status eq 2}>checked<{/if}> name="status" value="2"> 取消</p>
+	<p>
+		<{if $de}><input type="hidden" name="act" value="edit_card" /><input type="hidden" name="id" value="<{$de.id}>" /><{else}><input type="hidden" name="act" value="add_card" /><{/if}>
+		<input type="submit" class="submit" value="提交" />
+	</p>
+	</form>
+	<script>
+        $("form").submit(function(){
+            if(!$("input[name='name']").val())
+            {
+                $("input[name='name']").focus();
+                alert("会员卡名称不能为空")
+                return false;
+            }
+           
+            if(!$("input[name='total']").val())
+            {
+                $("input[name='total']").focus();
+                alert("生成张数不能为空")
+                return false;
+            }
+            
+            
+            if(!$("input[name='logo']").val())
+            {
+                $("input[name='logo']").focus();
+                alert("会员卡图标不能为空")
+                return false;
+            }   
+        })
+    </script>
+	<{elseif $smarty.get.listid}>
+	<section class="voucher_t">
+	<p>会员卡名称：<{$mu.name}></p>
+	<p>会员卡状态：<{if $mu.status eq 1}> 有效　<{else}> 失效<{/if}></p>
+	<p>发放张数：<font class="nums"><{$mu.total}></font> 张</p>
+	<p>已 绑 定：<font class="nums"><{if $mu.used}><{$mu.used}><{else}>0<{/if}></font> 个</p>
+	</section>
+	<table class="table-list-style lin32">
+		<thead>
+        <tr class="vouch_t_h">
+            <th>卡编号</th>
+            <th >会员(昵称)</th>
+            <th>绑定时间</th>
+            <th>状态</th>
+        </tr>
+       </thead>
+       <{foreach item=n from=$total.list}>
+        <tr>
+        	<td class="centert"><{$n.serial}></td>
+        	<td class="centert"><{if $n.blind_member_name}><a href="<{$config.weburl}>/home.php?uid=<{$n.blind_member_id}>" target="_blank"><{$n.blind_member_name}></a><{else}>--<{/if}></td>
+            <td class="centert"><{if $n.used_time}><{$n.used_time|date_format:"%Y-%m-%d"}><{else}>--<{/if}></td>
+            <td class="centert"><{if $n.status eq 1}>正常<{elseif $n.status eq -1}>无效<{else}>已取消<{/if}></td>
+        </tr>
+       
+        <{/foreach}>
+        <tr>
+            <td colspan="8"><div class="pagination"><{$total.page}></div></td>
+        </tr>
+    </table>
+	<{else}>
+	<table class="table-list-style">
+        <thead>
+        <tr >
+            <th class="al" style="padding-left:8px">会员卡列表</th>
+            <th class="al" >状态</th>
+            <th class="al" >操作</th>
+        </tr>
+        </thead>
+        <{foreach from=$de item=vo}>
+        <tr>
+        	<td class="td_list pic-small" style="padding-left:12px"><a href="main.php?m=member&s=admin_member_card&listid=<{$vo.id}>"><img style="float:left;margin-right:5px;" class="bor0" src="<{$vo.logo}>" width="62px"/></a>
+            <p><a href="main.php?m=member&s=admin_member_card&listid=<{$vo.id}>"><{$vo.name}></a></p>
+            <p>生成张数：<{$vo.total}></p>
+            <p>创建日期：<{$vo.create_time|date_format:"%Y-%m-%d"}></p>
+            </td>
+            <td><{if $vo.status eq 1}>有效<{else}>失效<{/if}></td>
+            <td class="cent dbutton" width="50px" style="padding-right:10px"><a href="main.php?m=member&s=admin_member_card&type=add&act=edit&id=<{$vo.id}>">编辑</a> <a onclick="return confirm('确认删除吗？')" href="main.php?m=member&s=admin_member_card&delid=<{$vo.id}>">删除</a> <a href="main.php?m=member&s=admin_member_card&listid=<{$vo.id}>">统计</a></td>
+        </tr>
+        <{foreachelse}>
+        <tr>
+            <td colspan="8" class="norecord"><i></i><span>暂无符合条件的数据！</span></td>
+        </tr>
+        <{/foreach}>
+        <tr>
+            <td colspan="8"></td>
+        </tr>
+    </table>
+    <{/if}>
+</section>

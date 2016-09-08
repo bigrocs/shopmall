@@ -1,0 +1,57 @@
+<div class="new_bg">
+	<div class="new_nei">
+        <h2>新闻列表</h2>
+        <div class="new_neiz">
+            <ul>
+                <{foreach item=list key=num from=$re.list}>
+                <li>
+                	<{if $list.titlepic}>
+                    <div class="new_neiliz"><a href="<{$list.url}>" title="<{$list.title}>" target="_blank"><img height="123" width="183" src="<{$list.titlepic}>" /></a></div>
+                    <{/if}>
+                    <div class="new_neiliz0">
+                        <div class="new_neibt"><a <{$list.style}> href="<{$list.url}>" title="<{$list.title}>" target="_blank"> <{$list.ftitle|strip_tags|replace:"%":"％"|truncate:100:'...'}></a></div>
+                        <div class="new_neisj"><{$list.uptime|date_format}></div>
+                        <div class="new_neinr"><p><{$list.smalltext}></p></div>
+                    </div>
+                    <div class="clear"></div>
+                </li>
+                <{/foreach}>
+            </ul>
+            <div class="new_ym">
+                <{$re.page}>
+            </div>
+        </div>
+        <div class="new_neiy">
+            <b>推荐阅读</b>
+            <ul><{insert name="label" type='news' temp='news_list' img='true' leng=16 limit = 8}></ul>
+            <div class="new_banner"><script src='<{$config.weburl}>/api/ad.php?id=15&catid=<{$smarty.get.id}>&name=<{$smarty.get.key}>'></script></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<style>
+.menu{ margin-bottom:0px !important;}
+.new_bg{background:#F2F2F2; width:100%; padding:15px 0px;}
+.new_nei{margin:0 auto; width:1200px; background:#fff;}
+.new_nei h2{background:#fbfbfb; height:35px; line-height:35px; border-bottom:1px solid #f5f4f4; font-family:微软雅黑; font-size:16px; font-weight:normal; padding-left:20px;}
+.new_neiz{float:left; width:949px; border-right:1px solid #f5f4f4;}
+.new_neiz ul{padding:15px;}
+.new_neiz li{padding:25px 15px; border-bottom:1px dashed #DDDDDD;}
+.new_neiliz{float:left; width:183px; height:123px; border:1px solid #f0f0f0;}
+.new_neiliz0{float:left; width:680px; padding-left:20px;}
+.new_neibt{font-family:微软雅黑; font-size:16px;}
+.new_neisj{color:#999999; padding-top:10px;}
+.new_neinr{color:#6C6C6C; padding-top:5px;}
+.new_neinr p{line-height:24px;}
+.new_ym{padding-bottom:30px; padding-left:30px;}
+.clear{clear:both;}
+.new_neiy{float:right; width:250px; margin:0 auto; padding-top:20px;}
+.new_neiy b{ font-size:16px; padding:20px 15px 0px; font-family:微软雅黑; color:#333;}
+.new_neiy_a{width:100px;}
+.new_neiy_a img{width:100px; height:75px;}
+.new_neiy ul{list-style:none; padding:0px 15px;}
+.new_neiy li{margin: 15px 0 0;}
+.new_banner{ margin-top:30px; border-top:1px solid #F5F4F4;}
+.new_banner img{width:217px; padding:15px 15px 0;}
+.footer{margin-top:0px !important;}
+</style>

@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="../script/jquery-1.4.4.min.js" type="text/javascript"></script>
+    <script src="../script/base.js" type="text/javascript"></script>
+<style>
+body{background:none repeat scroll 0 0 #FFFFFF;color:#333333;font:12px/150% Arial,Verdana,"宋体";}
+li {list-style-type:none;}
+#header {
+  background-color: #fff;
+  border-bottom: solid 2px #F5F5F5;}
+  .header {
+  padding: 5px 0;
+  height: 75px;
+}
+.w {
+  width: 1000px;
+}
+.header {
+  height: 60px;
+  padding: 15px 0;
+}
+.logo {
+  float: left;
+  width: 250px;
+  margin-top: 5px;
+  margin-left: 20%;
+}
+.form{
+  background-color: #FFF;
+  width: 402px;
+  padding: 19px 19px;
+  border: solid 1px #E6E6E6;
+  border-radius: 5px;
+  float: left;
+  position: relative;
+  z-index: 1;
+  margin-top: 6%;
+  margin-left: 22%;
+  }
+.tabs-nav .tabulous_active {
+  font-size: 18px;
+  color: #F32613;
+  line-height: 24px;
+  padding-bottom: 13px;
+  position: relative;
+  z-index: 1;
+  border-bottom: 3px solid #F32613;
+  width: 45%;
+  text-align: center;
+}
+form {
+  margin-top: 20px;
+  padding: 0 40px 20px 40px;}
+form .focus {
+  border-color: #7abd54;
+  z-index: 3;}
+form dl {
+  width: 320px;
+  background-color: #FFF;
+  height: 44px;
+  margin-top: 15px;
+  border: solid 1px #E6E6E6;
+  position: relative;
+  z-index: 1;}
+form dl dt {
+  font-size: 14px;
+  line-height: 20px;
+  color: #666;
+  width: 56px;
+  padding: 12px 0 12px 12px;
+  float: left;}
+.text {
+  font-family: arial,"宋体";
+  font-size: 14px;
+  height: 24px;
+  line-height: 24px;
+  padding: 4px 0 4px 3px;
+  width: 208px;
+  float: left;
+  border: none;}
+form dl dd {
+  height: 28px;
+  float: left;
+  padding: 8px 0;}
+.login-btn {
+  height: 50px;}
+.item {
+  height: 40px;
+  line-height: 26px;
+  overflow: visible;
+  position: relative;
+  width: 100%;}
+input[type="submit"]{
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFF;
+  background-color: #F32613;
+  width: 314px;
+  height: 42px;
+  border: solid 1px #D91E17;
+  border-radius: 3px;
+  cursor: pointer;}
+.lefts{width: 400px;height: 320px;float: left;margin-top: 6%;margin-left: 2%;}
+.lefts ul {
+  margin-top: 18px;
+  padding-top: 12px;
+  margin-bottom: 40px;
+  border-top: 1px dashed #e6e6e6;
+  width: 250px;}
+  .lefts p  {margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  color: #555;}
+.lefts ul li{
+line-height: 25px;
+}
+.foot {
+  overflow: hidden;
+  text-align: center;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ededed;
+  margin-bottom: 20px;
+  height: 160px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.fore4 {
+  height: 50px;
+  overflow: hidden;
+  z-index: 3;
+}
+.item .item-ifo a {
+  color: #06C;
+  font-weight: 600;
+  margin: 0;
+}
+ .code-div span {
+     width: 98px;
+     height: 44px;
+     float: left;
+     margin: 15px 10px 0;
+     border: solid 1px #E6E6E6;
+     position: relative;
+     z-index: 1;}
+ .code-div span img {
+     width: 100px;
+     height: 44px;
+ }
+.clearfix {
+    display: block;
+}
+#user_d{width: 120px;height: 20px;margin-left: 40px;margin-top:10px;border: 1px solid red;background: #FFF2F2;font-color: red;padding-left: 20px;}
+</style>
+</head>
+<script>
+function do_login()
+{
+	if(document.getElementById('user').value.length < 1)
+	{
+		document.getElementById('user').focus();
+        document.getElementById("user_d").innerText = "账号不能为空!";
+        document.getElementById("user_d").style.display="block";
+		return false;
+	}
+	if(document.getElementById('password').value.length < 1)
+	{
+		document.getElementById('password').focus();
+		document.getElementById("user_d").innerText = "密码不能为空!";
+		document.getElementById("user_d").style.display="block";
+		return false;
+	}
+}
+function get_randfunc(obj)
+{
+    var sj = new Date();
+    url=obj.src;
+    obj.src=url+'?'+sj;
+}
+</script>
+<body>
+<div id="header">
+	<div class="w header">
+    	<div class="logo ld">
+        <a hidefocus="true" title="mallbuilder" href="http://127.0.0.1/mallbuilder"><img src="http://127.0.0.1/mallbuilder/image/logo.gif"></a>
+        <b></b>
+        </div>
+	</div>
+</div>
+<div class="mc">
+<div class="form">
+    <ul class="tabs-nav">
+        <li class="tabulous_active">用户登录<i></i></li>
+        <li></li>
+    </ul>
+    <div id="user_d" style="display: none"><i class="iconfont"></i></div>
+    <form id="login" name="login" action="../login.php" method="post">
+
+        <dl>
+            <dt>账&nbsp;&nbsp;号：</dt>
+            <dd>
+                <input type="text" class="text" autocomplete="off" name="user" tabindex="1" value="<{$user}>" disabled="true" id="user">
+            </dd>
+        </dl>
+        <{if $smarty.get.erry=="-1"}><font color="red" class="clearfix">账号不存在</font>
+        <{elseif $smarty.get.erry=="-5"}><font color="red" class="clearfix">用户被禁止访问</font>
+        <{elseif $smarty.get.erry=="-4"}><font color="red" class="clearfix"><{$lang.have_restpass}></font><{/if}>
+        <dl>
+            <dt>密&nbsp;&nbsp;&nbsp;码：</dt>
+            <dd>
+                <input class="text" type="password" name="password" id="password" tabindex="2" autocomplete="off" placeholder="6-20个大小写英文字母、符号或数字"/>
+            </dd>
+        </dl>
+        <{if $smarty.get.erry=="-2"}>
+        <font color="red" class="clearfix">密码错误</font>
+        <{/if}>
+        <div class="code-div mt15">
+            <dl style="width: 200px;float: left;height: 43px">
+                <dt>验证码：</dt>
+                <dd>
+                    <input type="text" style="width:88px" maxlength="4" class="text w100" name="randcode" id="randcode" autocomplete="off" tabindex="3" placeholder="输入验证码"/>
+                </dd>
+            </dl>
+            <span><img onclick="get_randfunc(this);" src='../includes/rand_func.php'/></span>
+            <{if $smarty.get.erry=="-3"}>
+            <p style="margin-top:0px;width: 130px;float: left;color:red"  class="clearfix">验证码错误</p>
+            <{/if}>
+        </div>
+        <div class="item fore4">
+                    <div class="item-ifo mt15">
+                        <a href="../lostpass.php" class="">忘记密码?</a>
+                        <a href="../register.php" style="margin-left: 160px;color: #555555">免费注册</a>
+                    </div>
+        </div>
+        <span></span>
+
+            <font color="red" class="clearfix"></font>
+
+        <div class="item login-btn">
+            <input name="action" type="hidden" value="submit" />
+            <input name="authorize" type="hidden" value="authorize" />
+            <input name="url" type="hidden" value="<{$url}>" />
+            <input name="forward" type="hidden" id="forward" value="<{$smarty.get.forward}>" />
+            <input type="submit" tabindex="4" value="授权并登录" onclick="return do_login();">
+        </div>
+    </form>
+</div>
+ <div class="lefts">
+ <p><strong>ERP-Builder</strong> 将获得以下权限</p>
+ <ul>
+    <li>读取您的用户名等基本信息</li>
+    <li>创建或更新您店铺的营销活动</li>
+    <li>读取或更新您店铺的商品数据</li>
+ </ul>
+ </div>
+</div>
+<div class="foot">
+    <div class="openplatform-login-footer-content">
+    </div>
+</div>
+</body>
+</html>

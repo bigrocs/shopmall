@@ -1,0 +1,11 @@
+<{foreach item=hotli key=num from=$pro}>
+<li class="fore<{$num+1}>">
+<div class="p-img ld">
+    <a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$hotli.id}>">
+        <img width="100" src='<{$hotli.pic}>_220X220.jpg' />
+    </a>
+</div>
+<div class="p-name"><a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$hotli.id}>"><{$hotli.pname}></a></div>
+<div class="p-price"><strong><{$config.money}><{$hotli.price}></strong></div>
+</li>
+<{/foreach}>

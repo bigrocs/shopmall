@@ -1,0 +1,23 @@
+<link href="<{$config.weburl}>/templates/wap_app/css/list.css" rel="stylesheet" type="text/css" />
+<section class="itemSearchList">
+<{if $re.list}>
+<div class="itemSearchResult clearfix">
+    <{foreach item=slist key=num from=$re.list}>
+    <dl>
+        <dt><a class="p-img" href="<{$config.weburl}>/shop.php?uid=<{$slist.shopid}>&noheader=1">  <img height="80" width="80" alt="<{$list.pname}>" src="<{if $slist.logo!=''}><{$slist.logo}><{else}>image/default/user_admin/default_user_portrait.gif<{/if}>"></a> </dt>
+        <dd>
+            <p class="p-name"><a href="<{$config.weburl}>/shop.php?uid=<{$slist.shopid}>"><{$slist.company}></a></p>
+            <p class="p-name color"><{$slist.area}></p>
+            <p class="p-name color">店主：<{$slist.user}></p>
+            <div class="handle"><a href="main.php?m=sns&s=admin_share_shop&type=del&id=<{$slist.id}>">删除</a></div>
+        </dd>
+    </dl>
+    <{/foreach}>
+    <{$re.page}>
+</div>
+<{else}>
+<div class="itemsNull">
+    <h3>暂无符合条件的数据记录</h3>
+</div>
+<{/if}>
+</section>

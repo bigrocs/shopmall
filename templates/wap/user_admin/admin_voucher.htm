@@ -1,0 +1,158 @@
+<link href="<{$config.weburl}>/templates/wap/css/index.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.11.2.min.js" type="text/javascript"></script><header>
+<script src="<{$config.weburl}>/script/my_lightbox.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/Calendar.js"></script>
+<script type="text/javascript">
+var cdr = new Calendar("cdr");
+document.write(cdr);
+cdr.showMoreDay = true;
+</script>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s iconfont"><a href="javascript:history.back(-1)"><font>&#xe60d</font></a></section>
+    	<section class="nav-c"><span>代金券管理</span></section>
+    	<section class="nav-e"><a href="main.php?m=voucher&s=admin_voucher&type=add"><nav>添加</nav></a></section>
+    </div>
+</header>
+<section class="center wrap">
+	<{if $smarty.get.type eq 'add' or $smarty.get.type eq 'edit'}>
+	<form method="post" id="pro_from">
+	 <p>* 代金券名称：</p>
+    <p><input type="text" style="width:90%" name="name" value="<{$mu.name}>"/></p>
+    <p>* 有效期：</p>
+    <p><input type="text" class="text" name="etime" readonly="readonly" onfocus="cdr.show(this);" value="<{$mu.end_time|date_format:'%Y-%m-%d'}>"/></p>
+    <p>* 面额：</p>
+    <p><input name="price" type="text"  value="<{$mu.price}>" onblur="this.value=isNaN(this.value*1)?1:this.value*1" style="width:90%"  /></p>
+    <p>* 积分：</p>
+    <p><input type="text"  name="points" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" value="<{if $mu.points}><{$mu.points}><{else}>0<{/if}>" style="width:90%" /></p>
+    <p>* 可发放张数：</p>
+    <p><input type="text" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" style="width:90%" name="total" value="<{$mu.total}>"/></p>
+     <p>* 每人限领：</p>
+    <p>
+	    <select name="eachlimit" style="width:90%">
+	        <{if $voucher_config.p_v_eachlimit}>
+	        <{assign var=i value=0}>
+	        <{section name=total loop=$voucher_config.p_v_eachlimit}>
+	        <{assign var=i value=$i+1}>
+	        <option <{if $mu.eachlimit eq $i}>selected<{/if}> value="<{$i}>"><{$i}>张</option>
+	        <{/section}>
+	       <{else}>
+	        <option value="1">1张</option>
+	        <{/if}>
+	    </select>
+    </p>
+    <p>* 最低消费限制：</p>
+    <p><input type="text" style="width:90%" name="limit" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" value="<{$mu.limit}>"/></p>
+    <p>* 代金券描述：</p>
+    <p><textarea name="desc" style="width:90%;height:80px"><{$mu.desc}></textarea></p>
+    <p>* 代金券图片：</p>
+    <p><input type="text" style="width:80%" name="logo" readonly="readonly" id="logo" value="<{$mu.logo}>"/> [<a href="javascript:uploadfile('上传代金券图片','logo',160,160,'')">上传</a>] </p>
+    <{if $mu}>
+    <p>* 代金券状态：</p>
+    <p><input type="radio" <{if $mu.status eq 1}>checked<{/if}> name="status" value="1"> 有效　<input type="radio" <{if $mu.status eq 2}>checked<{/if}> name="status" value="2"> 失效</p>
+    <{/if}>
+    <{if $mu}><input type="hidden" name="act" value="edit_voucher" /><input type="hidden" name="id" value="<{$mu.id}>" /><{else}><input type="hidden" name="act" value="add_voucher" /><{/if}>
+    <p><input type="submit" class="submit" value="提交" /></p>
+    </form>
+    <script>
+        $("form").submit(function(){
+            if(!$("input[name='name']").val())
+            {
+                $("input[name='name']").focus();
+                alert("代金券名称不能为空")
+                return false;
+            }
+            if(!$("input[name='etime']").val())
+            {
+                $("input[name='etime']").focus();
+                alert("有效期不能为空")
+                return false;
+            }
+            if(!$("input[name='price']").val())
+            {
+                $("input[name='price']").focus();
+                alert("面额不能为空")
+                return false;
+            }
+            if(!$("input[name='total']").val())
+            {
+                $("input[name='total']").focus();
+                alert("可发放张数不能为空")
+                return false;
+            }
+            if(!$("input[name='limit']").val())
+            {
+                $("input[name='limit']").val(0);
+            }
+            
+            if(!$("input[name='logo']").val())
+            {
+                $("input[name='logo']").focus();
+                alert("代金券图片不能为空")
+                return false;
+            }   
+        })
+    </script>
+	<{elseif $smarty.get.listid}>
+	<section class="voucher_t">
+	<p>代金券名称：<{$mu.name}></p>
+	<p>代金券状态：<{if $mu.status eq 1}> 有效　<{else}> 失效<{/if}></p>
+	<p>已领取次数：<font class="nums"><{$mu.giveout}></font> 次</p>
+	<p>已使用次数：<font class="nums"><{$mu.used}></font> 次</p>
+	</section>
+	<table class="table-list-style lin32">
+		<thead>
+        <tr class="vouch_t_h">
+            <th>领取编号</th>
+            <th >会员(昵称)</th>
+            <th>时间</th>
+            <th>状态</th>
+        </tr>
+       </thead>
+        <{foreach item=n from=$total.list}>
+        <tr>
+            <td class="centert"><{$n.serial}></td>
+            <td class="centert"><a href="<{$config.weburl}>/home.php?uid=<{$n.member_id}>" target="_blank"><{$n.member_name}></a></td>
+            <td class="centert"><{$n.create_time|date_format:"%Y-%m-%d %H:%M:%S"}></td>
+            <td class="centert"><{if $n.status eq 1}>未使用<{elseif $n.status eq 2}>已使用<{elseif $n.status eq 3}>已过期<{else}>已收回<{/if}></td>
+        </tr>
+        <{foreachelse}>
+        <tr>
+            <td colspan="12"  class="norecord"><i></i><span>暂无统计信息！</span></td>
+        </tr>
+        <{/foreach}>
+        <tr>
+            <td colspan="12"><div class="pagination"><{$total.page}></div></td>
+        </tr>
+    </table>
+	<{else}>
+	<table class="table-list-style">
+        <thead>
+        <tr >
+            <th class="al" style="padding-left:8px">代金券列表</th>
+            <th class="al" >状态</th>
+            <th class="al" >操作</th>
+        </tr>
+        </thead>
+        <{foreach from=$re.list item="vo"}>
+        <tr>
+            <td class="td_list pic-small" style="padding-left:12px"><a href="main.php?m=voucher&s=admin_voucher&listid=<{$vo.id}>"><img style="float:left;margin-right:5px;" class="bor0" src="<{$vo.logo}>" width="62px"/></a>
+            <p><a href="main.php?m=voucher&s=admin_voucher&listid=<{$vo.id}>"><{$vo.name}></a></p>
+            <p>最低消费：<{$vo.limit}></p>
+            <p>面额：<{$vo.price}></p>
+            <p>有效期：<{$vo.start_time|date_format:"%Y-%m-%d"}> ~ <{$vo.end_time|date_format:"%Y-%m-%d"}></p>
+            </td>
+            <td><{if $vo.status eq 1}>有效<{else}>失效<{/if}></td>
+            <td class="cent dbutton" width="50px" style="padding-right:10px"><a href="main.php?m=voucher&s=admin_voucher&type=add&act=edit&id=<{$vo.id}>">编辑</a> <a onclick="return confirm('确认删除吗？')" href="main.php?m=voucher&s=admin_voucher&delid=<{$vo.id}>">删除</a> <a href="main.php?m=voucher&s=admin_voucher&listid=<{$vo.id}>">统计</a></td>
+        </tr>
+        <{foreachelse}>
+        <tr>
+            <td colspan="8" class="norecord"><i></i><span>暂无符合条件的数据！</span></td>
+        </tr>
+        <{/foreach}>
+        <tr>
+            <td colspan="8"><div class="pagination"><{$re.page}></div></td>
+        </tr>
+    </table>
+<{/if}>
+</section>

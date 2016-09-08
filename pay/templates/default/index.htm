@@ -1,0 +1,63 @@
+<{include file="header.htm"}>
+<div class="banner w">
+	<div class="user">
+    	<div class="img"><img height="72" src="<{if $de.logo}><{$de.logo}><{else}>templates/default/image/avatar.png<{/if}>"/></div>
+        <div class="img-cover"></div>
+        <div class="info">
+        	<div class="user_info">
+            <p>个人账户：</p>
+            <p>
+                <span><{$de.email}></span>
+                <a <{if $de.identity_verify=='true'}>class="current"<{/if}> href="<{$config.weburl}>?act=edit&op=name"></a>
+            </p>
+            </div>
+            <div class="user_account">账户余额：<em><{$de.cash}></em>元</div>
+        </div>
+    </div>
+    <div class="greeting">
+    	<span>您好，</span>
+        <p>每一天，努力让梦想更近一些~</p>
+    </div>
+</div>
+<div class="container w fn-clear">
+	<div class="fn-left">
+        <div class="sidenav">
+            <div class="m fore1">
+            	<div class="mt">资金管理</div>
+            	<div class="mc fn-clear">
+                	<a href="<{$config.weburl}>/?m=payment&s=recharge">充值</a>
+                    <a href="<{$config.weburl}>/?m=payment&s=withdraw">提现</a>
+                    <a href="<{$config.weburl}>/?m=payment&s=transfer">转账</a>
+                </div>
+            </div>
+            <div class="m fore2">
+            	<div class="mt">交易查询</div>
+            	<div class="mc fn-clear">
+                	<a href="<{$config.weburl}>/?m=payment&s=record">交易明细</a>
+                    <a href="<{$config.weburl}>/?m=payment&s=record&mold=1">充值记录</a>
+                    <a href="<{$config.weburl}>/?m=payment&s=record&mold=2">提现记录</a>
+                </div>
+            </div>
+            <div class="m fore3">
+            	<div class="mt">账户管理</div>
+            	<div class="mc fn-clear">
+                	<a href="<{$config.weburl}>/?m=payment&s=settings">账户信息</a>
+                	<a href="<{$config.weburl}>/?m=payment&s=setpass">支付密码</a>
+                    <a href="<{$config.weburl}>/?act=edit&op=name">实名认证</a>
+                </div>
+            </div>
+        </div>
+        <div class="m1">
+            <div class="mt"><a target="_blank" href="help.php">常见问题</a></div>
+            <div class="mc">
+                <ul>
+                	<{foreach item=list from=$help}>
+                    <li><a target="_blank" href="help.php?id=<{$list.con_group}>&type=<{$list.con_id}>"><{$list.con_title|truncate:20:""}></a></li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        </div>
+    </div>
+	<div class="fn-right"><{$output}></div>
+</div>
+<{include file="footer.htm"}>

@@ -1,0 +1,254 @@
+<{include file="header.htm"}>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span>我的购物车</span></section>
+   		<section class="nav-e"><a href="javascript:$('form').submit()"><nav>删除</nav></a></section>
+    </div>
+</header>
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<link href="<{$config.weburl}>/templates/wap/css/cart.css" rel="stylesheet" type="text/css" />
+<script language="javascript">
+    $(function(){
+        count();
+        /* 全选 */
+        $('.checkall').click(function(){
+            var _self = this;
+            var obj=$(this).parent().parent();
+            $(obj).find('input[type="checkbox"]').each(function(){
+                if (!this.disabled)
+                {
+                    $(this).attr('checked', _self.checked);
+                }
+            });
+        });
+        $(".cart_list input[type='checkbox']").click(function(){
+            var flag = $(this).attr("checked");
+            var data_type = $(this).attr("data-type");
+            if(flag == true)
+            {
+                if(data_type == 'all')
+                {
+                    ckeckbox("input[type='checkbox']",true);
+                }
+                $(".submit-btn").removeClass("submit-btn-disabled");
+            }
+            else
+            {
+                if(data_type == 'all')
+                {
+                    ckeckbox("input[type='checkbox']",false);
+                }
+                $(".submit-btn").addClass("submit-btn-disabled");
+            }
+            count();
+        });
+        function ckeckbox(obj,flag)
+        {
+            $("table").find(obj).each(function(){
+                if(flag == true)
+                {
+                    $(this).attr("checked","checked");
+                }
+                else
+                {
+                    $(this).attr("checked","");
+                }
+            });
+        }
+        function count()
+        {
+            var count = 0;
+            var num = 0;
+            $("table").find("input[name='product_id[]']:checked").each(function(){
+                var value = $(this).val();
+                var price = $(this).attr("data-value");
+                price = price.replace(/,/g, "")
+                price = Number(price);
+                count = count + price;
+                num ++;
+            });
+            $(".subtotal").html(count.toFixed(2));
+            if(num>0)
+                $(".submit-btn").removeClass("submit-btn-disabled");
+            else
+                $(".submit-btn").addClass("submit-btn-disabled");
+        }
+    });
+</script>
+<!--<script language="javascript">
+$(function(){
+	/* 全选 */
+	$('.checkall').click(function(){
+		var _self = this;
+		var obj=$(this).parent().parent();
+		$(obj).find('input[type="checkbox"]').each(function(){
+			if (!this.disabled)
+			{
+				$(this).attr('checked', _self.checked);
+			}
+		});
+	});	 
+});
+</script>-->
+<{if $smarty.get.type=="clear" || $cart.cart|@count<1}>
+    <div class="cart-empty">
+        购物车内暂时没有产品<br />您可以<a href="<{$config.weburl}>">去首页</a>挑选
+    </div>
+<{else}>  
+<section class="cart">
+<{if $smarty.get.type=="numf"}>
+    <div align="center"><font color="#FF0000">库存数量不够(已经为定订购产品的最大值)</font></div>
+<{elseif $smarty.get.type=="pronull"}>
+    <div align="center"> <font color="#FF0000">产品不存在或订购销完或已经删除</font></div>
+<{elseif $smarty.get.type=="del"}>
+    <div align="center"><font color="#FF0000">购物车不存在该产品已经删除</font></div>
+<{/if}>
+<div class="cart_list">
+    <form id="form" name="form" method="post">
+    <input type="hidden" name="act" value="del">
+    <{foreach item=list from=$cart.cart}>
+        <div class="item">
+        <div class="top">
+            <!--<input type="checkbox" class="checkall">-->
+            <a href="shop.php?uid=<{$list.seller_id}>"><{$list.company}></a>
+        </div>
+
+        <div>
+        <{foreach item=pro key=n from=$list.prolist}>
+            <!--<dl class="clearfix">
+            <dt>
+                <input type="checkbox" value="<{$pro.id}>" class="checkitem" name="checkbox[]">
+                <img height="80" alt="<{$pro.name}>" src="<{$pro.pic}>_220X220.jpg">
+            </dt>
+            <dd>
+                <p class="p-name"><{$pro.pname}></p>
+                <{if $pro.setmealname}>
+                <p>规格：<{$pro.setmealname}></p>
+                <{/if}>
+                <p class="p-price">
+                    <strong><{$config.money}><{$pro.price|number_format:2}></strong>
+                    <input data-param='{"id":"<{$pro.id}>"}' name="nums" id="nums" oninput="javascript:inputBuynum(this);" class="numIpt" type="number" value="<{$pro.num}>" min="1" max="<{$pro.stock}>" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'');">
+                </p>
+            </dd>
+            </dl>-->
+            <{if $n!=0}><div style="float:left;width:100%;height:10px;"></div><{/if}>
+            <table>
+                <tr>
+                    <td valign="top" width="120px" align="center" rowspan="4">
+                        <input type="checkbox" checked class="checkitem" data-value="<{$pro.price*$pro.num}>" name="product_id[]" value="<{$pro.id}>">
+                        &nbsp;&nbsp;<img height="80" width="80" alt="<{$pro.name}>" src="<{$pro.pic}>">
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top" class="cart_info">
+                        <p style="font-size:1em;" class="text_nownap"><{$pro.pname}></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <span class="c_left" style="font-size:0.875em;margin-top:4px;">
+                            <{if $pro.setmealname}>
+                                规格：<{$pro.setmealname}>
+                            <{else}>
+                                默认规格
+                            <{/if}>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <span style="font-size:1.125em;" class="price_color"><{$config.money}><span><{$pro.price|number_format:2}></span></span>
+                        <span style="font-size:1em;">&nbsp;x&nbsp;</span>
+                        <input style="font-size:1em;" class="p_num" data-param='{"id":"<{$pro.id}>"}' name="nums" id="nums" oninput="javascript:inputBuynum(this);" class="numIpt" type="number" value="<{$pro.num}>" min="1" max="<{$pro.stock}>" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'');">
+                    </td>
+                </tr>
+            </table>
+        <{/foreach}>
+        </div>
+        <!--<div class="bottom">
+            小计:&nbsp;&nbsp;<span class="p-name"><strong><{$config.money}><{$list.sumprice|number_format:2}></strong></span>
+        </div>-->
+        </div>
+    <{/foreach}>
+    <table width="100%" class="c_commit">
+        <tr>
+            <td>
+                <input type="checkbox" class="checkitem" data-type="all" class="c_left" checked>&nbsp;合计(不含运费):&nbsp;<span style="color:#de0023;"><strong><{$config.money}><span class="subtotal">0</span></strong></span>
+            </td>
+            <td>
+                <a class="submit-btn submit-btn-disabled" href="javascript:void(0);">结算</a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script><header>
+<script>
+    function inputBuynum(ele){
+        var buyNum = $(ele).val();
+        var maxNum = $(ele).attr("max");
+        var data_str = $(ele).attr("data-param");
+        eval("data_str = "+data_str);
+        if(buyNum!=null&&buyNum!=""){
+            if(Number(buyNum)<0||Number(buyNum)>Number(maxNum)){
+                alert("输入的数量有误,应为[1-"+maxNum+"]");
+                $(".numIpt").eq(inputindex).val('1');
+            }
+            else
+            {
+                edit_num(data_str.id,buyNum);
+            }
+        }
+    }
+    function edit_num(id,num){
+        var url = "?m=product&s=cart";
+        var pars = 'id='+id+'&num='+num;
+        $.post(url, pars,showResponse);
+        function showResponse(originalRequest)
+        {
+            window.location.reload();
+        }
+    }
+$(".submit-btn").bind("click",function(){
+    if(!$(this).hasClass("submit-btn-disabled"))
+    {
+        $("#form").attr("action","<{$config.weburl}>/index.php?m=product&s=confirm_order");
+        $("#form").submit();
+    }
+});
+    /*function inputBuynum(ele){
+        var _this=$(ele);
+        var inputindex = $(".numIpt").index(_this);
+        var buyNum = $(".numIpt").eq(inputindex).val();
+        var maxNum = $(".numIpt").eq(inputindex).attr("max");
+        var data_str = $(".numIpt").eq(inputindex).attr("data-param");
+        eval("data_str = "+data_str);
+        if(buyNum!=null&&buyNum!=""){
+            if(Number(buyNum)<0||Number(buyNum)>Number(maxNum)){
+                alert("输入的数量有误,应为[1-"+maxNum+"]");
+                $(".numIpt").eq(inputindex).val('1');
+            }
+            else
+            {
+                edit_num(data_str.id,buyNum);
+            }
+        }
+    }
+    function edit_num(id,num){
+        var url = "?m=product&s=cart";
+        var pars = 'id='+id+'&num='+num;
+        $.post(url, pars,showResponse);
+        function showResponse(originalRequest)
+        {
+            window.location.reload();
+        }
+    }*/
+</script>
+</section>
+<!--<footer>-->
+<!--总计（不含运费）:&nbsp;&nbsp;<span class="p-price"><strong><{$config.money}><{$cart.sumprice|number_format:2}></strong></span>-->
+<!--<a class="checkout" href="<{$config.weburl}>/?m=product&s=confirm_order">去结算</a>-->
+<!--</footer>-->
+<{/if}>
+</body>
+</html>

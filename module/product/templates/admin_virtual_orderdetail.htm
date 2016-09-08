@@ -1,0 +1,128 @@
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=1">我的商城</a> <span>&gt;</span>	已买到的商品 
+    </div>
+</div>
+<div class="main">
+<div class="wrap">
+    <div class="hd">
+        <ul class="tabs">
+            <li class="active"><a href="main.php?m=product&s=admin_orderdetail&id=<{$de.order_id}>">订单信息</a></li>
+        </ul>
+    </div>
+    <div class="order-detail">
+   
+    <{if $de.status==1}>
+    <div class="order">
+    <a class="button button-pay" target="_blank" href="<{$config.pay_url}>?m=payment&s=pay&tradeNo=<{$de.order_id}>">立刻付款</a>
+    </div>
+    <{/if}>
+    <dl class="clearfix">
+    	<dt>使用者号码：</dt>
+        <dd>
+            <{$de.consignee_mobile}>
+		</dd>
+        <dt>序　列　号：</dt>
+        <dd>
+            <{$de.serial}>
+        </dd>
+        <dt>有　效　期：</dt>
+        <dd>
+            <{$de.start_time|date_format}> - <{$de.end_time|date_format}>
+        </dd>
+        <dt>短信已发送：</dt>
+        <dd>
+            <{if $de.serial}>已发送<{else}>未发送<{/if}>
+        </dd>
+    </dl>
+    
+    <{if $de.invoice_title}>
+    <dl class="clearfix">
+    	<dt>发票信息：</dt>
+        <dd><{$de.invoice_title}></dd>
+    </dl>
+    <{/if}>
+    
+    <{if $de.des}>
+    <dl class="clearfix">
+    	<dt>买家留言：</dt>
+        <dd><{$de.des}></dd>
+    </dl>
+    <{/if}>
+    
+    <hr />
+    
+    <{if $de.buyerinfo}>
+    <dl class="dl clearfix">
+    	<dt>买家信息</dt>
+        <dd>用户名： <{$de.buyerinfo.user}></dd>
+        <dd>昵称： <{$de.buyerinfo.name}></dd>
+    </dl>
+    <{/if}>
+    
+    <{if $de.sellerinfo}>
+    <dl class="dl clearfix">
+    	<dt>卖家信息</dt>
+        <dd>用户名：<{$de.sellerinfo.user}></dd>
+        <dd>店铺名： <{$de.sellerinfo.company}></dd>
+    </dl>
+    <{/if}>
+    
+    <hr />
+    
+    <dl class="dl clearfix">
+    	<dt>订单信息</dt>
+        <dd>订单编号：<{$de.order_id}></dd>
+        <dd>创建时间：<{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></dd>
+        <{if $de.status>=2}>
+        <dd>付款时间：<{$de.payment_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></dd>
+        <{/if}>
+        <{if $de.status>=3}>
+        <dd>发货时间：<{$de.deliver_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></dd>
+        <{/if}>
+        <{if $de.status>=4}>
+        <dd>确认时间：<{$de.uptime|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></dd>
+        <{/if}>
+        <{if $de.logistics_name}>
+        <dd>物流名称：<{$de.logistics_name}></dd>
+        <{/if}>
+        <{if $de.invoice_no}>
+        <dd>物流单号：<{$de.invoice_no}></dd>
+        <{/if}>
+    </dl>
+    <table width="100%">
+        <tr>
+            <th class="first">商品</th>
+            <th width="13%">状态</th>
+            <th width="13%">单价(元)</th>
+            <th width="10%">数量</th>
+            <th width="13%" class="last">商品总价(元)</th>
+        </tr>
+        <{foreach item=plist from=$de.product}>
+        <tr>
+            <td class="item">
+            <div class="pic-info"><img src="<{$plist.pic}>" width="70" /></div>
+            <div class="txt-info">
+            <a href="<{$config.weburl}>/?m=product&s=detail&order_id=<{$de.order_id}>&pid=<{$plist.id}>&id=<{$plist.pid}>" target="_blank" ><{$plist.name}></a>
+            <{if $plist.spec}>
+            <p>
+            <{foreach item= v from = $plist.spec}>
+            <{$v}>&nbsp;
+            <{/foreach}>
+            </p>
+            <{/if}>
+            </div>
+            </td>
+            <td><{$order_status[$de.status]}></td>
+            <td><{$plist.price|number_format:2}></td>
+            <td><{$plist.num}></td>
+            <td class="last"><{$plist.num*$plist.price|number_format:2}></td>
+        </tr>
+        <{/foreach}>
+    </table>
+  	<div class="money">
+    	实付款：<b><{$de.product_price+$de.logistics_price|number_format:2}></b> 元
+    </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>会员管理</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="admin.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+	<script type="text/javascript" src="../script/jquery.validation.min.js"></script>
+	<script type="text/javascript" src="../script/moderate.js"></script>
+	<script type="text/javascript" src="../script/Calendar.js"></script>
+	<script type="text/javascript">
+		var cdr = new Calendar("cdr");
+		document.write(cdr);
+		cdr.showMoreDay = true;
+	</script>
+	 
+	<script language="javascript">
+	$(function(){
+		$('#form2').validate({
+			errorPlacement: function(error, element){
+				element.next('.form-error').append(error);
+			},      
+			rules : {
+				card_num:{
+					required:true,
+					remote: {
+						url: "?m=member&s=create_member.php",     //后台处理程序
+						type: "post",               //数据发送方式
+						//dataType: "json",           //接受数据格式   
+						data: {                     //要传递的数据
+							card_num: function() {
+								return $("#card_num").val();
+							}
+						}
+					}
+				},
+				amount:{
+					required:true
+				},
+			},
+			messages : {
+				card_num:{
+					required:'请填写会员卡号',
+					remote:'该会员卡号已经存在',
+				},
+				amount:{
+					required:'请填写充值的金额',
+				},
+			}
+		});
+	});
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="flow"> 
+			<div class="itemtitle"><h3>自定义会员卡</h3></div>
+		</div>
+		<div class="h35"></div>
+		<div>
+			<form name="form2" id="form2" method="post" action="">
+				<input type="hidden" name="m" value="member" />
+				<input type="hidden" name="s" value="create_member.php" />
+				<input type="hidden" name="card" value="add" />
+				
+				<table class="table table1">
+					<tbody>
+						<tr><td></td><td><span style="color:#666">(可任意编辑14位以内的卡号)</span></td></tr>
+						<tr>
+							<td width="100">会员卡号：</td>
+							<td>
+								<input type="text" name="card_num" id="card_num" maxlength="14" value="" class="w150" />
+								<div id="form-error" class="form-error"></div>
+							</td>
+						</tr>
+
+						<tr>
+							<td>充值金额：</td>
+							<td>
+								<input type="text" name="amount" value="0" onkeyup="value=value.replace(/[^\d]/g,'')" class="w150" />
+								<div id="form-error" class="form-error"></div>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>
+								<input type="submit" value="提交" class="submit" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div> 
+	</div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>通知模版</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../script/jquery.validation.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../script/district.js" ></script>
+<script src="../script/my_lightbox.js" language="javascript"></script>
+<script language="javascript">
+var weburl="<{$config.weburl}>";
+</script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>通知模版</h3>
+                <ul>
+                    <li <{if $smarty.get.operation=='' && !$smarty.get.type}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>"><span>邮件模版</span></a></li>
+                    
+                    <li <{if $smarty.get.operation=='' && $smarty.get.type==1}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=1"><span>站内信模版</span></a></li>
+               
+                    <li <{if $smarty.get.operation=='' && $smarty.get.type==2}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&type=2"><span>手机模版</span></a></li>
+                
+                    <li <{if $smarty.get.operation=='add'}>class="current"<{/if}>><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=add&type=<{$smarty.get.type}>"><span>添加</span></a></li>
+                    <{if $smarty.get.operation=='edit'}>
+                    <li class="current"><a href="#"><span>修改</span></a></li>
+                    <{/if}>
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div> 
+        <{if $smarty.get.operation=='add' or $smarty.get.operation=='edit' }>
+            <form name="form" id="form" method="post">
+            <input name="id" type="hidden" id="id" value="<{$de.id}>">
+            <table class="table table1">
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">通知模版</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td width="100">模板名称</td>
+                    <td>
+                    <{if $de.id&&$de.status != 1}>
+                    <input name="subject" type="hidden" value="<{$de.subject}>">
+                    <{$de.subject}>
+                    <{else}>
+                    <input name="subject" id="subject" type="text" class="w350" value="<{$de.subject}>">
+                    <{/if}>
+                    </td>
+                </tr>
+                <tr>
+                    <td>标记</td>
+                    <td>
+                    <{if $de.id&&$de.status != 1}>
+                    <input name="flag" type="hidden" value="<{$de.flag}>">
+                    <{$de.flag}>
+                    <{else}>
+                    <input name="flag" id="flag" type="text" class="w350" value="<{$de.flag}>">
+                    <{/if}>
+                    </td>
+                </tr>
+                <tr>
+                	<td>所属</td>
+                    <td>
+                    <{if $de.id}>
+                    <input name="type" type="hidden" value="<{$de.type}>">
+                    <{if $de.type==0}>邮件模版<{elseif $de.type==1}>站内信模版<{else}>手机模版<{/if}>
+                    <{else}>
+                    <select name="type" disabled="disabled">
+                    	<option <{if $de.type==0 or (!$smarty.get.type and !$de.type) }>selected="selected"<{/if}> value="0">邮件模版</option>
+                    	<option <{if $de.type==1 or ($smarty.get.type==1 and !$de.type)}>selected="selected"<{/if}> value="1">站内信模版</option>
+                    	<option <{if $de.type==2 or ($smarty.get.type==2 and !$de.type)}>selected="selected"<{/if}> value="2">手机模版</option>
+                    </select>
+                    <script>
+                    $("select[name='type']").click(function(){
+						if($(this).val()=='2')
+						{
+							$("#tr-title").hide();	
+						}
+						else
+						{
+							$("#tr-title").show();	
+						}
+					})
+                    </script>
+                    <{/if}>
+                    </td>
+                </tr>
+                <{if $de.type!=2}>
+                <tr id="tr-title">
+                    <td>标题</td>
+                    <td>
+                    <input name="title" id="title" type="text" class="w350" value="<{$de.title}>">
+                    <div id="form-error" class="form-error"></div>
+                 	</td>
+                </tr>
+                <{/if}>
+                <tr>
+                    <td>内容</td>
+                    <td>
+                    <script charset="utf-8" src="../lib/kindeditor/kindeditor-min.js"></script>
+					<script>
+                    var editor;
+                    KindEditor.ready(function(K) {
+                        editor = K.create('textarea[name="message"]', {
+                            filterMode: false,
+                        });
+                    });
+                    </script>
+                    <textarea style="width:80%; height:300px" id="message" name="message"><{$de.message}></textarea>
+                    <div id="form-error" class="form-error"></div>
+                    </td>
+				</tr>
+               
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                    <input class="submit" type="submit" value="提交">
+                    <input name="act" type="hidden" id="action" value="<{if !$smarty.get.editid}>save<{else}>edit<{/if}>">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
+        <{else}>
+        <form action="" method="post">
+        <input name="type" type="hidden" id="type" value="<{$smarty.get.type}>">
+        <table class="table">
+            <tbody>
+                <tr class="header">
+                    <th class="al">模版描述</th>
+                    <th width="50"></th>
+                </tr>
+                <{foreach item=list from=$de.list}>
+                <tr>
+                    <td class="al"><{$list.subject}></td>
+                    <td>
+                    <a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&operation=edit&editid=<{$list.id}>&type=<{$smarty.get.type}>"><{$editimg}></a> 
+                    <{if $list.status==1}>
+                    <a onclick="return confirm('确定删除吗');" href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>&delid=<{$list.id}>&type=<{$smarty.get.type}>"><{$delimg}></a>
+                    <{/if}>
+                    </td>
+                </tr>
+                <{foreachelse}>
+                <tr>
+                    <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+        </form>
+        <{/if}>
+    </div>
+</body>
+</html>

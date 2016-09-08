@@ -1,0 +1,101 @@
+@charset "utf-8";
+*{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+ul,ol,li{list-style:none;}
+em,i{font-style:normal;}
+img{border:0;}
+input,img{vertical-align:middle;}
+body{color:#000;font:400 14px/18px arial;background:#EEE;}
+a,a:visited{color:#333;text-decoration:none;}
+.clearfix:after{display:block;content:'';clear:both;visibility:hidden;}
+.hidden{display:none;}
+.red{color:#F00;}
+.org{color:#FF6600;}
+.m30{margin:30px auto;text-align:center;}
+/*********Lemons 20141226 字体*******/
+@font-face {
+    font-family: 'iconfont';
+    src: url('fonts/iconfont.eot'); /* IE9*/
+    src: url('fonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('fonts/iconfont.woff') format('woff'), /* chrome、firefox */
+    url('fonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('fonts/iconfont.svg#iconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont{font-family:"iconfont";font-size:22px;font-style:normal;color:#fff}
+.iconfont_min{font-family:"iconfont";font-size:1.4em;font-style:normal}
+
+
+header{width:100%;height:50px;}
+.nav-w{background-color:#dd3030;width:100%;font-size:12px;padding:8px 0 8px;height:34px;line-height:29px;display:-webkit-box;left:0;position:fixed;top:0;z-index:199;}
+.nav-w a{color:#666;}
+.nav-s{min-width:74px;padding-left:5px;}
+.nav-c{text-align:center;-webkit-box-flex:1;}
+.nav-e{min-width:60px;padding-right:15px;}
+.nav-s a{display:inline-block;width:74px;height:34px;line-height:34px;}
+.nav-s a nav{color:#fff;display:inline-block;height:34px;line-height:34px;text-align:center;text-decoration:none;width:62px;}
+.nav-c span{display:block;height:32px;line-height:32px;padding:0 10px;font-size:18px;font-weight:bold;color:#fff;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
+.nav-e a{color:#fff;display:inline-block;width:60px;height:32px;}
+.nav-e a nav{color:#fff;display:inline-block;height:32px;line-height:32px;text-align:center;text-decoration:none;width:60px;}
+.nav-e a.list{background:#f50;border-color:#f50;color:#FFF;border-radius: 5px 5px 5px 5px;width: 60px;height: 32px;float: right;text-align: center;font-weight: normal;font-size: 12px;}
+.nav-e a.list nav{color:#FFF;}
+
+footer{font-size:14px;text-align:center;margin:0 auto 20px;}
+footer section{background:url(../../../image/wap/foot_bg.png) repeat-x;height:30px;line-height:30px;border-bottom:1px solid #E8E8E8;border-top:1px solid #E8E8E8;padding:0 20px;}
+footer section .fl{float:left;width:70%;text-align:left;}
+footer section .fl a{color:#3D5F9C;}
+footer section .fr{float:right;width:30%;text-align:right;}
+footer section .fr a{position:relative;padding-right:12px;}
+footer section .fr b{position:absolute;width:0;height:0;top:2px;right:0;border:4px transparent solid;border-bottom-color:#7B7B7B}
+footer nav{padding:12px 0 9px;}
+footer nav a{margin:0 8px;color:#A6A6A6;}
+footer p,footer p a{color:#A6A6A6;font-size:12px;line-height:16px;}
+
+.p-img,.p-name,.p-price,.p-detail{overflow:hidden;}
+.p-name,.p-detail{word-break:break-all;word-wrap:break-word;}
+.p-price{color:#eb5211;font-size: 16px;font-weight: normal;}
+.p-price strong,.p-market strong{color:#FF0000;}
+
+.page{color:#999999;height:32px;line-height:32px;margin:16px 0 20px;text-align:center;}
+.page div{background:#F9F9F9;border:1px solid #E0E1E1;min-width:88px;}
+.page .pre{border-right:1px solid #E0E1E1;width:88px;float:left;border-radius:4px 0 0 4px;}
+.page .next{border-left:1px solid #E0E1E1;width:88px;float:right;border-radius:0 4px 4px 0;}
+.page .grey{background:#E6E6E6;color:#C2C2C2;}
+
+.page b{color:#dd3030 !important;}
+.page a,.page b{background-color: #FFFFFF;background-repeat: no-repeat;border: 1px solid #C2D5E3;color: #333333;display: inline;float: left;height: 20px;line-height: 20px;margin-left: 4px;overflow: hidden;padding: 0 4px;text-decoration: none;}
+
+.mc{width: 95%;margin: 0 auto;clear: both;}
+.voucher{background-color: #fffbf3;border: 1px dotted #ffcfbf;display: block;height: 162px;position: relative;z-index: 1;}
+.voucher .cut{background: url("../../../image/default/points/point_bg.png") no-repeat scroll -140px 0 rgba(0, 0, 0, 0);height: 18px;left: 5px;position: absolute;top: -9px;width: 20px;z-index: 2;}
+.m .mc .voucher-list li{margin: 20px 0 20px 20px;width: 100%;clear: both;}
+.voucher .info { background: url(../images/point_voucher_bg.png) repeat-y right 0; width: 120px; height: 192px; padding: 10px 30px 0 15px; position: absolute; z-index: 1; top: 0; left: 0;}
+.voucher .store { font-weight: 600; text-align: center; display: block; height: 20px;overflow:hidden}
+.m .mc .voucher-list  li p.pline { text-align: left; height: 25px; margin-bottom: 2px;background:none;padding:0px;overflow:hidden}
+.voucher .pic { line-height: 0; text-align: center; vertical-align: middle; display: table-cell; *display: block; width: 120px; height: 120px; overflow: hidden;}
+.voucher .pic img { max-width: 120px; max-height: 120px; margin-top:expression(120-this.height/2); }
+.voucher .value,
+.voucher .point,
+.voucher .button { display: block; padding-left: 145px;}
+.voucher .value { padding-top: 5px; }
+.voucher .value dt {  color: #D93600; }
+.voucher .value dt em { font-size: 20px;}
+.voucher .value dd { color: #D83500; margin-bottom: 4px;}
+.voucher .value dd.time { color: #999;}
+.voucher .point { padding-bottom: 5px;}
+.voucher .point p { line-height: 20px; display: block; color: #777; height: 20px;}
+.voucher .point p.required { font: 14px;color: #D93600; height: 24px;}
+a.ncp-btn-red{background-color: #da4f49;line-height: 29px;border-color: #c44742 #c44742 #a33b37;display: block; padding-left: 8px 12px; width:80px;text-align:center;color: #fff;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1)}
+.voucher .point p.w120{width:auto;}
+.mt.mt-voucher{background:url("../../../image/default/points/all01.png") no-repeat scroll 2px center rgba(0, 0, 0, 0)}
+.m .mc .voucher-list li.fl_left{margin-left: 0;}
+.m .mc .voucher-list li.fl_middle{margin-left: 42px;}
+#fwin_buy{width: 70%!important;left: 15%!important;top: 45%!important;}
+
+.m-tags{width: 15px;height: 15px;border: 1px solid rgb(19,208,179);border-radius: 13px; float: left;}
+.m-tags div{border-radius: 13px; width: 90%;height: 90%;background: rgb(19,208,179)}
+
+.m-position{width: 60%;float: left;}
+.m-bp{width: 95%;height: auto;overflow: hidden;border-radius:5px;background: #fff;margin: 10px auto;}
+.m-reload{float: right;}
+.itemsNull{margin: 20px 0 15px;padding-left: 15px;}

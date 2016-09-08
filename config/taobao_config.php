@@ -1,0 +1,1 @@
+<?php $taobao_config = unserialize('a:2:{s:6:"appkey";s:8:"23143339";s:9:"secretKey";s:32:"bed53d4593456c31dd8b86df9d453878";}');?>

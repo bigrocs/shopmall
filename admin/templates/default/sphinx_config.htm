@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Sphinx设置</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="admin.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="flow">
+        <div class="itemtitle">
+            <h3>Sphinx设置</h3>
+            <ul>
+                <li <{if $smarty.get.operation==''}>class="current"<{/if}> ><a href="sphinx_config.php"><span>Sphinx设置设置</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="h35"></div>
+    <form name="form" id="form" method="post">
+        <table class="table2">
+            <tr>
+                <td class="td" colspan="2">环境检测</td>
+            </tr>
+            <tr>
+                <td align="left">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<{if $sphinx_ext}>Sphinx<{else}> Sphinx 扩展尚未安装 <{/if}><br /><br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;<{if $scws_ext}>Scws_ext<{else}> Scws  扩展尚未安装 <{/if}>
+            </tr>
+
+            <tr>
+                <td class="td" colspan="2">是否启用 Sphinx</td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <input type="radio" class="radio" name="sphinx_statu" value="1" <{if $sphinx_config.sphinx_statu eq 1}>checked<{/if}> >
+                    开启<br /><br />
+                    <input type="radio" class="radio" name="sphinx_statu" value="0" <{if $sphinx_config.sphinx_statu eq 0}>checked<{/if}> >
+                    关闭
+            </tr>
+
+
+            <tr>
+                <td class="td" colspan="2">Sphinx Search Host</td>
+            </tr>
+            <tr>
+                <td width="200">
+                    <input name="sphinx_search_host" type="text" class="w250" value="<{$sphinx_config.sphinx_search_host}>" />
+                </td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td class="td" colspan="2">Sphinx Search Port</td>
+            </tr>
+            <tr>
+                <td width="200">
+                    <input type="text" name="sphinx_search_port" class="w250" value="<{$sphinx_config.sphinx_search_port}>" />
+                </td>
+                <td class="tip"></td>
+            </tr>
+            <!--
+            <tr>
+                <td class="td" colspan="2">Sphinx User</td>
+            </tr>
+            <tr>
+                <td width="200">
+                    <input type="text" name="sphinx_user" class="w250" value="<{$sphinx_config.sphinx_user}>" />
+                </td>
+                <td class="tip"></td>
+            </tr>
+
+
+            <tr>
+                <td class="td" colspan="2">Sphinx Passwd</td>
+            </tr>
+            <tr>
+                <td width="200">
+                    <input type="text" name="sphinx_passwd" class="w250" value="<{$sphinx_config.sphinx_passwd}>" />
+                </td>
+                <td class="tip"></td>
+            </tr>
+
+
+            <tr>
+                <td width="400">
+                    <textarea name="wechat_app_item" class="w250"   rows="20"  style="width: 500px;"><{$wechat_config.wechat_app_item|stripslashes}></textarea>
+                </td>
+                <td class="tip"><a target="_blank" href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">什么是自定义菜单？</a></td>
+            </tr>
+            -->
+            <tr>
+                <td class="td" colspan="99">
+                    <input class="submit" type="submit" value="提交">
+                    <input name="act" type="hidden" id="action" value="item">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<div class="block fn-clear">
+	<div class="record">
+        <h2>
+            <{if $smarty.get.mold==1}>充值记录<{elseif $smarty.get.mold==2}>提现记录<{else}>交易记录<{/if}>
+            <span>可用余额<strong><{$de.cash}></strong>元</span>
+        </h2>
+    	<{if !$smarty.get.mold}>
+   		<div class="filter">
+    	<div class="date"></div>
+        <dl class="fn-clear">
+        	<dt>交易分类：</dt>
+            <dd>
+            <a <{if !$smarty.get.type}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record<{if $smarty.get.status}>&status=<{$smarty.get.status}><{/if}>">全部</a>
+            <a <{if $smarty.get.type==1}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record&type=1<{if $smarty.get.status}>&status=<{$smarty.get.status}><{/if}>">付款</a>
+            <a <{if $smarty.get.type==2}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record&type=2<{if $smarty.get.status}>&status=<{$smarty.get.status}><{/if}>">收款</a>
+            </dd>
+        </dl>
+        <dl class="fn-clear">
+        	<dt>交易状态：</dt>
+            <dd>
+            <a <{if !$smarty.get.status}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record<{if $smarty.get.type}>&type=<{$smarty.get.type}><{/if}>">全部</a>
+            <a <{if $smarty.get.status==1}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record&status=1<{if $smarty.get.type}>&type=<{$smarty.get.type}><{/if}>">未付款</a>
+            <a <{if $smarty.get.status==2}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record&status=2<{if $smarty.get.type}>&type=<{$smarty.get.type}><{/if}>">等待发货</a>
+            <a <{if $smarty.get.status==3}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record&status=3<{if $smarty.get.type}>&type=<{$smarty.get.type}><{/if}>">未确认收货</a>
+			<a <{if $smarty.get.status==4}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record&status=4<{if $smarty.get.type}>&type=<{$smarty.get.type}><{/if}>">成功</a>
+            <a <{if $smarty.get.status==10}>class="current"<{/if}> href="<{$config.weburl}>/?m=payment&s=record&status=10<{if $smarty.get.type}>&type=<{$smarty.get.type}><{/if}>">失败</a>
+            </dd>
+        </dl>
+    </div>
+    <{/if}>
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <th class="al" width="80">创建时间</th>
+                <th class="al">名称 | 交易号</td>
+                <{if !$smarty.get.mold}><th class="al" width="120">对方</th><{/if}>
+                <th width="100">金额(元)</th>
+                <th width="80">状态</th>
+                <th width="60">操作</th>
+            </tr>
+            <{foreach item=list from=$re.list}>
+            <tr>
+                <td class="al" <{if $list.is_refund=='true'}>rowspan="2"<{/if}>><{$list.time|date_format:"%Y-%m-%d"}></td>
+                <td class="al">
+                <{$list.note}>
+                <div>
+                    交易号
+                    <{if $list.order_id&&$list.mold!=8}>
+                        <{$list.order_id}>
+                    <{else}>
+                        <{$list.flow_id}>
+               		<{/if}>
+             	</div>
+                </td>
+                <{if !$smarty.get.mold}><td class="al"><{$list.name.real_name}></td><{/if}>
+                <td class="price<{if $list.minus=='T'}> minus<{/if}>"><{if $list.minus!='T'}>+<{/if}><{$list.price}></td>
+                <td <{if $list.is_refund=='true'}>rowspan="2"<{/if}>>
+                <{if $list.statu==1}><{if $list.mold==8}>进行中<{else}>等待付款<{/if}>
+                <{elseif $list.statu==2}>
+                    <{if $list.buyer_email==''}>
+                        已付款
+                    <{else}>
+                        等待发货
+                    <{/if}>
+                <{elseif $list.statu==3}>
+                    <{if $list.buyer_email==''}>
+                        等待确认收货
+                    <{else}>
+                        已发货
+                    <{/if}>
+                <{elseif $list.statu==4}>交易成功
+                <{elseif $list.statu==5}>
+                    <{if $list.buyer_email==''}>
+                        已审请退货
+                    <{else}>
+                        要求退货
+                    <{/if}>
+                <{elseif $list.statu==6}>
+                    已退货
+                <{else}>已取消
+                <{/if}>
+                </td>
+                <td <{if $list.is_refund=='true'}>rowspan="2"<{/if}>>
+                <{if $list.statu==1&&$list.seller_email&&($list.mold==3||$list.mold==0)}>
+                <a href="<{$config.weburl}>?m=payment&s=pay&tradeNo=<{$list.order_id}>">付款</a>
+                <{else}>
+                <a target="_blank" href="<{if $list.return_url}><{$list.return_url}><{else}><{$config.weburl}>?m=payment&s=detail&tradeNo=<{$list.flow_id}><{/if}>">详情</a>
+                <{/if}> 
+                </td>
+            </tr>
+            <{if $list.is_refund=='true'}>
+            <tr>
+            	<td class="al">退款</td>
+                <td></td>
+            	<td class="price <{if $list.minus!='T'}> minus<{/if}>">
+                	<{if $list.minus=='T'}>+<{else}>-<{/if}><{$list.refund_amount}>
+                </td>
+            </tr>
+            <{/if}>
+            <{foreachelse}>
+            <tr>
+                <td colspan="99">
+                <div class="none fn-clear">
+                    <img class="fn-left" src="templates/default/image/none.jpg" />
+                    <span class="fn-left">没有找到记录，请调整搜索条件</span>
+                </div>
+                </td>
+            </tr>
+            <{/foreach}>
+            <{if $re.page&&$re.page!='   '}>
+            <tr>
+                <td colspan="99">
+                <div class="page"><{$re.page}></div>
+                </td>
+            </tr>
+            <{/if}>
+        </table>
+    </div>
+</div>

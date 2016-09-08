@@ -1,0 +1,56 @@
+<div class="new_bg">
+	<div class="new_nei">
+        <div class="new_neiz">
+            <h2>调查结果</h2>
+            <div class="new_tp">
+                <h3>调查结果</h3>
+                <table>
+                <tbody>
+                <{foreach item=list name=name from=$vote}>
+                <tr><td colspan="4" style="font-weight:bold;"><{$smarty.foreach.name.iteration}>. <{$list.title}></td></tr>
+                <{foreach item=slist name=sname from=$list.item}>
+                <tr>
+                    <td class="left_td"><{$smarty.foreach.sname.iteration}>. <{$slist.0}></td>
+                    <td width="25%"><span  style="background: none repeat scroll 0 0 #E1E1E1;float:left;height:12px;width:150px;"><div class="color<{$smarty.foreach.sname.iteration}>" style="width:<{if $list.num!=0}><{$slist.1/$list.num*100}><{else}>0<{/if}>%;"></div></span></td>
+                    <td width="10%"><{$slist.1}>票</td>
+                    <td width="12%"><{if $list.num!=0}><{$slist.1/$list.num*100|number_format:2}><{else}>0<{/if}>%</td>
+                </tr>
+                <{/foreach}>
+                <{/foreach}>
+                </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="new_neiy"><img src="image/new_banner1.jpg" /><img src="image/new_banner2.jpg" /></div>
+        <div class="clear"></div>
+    </div>
+</div>
+<style>
+.menu{ margin-bottom:0px !important;}
+.new_bg{background:#F2F2F2; width:100%; padding:15px 0px;}
+.new_nei{margin:0 auto; width:1200px; background:#fff;}
+.new_neiz{float:left; width:949px; border-right:1px solid #f5f4f4;}
+.new_neiz h2{background:#fbfbfb; height:50px; line-height:50px; border-bottom:1px solid #f5f4f4; font-family:微软雅黑; font-size:20px; font-weight:normal; padding-left:20px;}
+.new_neinr p{line-height:24px;}
+.new_xq{padding:20px;}
+.new_xqh{border-bottom:1px solid #f5f4f4; width:900px; margin:0 auto;}
+.new_xqh h3{font-family:微软雅黑; font-size:24px; text-align:center; padding:20px 0px;}
+.new_xqsj{color:#939393; text-align:center; padding-bottom:10px;}
+.new_xqzw{font-size:14px; color:#333333; padding:20px;}
+.new_xqzw p{line-height:30px;}
+.new_xqzw img{ text-align:center; padding-bottom:20px;}
+.new_tp{margin:25px 25px; border:1px solid #eeeeee; margin-bottom:30px; padding:20px;}
+.new_tp h3{font-size:18px; padding-bottom:15px; font-family:微软雅黑;}
+.new_tp td{ padding-top:10px; padding-right:20px;}
+.left_td{padding-left:10px;}
+.color1{background-color:#E7AB6D; height:12px;}
+.color2{background-color:#5DBC5B; height:12px;}
+.color3{background-color:#6C81B6; height:12px;}
+
+.new_ym{padding-bottom:30px; padding-left:30px;}
+.clear{clear:both;}
+.new_neiy{float:right; width:250px; margin:0 auto;}
+.new_neiy img{width:217px; padding:15px 15px 0;}
+.footer{margin-top:0px !important;}
+/*---http://democn.mall-builder.com/?m=news&s=newsd&id=1----*/
+</style>

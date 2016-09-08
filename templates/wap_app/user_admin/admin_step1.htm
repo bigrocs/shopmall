@@ -1,0 +1,318 @@
+<{include file="../header.htm"}>
+<link href="<{$config.weburl}>/templates/wap_app/css/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="script/Validator.js"></script>
+<script type="text/javascript" charset="utf-8" src="<{$config.weburl}>/script/district.js" ></script>
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type=text/javascript></script>
+<script src='http://api.map.baidu.com/api?v=2.0&ak=GAGiz9gdoRfTpImL6A2RZYxH' type='text/javascript'></script>
+<script type="text/javascript">
+var searchTxt = ' 搜索商品！';
+var SEARCHVALUE = '请输入分类属性名称';
+var weburl="<{$config.weburl}>";
+function searchFocus(e){
+	if(e.value == searchTxt){
+		e.value='';
+		$('#keyword').css("color","");
+	}
+}
+function searchBlur(e){
+	if(e.value == ''){
+		e.value=searchTxt;
+		$('#keyword').css("color","#999999");
+	}
+}
+
+function getHTML(v,ob,sscatid,scatid,tcatid)
+{	
+	if(ob=='tcatid'){
+		document.getElementById('scatid').options.length=0;
+		document.getElementById('sscatid').options.length=0;
+		document.getElementById('scatid').style.visibility="hidden";
+		document.getElementById('sscatid').style.visibility="hidden";
+	}
+	if(ob=='scatid'){
+		document.getElementById('sscatid').options.length=0;
+		document.getElementById('sscatid').style.visibility="hidden";
+	}
+	var url = '<{$config.weburl}>/ajax_back_end.php';
+	var sj = new Date();
+	var pars = 'shuiji=' + sj+'&cattype=com&pcatid='+v;
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		if(originalRequest=='')
+			return false;
+			
+		var tempStr = 'var MyMe = ' + originalRequest; 
+		var i=1;var j=0;
+		eval(tempStr);
+		for(var s in MyMe)
+		{
+			++j;
+		}
+		if(j>0)
+			document.getElementById(ob).style.visibility="visible";
+		else
+			document.getElementById(ob).style.visibility="hidden";
+		document.getElementById(ob).options.length =j+1;
+		document.getElementById(ob).options[0].value = '';
+        document.getElementById(ob).options[0].text = '<{$lang.select_sub_categories}>';
+		document.getElementById(ob).options[0].selected = true;
+		for(var k in MyMe)
+		{
+			var cityId=MyMe[k][0];
+			var ciytName=MyMe[k][1];
+			document.getElementById(ob).options[i].value = cityId;
+			document.getElementById(ob).options[i].text = ciytName;
+			
+			if(cityId==scatid||cityId==tcatid||cityId==sscatid)
+			{
+				document.getElementById(ob).options[i].selected = true;
+				scityid=cityId;
+			}
+			i++;
+	　	}
+		try
+		{
+			if(ob=='tcatid')
+				getHTML(scityid,'scatid',sscatid,scatid,tcatid);
+			if(ob=='scatid')
+				getHTML(scityid,'sscatid',sscatid,scatid,tcatid);
+		}
+		catch(e)
+		{
+			
+		}
+	 }
+　}
+function chk()
+{
+	var flag = true;
+	
+	if(!require("company","请填写店铺名称。"))
+	{
+		return false;
+	}
+	if(!require("catid","请选择店铺分类。"))
+	{	
+		return false;
+	}
+	if(!require("addr","请填写详细地址。"))
+	{	
+		return false;
+	}
+	if(!require("tel","请填写联系电话。"))
+	{
+		return false;
+	}
+	if(!limit("company",20,"店铺名称请控制长度不超过20字。"))
+	{
+		return false;
+	}
+	if($("#d_2").css('display')!='none' && !$("#select_1").val())
+	{	
+		id="select_1";
+		flag = false;
+	}
+	else if($("#select_2").find("option").length>0 && !$("#select_2").val())
+	{	
+		id="select_2";
+		flag = false;
+	}
+	else if($("#select_3").find("option").length>0 && !$("#select_3").val())
+	{	
+		id="select_3";
+		flag = false;
+	}
+	else if($("#select_4").find("option").length>0 && !$("#select_4").val())
+	{	
+		id="select_4";
+		flag = false;
+	}
+	if(!flag)
+	{
+		document.getElementById(id).focus();
+		if($("#d_2 .form-error").html())
+			$("#d_2 .form-error").html("请选择所在地区。")
+		else
+			$('#d_2').append("<span class='form-error'>请选择所在地区。</span>")
+		return false;	
+	}	
+		
+}
+function require(id,msg)
+{	
+	if(!$("#"+id).val())
+	{
+		msgs(id,msg);
+		return false;
+	}
+	else
+	{
+		$("#"+id).next('span').html("");
+		return true;	
+	}
+}
+function limit(id,m,msg)
+{	
+	if((($("#"+id).val()).length)>m)
+	{
+		msgs(id,msg);
+		return false;
+	}
+	else
+	{
+		$("#"+id).next('span').html("");
+		return true;	
+	}
+}
+function msgs(id,msg)
+{
+	if($("#"+id).next('span').attr('class'))
+		$("#"+id).next('span').html(msg)
+	else
+		$("#"+id).after("<span class='form-error'>"+msg+"</span>")	
+	document.getElementById(id).focus();
+}
+</script>
+</head>
+<{if !$smarty.get.noheader}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s iconfont"><a href="<{$config.weburl}>"><nav>&#xe60d</nav></a></section>
+    	<section class="nav-c"><span>申请开店</span></section>
+    	<section class="nav-e"></section>
+    </div>
+</header>
+<{/if}>
+<section style="width:100%;margin-top:18px;"><img style="margin:0px auto" width="100%" src="<{$config.weburl}>/image/wap/mobile_shop_step1.png" /></section>
+
+<div class="layout mobile_shop_step0">
+	<div class="wrap_shadow" style="background:none">
+    	<div class="wrap_all main" style="border:0px">
+            
+            <div class="form-style">
+			<form action="" method="post" onSubmit="return chk()">
+            <input type="hidden" value="edit" name="submit">
+            <p class="shop_step_title"><em>*</em>店铺名称：</p>
+            <p><input name='company' id="company" type='text' value="<{$de.company}>" class=" text" style='width:90%'></p>
+        
+            <p class="shop_step_title">主营商品：</p>
+        	<p>
+        	<input  name="main_pro" value="<{$de.main_pro}>" type="text" placeholder="关键字之间用半角,进行分隔"  style='width:90%'/>
+        	</p>
+            	
+            <p class="shop_step_title"><em>*</em>店铺分类：</p>
+        	<p>
+	            <select class="select1" name="catid" id="catid" style="width:90%">
+	            <option value=""><{$lang.selec_category}></option>
+	            <{foreach item=list from=$cat}> <option value="<{$list.id}>" ><{$list.name}>
+	            </option>
+	            <{/foreach}>
+	            </select>
+	            <select class="select1 hidden" style="width:90%;margin-top:5px;"  name="tcatid" id="tcatid" onChange="getHTML(this.value,'scatid')">
+	            </select>
+	            <select class="select1 hidden" style="width:90%;margin-top:5px;" name="scatid" id="scatid" onChange="getHTML(this.value,'sscatid')">
+	            </select>
+	            <select class="select1 hidden" style="width:90%;margin-top:5px;"  name="sscatid" id="sscatid">
+	            </select>
+            </p>
+
+            <p class="shop_step_title"><em>*</em>所在地区：</p>
+            <p>
+                <input type="hidden" name="t" id="t" value="<{$de.area}>" />
+                <input type="hidden" name="province" id="id_1" value="<{$de.provinceid}>" />
+                <input type="hidden" name="city" id="id_2" value="<{$de.cityid}>" />
+                <input type="hidden" name="area" id="id_3" value="<{$de.areaid}>" />
+                <input type="hidden" name="street" id="id_4" value="<{$de.streetid}>" />
+                <select id="select_1" onChange="district(this);" dataType="Require" msg="请选择所在地区" class="select1" style="width:90%" >
+                <option value="">--请选择--</option>
+                <{$prov}>
+                </select>
+                <select id="select_2" onChange="district(this);" class="hidden select1" style="width:90%;margin-top:5px;"></select>
+                <select id="select_3" onChange="district(this);" class="hidden select1" style="width:90%;margin-top:5px;"></select>
+                <select id="select_4" onChange="district(this);" class="hidden select1" style="width:90%;margin-top:5px;"></select>			
+          	</p>
+            
+            <p class="shop_step_title"><em>*</em>地图定位：(<font color="red">点击地图进行精确定位</font>)</p>
+            <p>
+            	<div id="allmap" style="height:300px"></div>
+            	<input type="hidden" id="lng" name="lng" value="" />
+                <input type="hidden" id="lat"  name="lat" value="" />
+            </p>
+
+            <p class="shop_step_title"><em>*</em>详细地址：</p>
+            <p><input type='text' name='addr' id="addr" value="<{$de.addr}>" placeholder="不必重复填写所在地区" maxlength="200" class="text" style='width:90%'></p>
+       
+            <p class="shop_step_title"><em>*</em>联系电话：</p>
+            <p><input type='text' name='tel' id="tel" value="<{$de.tel}>" class="text" style="width:90%"></p>
+            
+            <p class="shop_step_title">店铺简介：</p>
+           
+            <textarea name="intro" style="width:90%;height:80px;"></textarea>
+                
+            <p class="shop_step_title">
+                <input type="hidden" name="grade" value="<{if $smarty.get.grade}><{$smarty.get.grade}><{else}>1<{/if}>" />
+                <input type="submit" value="提交" class="submit" />
+            </p>
+           
+    	</div>
+    </div>
+</div>
+<script type="text/javascript">
+	var map = new BMap.Map("allmap");
+
+	map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+	
+	//var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+	//var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+	//添加控件和比例尺
+
+	//map.addControl(top_left_control);        
+	//map.addControl(top_left_navigation);     
+
+	var myGeo = new BMap.Geocoder();
+	map.centerAndZoom(new BMap.Point(116.404, 39.915), 16);
+	$("select#select_1").change(function(){
+		str = $("select#select_1").find("option:selected").text()
+		myGeo.getPoint(str, function(point){
+		if(point) {
+				map.centerAndZoom(point, 16);
+			}
+		})
+	})
+	$("select#select_2").change(function(){
+		str += $("select#select_2").find("option:selected").text()
+		myGeo.getPoint(str, function(point){
+		if(point) {
+				map.centerAndZoom(point, 16);
+			}
+		})
+    	})
+	$("select#select_3").change(function(){
+		str += $("select#select_3").find("option:selected").text()
+		myGeo.getPoint(str, function(point){
+		if(point) {
+				map.centerAndZoom(point, 16);
+			}
+		})
+	})
+	$("select#select_4").change(function(){
+		str += $("select#select_4").find("option:selected").text()
+		myGeo.getPoint(str, function(point){
+		if(point) {
+				map.centerAndZoom(point, 16);
+			}
+		})
+	})
+	function showInfo(e){
+		$("#lng").val(e.point.lng)
+		$("#lat").val(e.point.lat)
+		map.clearOverlays(); 
+		var new_point = new BMap.Point(e.point.lng,e.point.lat)
+		var marker = new BMap.Marker(new_point);  // 创建标注
+		map.addOverlay(marker);              // 将标注添加到地图中
+		map.panTo(new_point); 
+	}
+	map.addEventListener("click", showInfo);
+</script>
+<{include file="../footer.htm"}>

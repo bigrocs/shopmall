@@ -1,0 +1,204 @@
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+    #allmap{width:100%;height:auto;height: 500px;margin-bottom: 50px;}
+    p{margin-left:5px; font-size:14px;}
+    #suggestId{width: 81%;float: left;border: 1px solid #ccc;padding-left: 8px;font-size: 12px;border-radius: 5px 0px 0px 5px;border-right: 0px;height: 26px;padding-top: 14px;}
+    #ddsearch{width: 15%;background: rgb(213, 0, 25);line-height: 42px;border-radius: 0px 5px 5px 0px;color: #fff;font-size: 12px;line-height: 42px;border: 0px;}
+    .ttop_b{width:95%;position:fixed;top:10px;display: none;}
+    .tangram-suggestion table td{line-height: 32px;padding-left: 8px;}
+    #pbottom{position: fixed;bottom: 0;line-height: 40px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;font-size: 12px;width: 100%;padding-left: 28px;background: url("image/wap/qdh.png") 10px center no-repeat #fff;}
+    #checkline{width: 60px;height: 32px;line-height: 32px;display: inline-block;background-color: rgb(213, 0, 25);color:#fff;outline: 0px;border-radius:5px;text-align: center;position: absolute;right: 36px;top:5px;}
+    #mtips{padding-top: 15px;line-height: 32px;background: rgba(0,0,0,.5);color: #FFF;background-size: 15px;display: none;position: fixed;z-index: 99;border-radius: 5px;height: 80px;top: 45%;z-index: 1000;left: 5%;width: 90%;text-align: center;}
+  #mtips p{text-align: center;margin-top: 8px;}
+  </style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GAGiz9gdoRfTpImL6A2RZYxH"></script>
+<div class="lab_1" id="lab_1">
+  <div id="allmap"></div>
+  <div class="ttop_b" >
+    <div style="width:98%;overflow:hidden;margin:0 auto">
+      <div id="r-result"><input type="text" id="suggestId" size="20" value="" placeholder="搜索地点、公交、路线"  /><button id="ddsearch" >搜索</button></div>
+      <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:80%;height:auto;display:none"></div>
+    </div>
+  </div>
+ 
+<div id="pbottom"><{$re.area}><a id='checkline' href="<{$config.weburl}>/?m=shop&s=location&shopid=<{$smarty.get.shopid}>&act=searchline">查看路线</a></div>
+
+</div>
+<div id="mtips">定位中，请稍等...</div>
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" ></script>
+<script src="<{$config.weburl}>/script/jquery.cookie.js" ></script>
+<script type="text/javascript">
+var h=window.innerHeight|| document.documentElement.clientHeight|| document.body.clientHeight;
+document.getElementById("allmap").height = (h-50)+"px"
+  // 百度地图API功能
+  var map = new BMap.Map("allmap");
+
+  var new_point = new BMap.Point("<{$re.lng}>", "<{$re.lat}>");
+  var marker = new BMap.Marker(new_point);  // 创建标注
+  map.addOverlay(marker);              // 将标注添加到地图中
+
+  map.centerAndZoom(new_point, 18);
+  // 添加带有定位的导航控件
+  
+  var navigationControl = new BMap.NavigationControl({
+    // 靠左上角位置
+    anchor: BMAP_ANCHOR_TOP_LEFT,
+    // LARGE类型
+    type: BMAP_NAVIGATION_CONTROL_LARGE,
+    // 启用显示定位
+    enableGeolocation: true
+  });
+  map.addControl(navigationControl);
+  
+  // 添加定位控件
+  var geolocationControl = new BMap.GeolocationControl();
+  
+  geolocationControl.addEventListener("locationError",function(e){
+    // 定位失败事件
+    alert("定位失败，刷新页面后再试");
+  });
+
+ // map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+  map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+
+  map.addControl(geolocationControl);
+
+  function G(id) {
+    return document.getElementById(id);
+  }
+
+
+  G("checkline").onclick=function(){
+    if($.cookie("lat"))
+    {
+      var area = "<{$re.area}>";
+      
+      area=area.replace(/\s+/g, "")
+     
+      
+      url = "http://api.map.baidu.com/direction?origin=name:当前位置|latlng:"+$.cookie("lat")+","+$.cookie("lng")+"&destination=name:"+area+"|latlng:<{$re.lat}>,<{$re.lng}>&mode=driving&region=上海&output=html&src=<{$config.webname}>";
+      location.href=url;
+    }
+    else
+    {
+      $("#mtips").show("800",function(){});
+      var geolocation = new BMap.Geolocation();
+      geolocation.getCurrentPosition(function(r){
+          if(this.getStatus() == BMAP_STATUS_SUCCESS){
+              var mk = new BMap.Marker(r.point);
+              var pt = r.point;
+              $.cookie("lng",pt.lng);
+              $.cookie("lat",pt.lat);
+
+              var area = "<{$re.area}>";
+              $.cookie("relarea",area);
+
+              area=area.replace(/\s+/g, "");
+
+               url = "http://api.map.baidu.com/direction?origin=name:当前位置|latlng:"+r.point.lat+","+r.point.lng+"&destination=name:"+area+"|latlng:<{$re.lat}>,<{$re.lng}>&mode=driving&region=上海&output=html&src=<{$config.webname}>";
+               location.href=url;
+          }
+      })
+
+    }
+    return false;
+    //G("lab_1").style.display = "none"
+    //G("lab_2").style.display = "block"
+  }
+
+  var opts = {
+    width : 200,     // 信息窗口宽度
+    height: 100,     // 信息窗口高度
+    title : "商家名称：<{$re.company}>" , // 信息窗口标题
+    enableMessage:true,//设置允许信息窗发送短息
+    message:"亲耐滴，晚上一起吃个饭吧？戳下面的链接看下地址喔~"
+  }
+  var infoWindow = new BMap.InfoWindow("地址：<{$re.addr}>", opts);  // 创建信息窗口对象 
+  //marker.addEventListener("click", function(){          
+ map.openInfoWindow(infoWindow,new_point); //开启信息窗口
+  //});
+
+  // 百度地图API功能
+  function G(id) {
+    return document.getElementById(id);
+  }
+  //var map = new BMap.Map("allmap");
+  //map.centerAndZoom("北京",12);
+
+  var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+    {"input" : "suggestId"
+    ,"location" : map
+  });
+  ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+   
+    var str = "";
+    var _value = e.fromitem.value;
+    var value = "";
+    if (e.fromitem.index > -1) {
+      value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+    }    
+    str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+    
+    value = "";
+    if (e.toitem.index > -1) {
+      _value = e.toitem.value;
+      value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+    }    
+    str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+    G("searchResultPanel").innerHTML = str;
+  });
+
+
+  var myValue;
+
+  ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+    var _value = e.item.value;
+    myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+    G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+    setPlace();
+  });
+
+  G("ddsearch").onclick = function(){
+    var myGeo = new BMap.Geocoder();
+    str = G("suggestId").value
+    if(str)
+    {
+      myGeo.getPoint(str, function(point){
+        if (point) {
+          map.centerAndZoom(point, 18);
+          map.addOverlay(new BMap.Marker(point));
+        }
+      },"");
+    }
+    
+  }
+
+  function setPlace(){
+    map.clearOverlays();    //清除地图上所有覆盖物
+
+
+    function myFun(){
+      var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+      map.centerAndZoom(pp, 16);
+      map.addOverlay(new BMap.Marker(pp));    //添加标注
+    }
+
+    var local = new BMap.LocalSearch(map, { //智能搜索
+      onSearchComplete: myFun
+    });
+
+    local.search(myValue);
+  }
+
+  // 底部坐标地址
+ 
+  var geoc = new BMap.Geocoder();
+ 
+  geoc.getLocation(new_point, function(rs){
+      var addComp = rs.addressComponents;
+      G("pbottom").innerHTML=addComp.city + " " + addComp.district + " " + addComp.street + addComp.streetNumber+"　　<a id='checkline' href='#'>查看路线</a>"
+      G("pbottom").style.display="block";
+    });        
+
+</script>

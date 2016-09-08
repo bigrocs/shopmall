@@ -1,0 +1,38 @@
+<{include file="header.htm"}>
+<div class="main">
+	<div class="w fn-clear">
+        <div class="fn-left">
+            <ul class="ul">
+                <{foreach item=list from=$re}>
+                <li><a href="aboutus.php?id=<{$list.con_id}>"><{$list.con_title}></a></li>
+                <{/foreach}>
+            </ul>
+            <div class="m1">
+                <div class="mt"><a target="_blank" href="help.php">联系客服</a></div>
+                <div class="mc">
+					<p>客服服务电话
+                    <b><{$config.owntel}></b>
+                    <p>客服邮箱
+                    <b class="email"><{$config.email}></b>
+                </div>
+            </div>
+            <div class="m1">
+                <div class="mt"><a target="_blank" href="help.php">常见问题</a></div>
+                <div class="mc">
+                    <ul>
+                        <{foreach item=list from=$help}>
+                        <li><a target="_blank" href="help.php?id=<{$list.con_group}>&type=<{$list.con_id}>"><{$list.con_title|truncate:20:""}></a></li>
+                        <{/foreach}>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="fn-right">
+        	<h3>
+                <{$de.con_title}>
+            </h3>
+            <div class="con"><{$de.con_desc}></div>
+        </div>
+    </div>
+</div>
+<{include file="footer.htm"}>

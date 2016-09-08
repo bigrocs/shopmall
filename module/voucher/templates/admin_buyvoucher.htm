@@ -1,0 +1,41 @@
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=1">我的商城</a> <span>&gt;</span>我的代金券 
+    </div>
+</div>
+
+<div class="main">
+	<div class="wrap">
+       <table class="table-list-style order voucher_list">
+            <thead>
+                <tr>
+                    <th width="82"></th>
+                    <th width="200" class="al">代金券序列号</th>
+                    <th width="80">面额</th>
+                    <th width="100">有效期</th>
+                    <th width="80">状态</th>
+                    <th width="80">操作</th>
+                </tr>
+            </thead>
+            <{foreach from=$list.list item=vo}>
+            <tr>
+                <td><img src="<{$vo.logo}>" class="w70b1"/></td>
+                <td class="al">名　称：<{$vo.name}>    (已领<{$vo.getnum}>张/限领<{$vo.eachlimit}>张)<br/>使用范围：<{$vo.shop_name}>　<i>使用条件：订单满<{$vo.limit}>元</i><br/>序列号：<{$vo.serial}></td>
+                <td><{$vo.price}></td>
+                <td><{$vo.start_time|date_format:"%Y-%m-%d"}> ~ <{$vo.end_time|date_format:"%Y-%m-%d"}></td>
+                <td><{if $vo.status eq 1}>未使用<{elseif $vo.status eq 2}>已用<{elseif $vo.status eq 3}>过期<{else}>收回<{/if}></td>
+                <td><a href="<{$config.weburl}>/shop.php?uid=<{$vo.shop_id}>" target="_blank">使用</a> <a onclick="return confirm('确定吗？')" href="<{$config.weburl}>/main.php?m=voucher&s=admin_buyvoucher&del_v_id=<{$vo.id}>">删除</a></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td colspan="6"><div style="line-height:45px;text-align:center">您还没有领取代金券,<a style="display: inline;color:blue" href="<{$config.weburl}>/index.php?m=points" target="_blank">去看看</a></div></td>
+            </tr>
+            <{/foreach}>
+            <{if $list.page}>
+            <tr>
+                <td colspan="6"><div class="pagination"><{$list.page}></div></td>
+            </tr>
+            <{/if}>
+        </table>
+        </div>
+</div>

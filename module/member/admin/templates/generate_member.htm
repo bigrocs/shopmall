@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>会员管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../script/jquery.validation.min.js"></script>
+<script type="text/javascript" src="../script/moderate.js"></script>
+<script type="text/javascript" src="../script/Calendar.js"></script>
+<script type="text/javascript">
+var cdr = new Calendar("cdr");
+document.write(cdr);
+cdr.showMoreDay = true;
+</script>
+<style>
+	.execel{height:28px;line-height:28px;background:#047AD1;color:#FFF;padding:0px 10px;float:left;margin:0 10px;}
+</style>
+<script language="javascript">
+$(function(){
+	$('#form2').validate({
+		errorPlacement: function(error, element){
+			element.next('.form-error').append(error);
+		},      
+		rules : {
+			number:{
+				required:true,
+				min:1,
+				digits:true
+			},
+			amount:{
+				required:true
+			},
+		},
+		messages : {
+			number:{
+				required:'请填写生成会员卡的数量',
+				min:'数量必须大于0',
+				digits:'必须输入整数',
+			},
+			amount:{
+				required:'请填写充值的金额',
+			},
+		}
+	});
+});
+</script>
+</head>
+<body>
+<div class="container">
+    <div class="flow"> 
+        <div class="itemtitle">
+            <h3>会员卡</h3>
+        </div>
+    </div>
+    <div class="h35"></div>
+    <table class="select_table">
+        <tr>
+            <td>
+                <div class="select_box">
+                    <form action="" method="get">
+						<input type="hidden" name="m" value="member">
+						<input type="hidden" name="s" value="generate_member.php">
+						<div class="catalogBox">
+                        <input type="hidden" value="<{if $smarty.get.type}><{$smarty.get.type}><{else}>user<{/if}>" name="type" id="type">
+                        <div class="select">
+                            <span>
+								<{if $smarty.get.type}>
+									<{assign var=n value=$smarty.get.type}>
+									<{$arr.$n}>
+								<{else}>
+									<{$arr.1}>
+								<{/if}>
+							</span>
+                            <b></b>
+                        </div>
+                        <div style="display:none;" class="i-select">
+                            <ul>
+                                <li key="1">未激活</li>
+								<li key="2">已激活</li>
+                            </ul>
+                        </div>
+                    </div>
+						<input placeholder="请输入会员卡号..." type="text" name="name" class="txt s w250" value="<{$smarty.get.name}>"  />
+						<input readonly="readonly" onFocus="cdr.show(this);" class="txt c w100" type="text" name="stime" id="stime" value="<{$smarty.get.stime}>" placeholder="请输入生成时间"> 
+						<em class="fl mr5">-</em> 
+						<input readonly="readonly" onFocus="cdr.show(this);" class="txt c w100" type="text" name="etime" id="etime" value="<{$smarty.get.etime}>" placeholder="请输入生成时间">
+						<input type="submit" value="搜索" />
+						<a class="execel" href="?m=member&s=card_execel.php<{if $smarty.get.stime}>&stime=<{$smarty.get.stime}><{/if}><{if $smarty.get.etime}>&etime=<{$smarty.get.etime}><{/if}><{if $smarty.get.name}>&name=<{$smarty.get.name}><{/if}><{if $smarty.get.type}>&type=<{$smarty.get.type}><{/if}>">导出会员卡</a>
+                    </form>
+                </div>
+                <a class="refresh" href="?m=member&s=generate_member.php"></a>
+            </td>
+        </tr>
+    </table>
+	
+	<div>
+		<form name="form2" id="form2" method="post" action="">
+			<input type="hidden" name="m" value="member" />
+			<input type="hidden" name="s" value="generate_member.php" />
+			<input type="hidden" name="card" value="add" />
+			<table class="table table1">
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">生成会员卡</th>
+                    </tr>
+                </thead>
+                <tbody>
+					<tr>
+						<td width="100">会员卡数量：</td>
+						<td>
+							<input type="text" name="number" value="" class="w150" onkeyup="value=value.replace(/[^\d]/g,'')" />
+							<div id="form-error" class="form-error"></div>
+						</td>
+					</tr>
+
+					<tr>
+						<td>充值金额：</td>
+						<td>
+							<input type="text" name="amount" value="0" onkeyup="value=value.replace(/[^\d]/g,'')" class="w150" />
+							<div id="form-error" class="form-error"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>
+							<input type="submit" value="提交" class="submit" />
+						</td>
+					</tr>
+                </tbody>
+            </table>
+		</form>
+	</div>
+	
+    <div style="position: relative;" id="threadlist">   
+    <form action="" method="post" id="form" name="form">
+    <input type="hidden" name="act" id="act" value="op" />
+    <table class="table">
+        <tbody>
+            <tr class="header">
+                <th width="5%" class="al">操作</th>
+                <th width="20%" class="al">会员卡号</th>
+                <th width="30%" class="al">初始密码</th>
+                <th width="30%" class="al">是否激活</th>
+				<th width="15%" class="al">生成时间</th>
+            </tr>
+            <{foreach item=list from=$de.list}>
+            <tr>
+                <td width="10">
+					<input type="checkbox" value="<{$list.userid}>" class="checkitem" onclick="tmodclick(this)" name="chk[]">
+				</td>
+                <td class="al" valign="top">
+					<p><b><{$list.card_num}></b></p>
+                </td>
+                <td class="al"><{$list.rand_pwd}></td>
+                <td><{if $list.statu==2}>已激活<{else}>待激活<{/if}></td>
+				<td><{$list.regtime}></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="al">每页最多显示： 10条</td>
+                <td colspan="99"><div class="page"><{$de.page}></div></td>
+            </tr>
+        </tfoot>
+    </table>
+    <div id="mdly" class="hidden">
+        <a onclick="$('#mdly').addClass('cpd');" href="javascript:;" class="min">最小化</a>
+        <label>
+        <input type="checkbox" onclick="if(!($('.max')[0].innerHTML = modclickcount = checkall(this.form, 'chk'))) {$('#mdly').hide();}" name="chkall">
+        全选
+        </label>
+        <h6>
+            <span>选中</span>
+            <strong class="max" onclick="$('#mdly').removeClass('cpd');">0</strong>
+            <span>个会员: </span>
+        </h6>
+        <p>
+            <a id="button" key="s1" href="javascript:;"><b>激活</b></a>
+            <span>|</span>
+            <a id="button" key="s2" href="javascript:;"><b>待激活</b></a>
+        </p>
+        <p>
+            <a id="button" key="s3" href="javascript:;"><b>禁止访问</b></a>
+        </p>
+    </div>
+    </form>
+    </div>
+</div>
+<script>
+$("#button").live('click',function(){
+    var key=$(this).attr("key")
+	$("#act").val(key);		
+	$("#form")[0].submit();
+	return false;
+});
+
+$(function(){
+	$(".select").click(function(){ 
+		var obj=$(this);
+		$(this).next().slideToggle("fast",function(){
+			if($(obj).next().is(":visible")){
+				$(document).one('click',function(){
+					$(".select").next().slideUp("fast");
+				});
+			}
+		});
+	});
+	$(".i-select li").click(function(){
+		var str=$(this).html();
+		$(this).parent().parent().prev().prev().attr("value",$(this).attr("key"));
+		$(this).parent().parent().prev().children().html(str);
+	});
+});
+</script>
+</body>
+</html>

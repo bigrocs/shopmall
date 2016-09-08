@@ -1,0 +1,248 @@
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=1">我的商城</a> <span>&gt;</span>已买到的商品 
+    </div>
+</div>
+
+<div class="main">
+	<div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="<{if !$smarty.get.status&&$smarty.get.rate!='1'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_virtual_buyorder">所有订单</a></li>
+                <li class="<{if $smarty.get.status=='1'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_virtual_buyorder&status=1"><{$order_status.1}></a></li>
+                <li class="<{if $smarty.get.status=='4'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_virtual_buyorder&status=4"><{$order_status.4}></a></li>
+                <li class="<{if $smarty.get.rate=='1'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_virtual_buyorder&rate=1"><{$rate.1}></a></li>
+			</ul>
+        </div>
+        
+        <div class="searchbar">
+        <form action="main.php" method="get">
+        <input type="hidden" name="m" value="product" />
+        <input type="hidden" name="s" value="admin_virtual_buyorder" />
+        	<div>
+            	<input type="text" class="w300" name="key" value="<{$smarty.get.key}>" />
+            	<span class="search-btn"><input type="submit" value="订单搜索" /></span>
+            	<div class="search-opt">
+                <a class="show-whole" style="display:none;" href="#">更多筛选条件<i><em></em><span></span></i></a>
+                <a class="show-simple" href="#">精简筛选条件<i><em></em><span></span></i></a>
+                </div>
+            </div>
+        	<table width="100%" class="whole ">
+            	<tr>
+                	<td width="33%">
+                    	<label>交易状态：</label>
+                        <div class="select_box" style="z-index:99">
+                            <input type="hidden" value="<{$smarty.get.zt}>" name="zt">
+                            <div class="search-select">
+                                <span>
+                                <{if $smarty.get.zt}>
+                                    <{foreach item=list key=key from=$order_status}>
+                                       <{if $key==$smarty.get.zt}><{$list}><{/if}>
+                                    <{/foreach}> 
+                                <{else}>
+                                   全部
+                                <{/if}>    
+                                </span>
+                                <b></b>
+                            </div>
+                            <div style="display:none;" class="i-search-select">
+                                <ul>
+                                    <li key="" class="sub-line">全部</li>
+                                    <{foreach item=list key=key from=$order_status}>
+                                    <li key="<{$key}>" class="sub-line"><{$list}></li>
+                                    <{/foreach}>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                	<td width="33%">
+                    	<label>成交时间：</label>
+                        <input onFocus="cdr.show(this);" type="text" class="w70 time" name="stime" value="<{$smarty.get.stime}>" />
+                        &nbsp;到&nbsp;
+                        <input onFocus="cdr.show(this);" type="text" class="w70 time" name="etime" value="<{$smarty.get.etime}>" />
+                    </td>
+                    <td>
+                    	<label>售后服务：</label>
+                        <div class="select_box" style="z-index:1">
+                            <input type="hidden" value="<{$smarty.get.sh}>" name="sh">
+                            <div class="search-select">
+                                <span>全部</span>
+                                <b></b>
+                            </div>
+                            <div style="display:none;" class="i-search-select">
+                                <ul>
+                                    <li key="" class="sub-line">全部</li>
+                                    <li key="1" class="sub-line">退款</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>   
+        <script type="text/javascript" src="<{$config.weburl}>/script/Calendar.js"></script>       
+		<script type="text/javascript">
+		var cdr = new Calendar("cdr");
+		document.write(cdr);
+		cdr.showMoreDay = true;
+
+		$(function(){
+			 $(".search-opt a").click(function(){
+				$(this).hide().siblings().show();
+				if($(this).attr("class") == 'show-whole')
+					$(".whole").show();
+				else
+					$(".whole").hide();
+			})
+			$(".search-select").click(function(){ 
+				var obj=$(this);
+				$(obj).addClass("current");
+				$(obj).next().find("li").each(function(){
+					var val = $(this).parent().parent().prev().prev().val();
+					
+						$.each($('li[key="'+val+'"]'),function(i){
+							$(this).addClass('selected').siblings().removeClass('selected');						});	
+					
+				});
+				$(this).next().slideToggle("fast",function(){
+					if($(obj).next().is(":visible")){
+						$(document).one('click',function(){
+							$(".search-select").next().slideUp("fast");
+							$(obj).removeClass("current");
+						});
+					}
+				});
+			});
+			$(".i-search-select li").click(function(){
+				var str=$(this).html();
+				$(this).parent().parent().prev().prev().attr("value",$(this).attr("key"));
+				$(this).parent().parent().prev().children("span").html(str);
+				//$(this).parent().parent().slideToggle();
+			});
+		});
+		</script>
+        </div>
+        <table class="table-list-style order">
+        	<thead>
+                <tr>
+                    <th width="*">商品</th>
+                    <th width="80">单价(元)</th>
+                    <th width="80">数量</th>
+                    <th width="100">商品操作</th>
+                    <th width="120">实付款(元)</th>
+                    <th width="120">交易状态</th>
+                    <th width="120">交易操作</th>
+                </tr>
+            </thead>
+            <{foreach item=buylist from=$blist.list}>
+            <{assign var=count value=$buylist.product|@count}>
+            <{assign var=count value=$count+1}>
+            <tbody <{if $buylist.status==0||$buylist.status==4}>class="success-order"<{/if}>>
+                <tr>
+                    <td class="sep-row" colspan="20"></td>
+                </tr>
+                
+                <tr>
+                    <th class="bdl">
+                    <span class="dealtime"><{$buylist.create_time|date_format:"%Y-%m-%d"}></span>
+                    <span class="number">订单号：<{$buylist.order_id}></span>
+                    </th>
+                    <th colspan="2"><a target="_blank" title="<{$buylist.company}>" href="shop.php?uid=<{$buylist.seller_id}>"><{$buylist.company|truncate:16}></a></th>
+                    <th></th>
+                    <th class="bdr" colspan="3"></th>
+                </tr>
+                
+                <{foreach item=plist key=key from=$buylist.product}>
+                <tr> 
+                    <td class="bdl product">
+                        <a class="pic" target="_blank" href="<{$config.weburl}>/?m=product&s=detail&order_id=<{$buylist.order_id}>&pid=<{$plist.id}>&id=<{$plist.pid}>"><img width="80" height="80" src="<{$plist.pic}>_220X220.jpg" /></a>
+                        <div class="desc">
+                        <a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&pid=<{$plist.id}>&id=<{$plist.pid}>&order_id=<{$buylist.order_id}>"><{$plist.name}></a>
+                        <{if $plist.is_tg=='true'}><p><span class="tg">团购</span></p><{/if}>
+                        <{if $plist.spec}>
+                        <p>
+                        <{foreach item= v from = $plist.spec}>
+                        <{$v}>&nbsp;
+                        <{/foreach}>
+                        </p>
+                        <{/if}>
+                        </div>
+                    </td>
+                    <td><{$plist.price|number_format:2}></td>
+                    <td><{$plist.num}></td>
+                    <td>
+                       
+                        <{if $plist.status == 4 }>
+                        <a class="org" href="main.php?m=product&s=admin_apply_detail&order_id=<{$buylist.order_id}>&pid=<{$plist.id}>">退款处理中</a>
+                        <{elseif $plist.status == 5 }>
+                        
+                        <a class="black" target="_blank" href="main.php?m=product&s=admin_apply_detail&order_id=<{$buylist.order_id}>&pid=<{$plist.id}>">查看退款</a>
+                       
+                        <{else}>
+
+                        <{if $buylist.status==2||$buylist.status==3}>
+                        <{if $buylist.recate && $buylist.recate neq '0'}>
+                        <a href="main.php?m=product&s=admin_apply&requireId=1&order_id=<{$buylist.order_id}>&id=<{$plist.id}>">退款/退货</a>
+                         <{else}>
+                        不支持退款
+                        <{/if}>
+                        <{elseif $buylist.status==4}>
+                        <a href="main.php?m=product&s=admin_apply&requireId=1&order_id=<{$buylist.order_id}>&id=<{$plist.id}>">申请售后</a>
+                        <{/if}>
+                        <{/if}>
+                        
+                    </td>
+                
+                    <{if $key==0}>
+                    <td class="bl" rowspan="<{$count}>"><b><{$buylist.product_price+$buylist.logistics_price|number_format:2}></b><{if $buylist.voucher_price gt 0}><br/>优惠券抵：<b><{$buylist.voucher_price|number_format:2}></b>元<{/if}><{if $buylist.discounts gt 0}><br/>店铺会员:<b><{$buylist.discounts}></b>折<{/if}></td>
+                   
+                    <td class="bl" rowspan="<{$count}>">
+                    <a target="_blank" href="<{$config.weburl}>/main.php?m=product&s=admin_virtual_orderdetail&id=<{$buylist.order_id}>"><{$order_status[$buylist.status]}></a>
+                    <a target="_blank" href="<{$config.weburl}>/main.php?m=product&s=admin_virtual_orderdetail&id=<{$buylist.order_id}>">订单详情</a>
+                    
+                    <{if $buylist.status==4 && $buylist.buyer_comment==1 && $buylist.seller_comment!=1}>已评
+                    <{elseif $buylist.status==4 && $buylist.buyer_comment==1 && $buylist.seller_comment==1}>双方已评
+                    <{/if}>
+                    </td>
+                    
+                    <td class="bl bdr" rowspan="<{$count}>">
+                    <{if $buylist.status==1}>
+                        <a class="button button-pay" href="<{$config.pay_url}>?m=payment&s=pay&tradeNo=<{$buylist.order_id}>">立刻付款</a>
+                        <a onclick="return confirm('确定是否要取消？');" href="main.php?m=product&s=admin_virtual_buyorder&id=<{$buylist.order_id}>&flag=0">取消订单</a>
+                    <{elseif $buylist.status==3}>
+                    	<p class="countdown">
+                        	<i></i>
+                        	<em>还剩<{$buylist.time_expand}></em>
+                        </p>
+                    	<a class="button button-confirm" href="main.php?m=product&s=admin_virtual_buyorder&id=<{$buylist.order_id}>&flag=4">确定收货</a>
+                    <{elseif $buylist.status==5}>
+                    	<!--<a href="main.php?m=product&s=admin_return_step&id=<{$buylist.order_id}>">退货详情</a>-->
+                    <{elseif $buylist.status==4 && !$buylist.buyer_comment}>
+                    	<a class="button button-rate" href="<{$config.weburl}>/?m=product&s=comment&uid=<{$buid}>&id=<{$buylist.order_id}>">评论</a>
+                    <{/if}>
+                    </td>
+                    <{/if}>
+                </tr>
+                <{/foreach}>
+                <tr>
+                    <td class="bdl bdb product">运送方式：<{if $buylist.logistics_type}><{$buylist.logistics_type}><{else}>卖家承担<{/if}></td>
+                    <td class="bdb"><{$buylist.logistics_price|number_format:2}></td>
+                    <td class="bdb">-</td>
+                    <td class="bdb">&nbsp;</td>
+                </tr>
+            </tbody>
+			<{foreachelse}>
+                <tr>
+                    <td colspan="20" class="norecord">
+                        <i></i><span>暂无符合条件的数据记录</span>	
+                    </td>
+                </tr>
+            <{/foreach}>
+            <tfoot>
+            <tr>
+                <td colspan="20"><div class="pagination"><{$blist.page}></div></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

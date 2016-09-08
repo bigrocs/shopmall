@@ -1,0 +1,134 @@
+<link href="<{$config.weburl}>/templates/wap/css/index.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type=text/javascript></script>
+<header>
+	<div class="nav-w">
+    	<section class="nav-c"><span><{if $cominfo.shop_type eq 1}>分销中心<{else}>卖家中心<{/if}></span></section>
+    	<section class="nav-e"></section>
+    </div>
+</header>
+<script type="text/javascript">
+function gotoMenu(url)
+{
+	if(/zmobile/.test(navigator.userAgent)){
+		if(context.loadUrl(url))
+		{
+		}
+		else
+		{
+			window.location.href=url;
+		}
+	}
+	else
+	{
+		window.location.href=url;
+	}
+}
+</script>
+<!--个人中心主页-->
+ <section class="center">
+   <article class="c_info">
+       <a target="_blank" href="shop.php?uid=<{$buid}>" class="mytb">
+		<aside class="c_infoL"><img src="<{if !$cominfo.logo}>image/default/user_admin/default_user_portrait.gif<{else}><{$cominfo.logo}><{/if}>" width="80" height="80"/></aside>
+       </a>
+       <!--<aside class="c_infoR"><span>店铺二维码</span><img src="api/share_qrcode.php?type=shop&shop_id=<{$shop_id}>&rand=<{math equation=rand(1,10000)}>"   width="80" height="80"></aside>-->
+       <dl class="c_info1">
+          <dt> </dt>
+          <a target="_blank" href="shop.php?uid=<{$buid}>&dist_id=<{$buid}>" class="mytb"><dd><span>店铺名称：</span><{$cominfo.company}></dd></a>
+          <dd><span>上次登录时间：</span><{$cominfo.create_time|date_format:"%Y-%m-%d"}></dd>
+          <dd style=" color:#ff0000;"><span style=" color:#ff0000;">我的佣金收入：</span><{$dist_user_row.distribution_user_amount|string_format:"%.3f"}></dd>
+       </dl>
+   </article>
+     <article class="c_info">
+         <aside class="c_infoL"><img src="api/share_qrcode.php?type=shop&shop_id=<{$cominfo.userid}>&rand=<{math equation=rand(1,10000)}>"   width="80" height="80"></aside>
+         <dl class="c_info1">
+             <dd><span>店铺二维码</dd>
+             <dd><span>将您喜欢认可的商品分享给您朋友，即可分享赚钱，全民创业时代</dd>
+         </dl>
+     </article>
+   <{if $cominfo.shop_statu neq 1 AND $cominfo.shop_statu neq -3}>
+   <p class="btn_exit" style="margin-top:28px;margin-bottom:14px;"><a ><input type="button" value="店铺正在审核中..."></a></p>
+   <{else}>
+     <{if $cominfo.shop_statu eq 1}>
+   <article class="info_list">
+      <label  class="info_list1">商品管理<em class="up"></em></label>
+       <div class="animate">
+         <div class="info_list2" onclick="gotoMenu('?m=product&s=admin_product')">商品发布 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+         <div class="info_list2" onclick="gotoMenu('?m=product&s=admin_product_list')">商品管理 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+         <div class="info_list2" onclick="gotoMenu('?m=product&s=admin_product_storage')">仓库中的商品 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+       </div>
+   </article>
+
+   <article class="info_list">
+      <label class="info_list1">订单管理 <em class="up"></em></label>
+       <div class="animate">
+         <div class="info_list2" onclick="gotoMenu('?m=product&s=admin_sellorder')">订单管理 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+         <div class="info_list2" onclick="gotoMenu('?m=logistics&s=admin_start_addr')">发货地址 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+         <div class="info_list2" onclick="gotoMenu('?m=logistics&s=admin_logistics_temp')">物流模板 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+       </div>
+   </article>
+    <{/if}>
+
+     <{if $cominfo.shop_statu eq 1}>
+     <article class="info_list">
+         <label class="info_list1">活动管理 <em class="up"></em></label>
+         <div class="animate">
+             <div class="info_list2" onclick="gotoMenu('?m=voucher&s=admin_voucher')">代金券管理 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+             <div class="info_list2" onclick="gotoMenu('?m=member&s=admin_member_card')">会员卡管理 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+             <div class="info_list2" onclick="gotoMenu('?m=member&s=admin_customer')">顾客管理 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+         </div>
+     </article>
+     <{/if}>
+
+
+     <article class="info_list">
+         <label class="info_list1">分销中心 <em class="up"></em></label>
+         <div class="animate">
+             <div class="info_list2" onclick="gotoMenu('?m=distribution&s=admin_distribution_product_list')">商品管理 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+             <div class="info_list2" onclick="gotoMenu('?m=distribution&s=admin_distribution_share_log')">分享记录 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+             <div class="info_list2" onclick="gotoMenu('?m=distribution&s=admin_distribution_product_find')">发现商品 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+         </div>
+     </article>
+     <article class="info_list">
+         <label class="info_list1">我的分销 <em class="up"></em></label>
+         <div class="animate">
+             <div class="info_list2" onclick="gotoMenu('?m=distribution&s=admin_distribution')">分佣概况 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+             <div class="info_list2" onclick="gotoMenu('?m=distribution&s=admin_distribution_order_list')">分销业绩 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+             <div class="info_list2" onclick="gotoMenu('?m=distribution&s=admin_distribution_user')">我的下级 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+         </div>
+     </article>
+
+
+     <article class="info_list">
+         <label class="info_list1">店铺管理 <em class="up"></em></label>
+         <div class="animate">
+             <div class="info_list2" onclick="gotoMenu('?m=shop&s=myshop')">店铺设置 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+             <div class="info_list2" onclick="gotoMenu('?m=shop&s=admin_certification')">认证设置 <div class="link_to"><p class="arrow2"><em></em><i></i></p></div></div>
+         </div>
+     </article>
+
+  <{/if}>
+   <p class="btn_exit"><a href="main.php?cg_u_type=1"><input type="button" value="切换至个人中心"></a></p>
+ </section>
+<script type="text/javascript">
+    function show_menu(){
+        var arrow = $(this).find("em");
+        if(arrow.hasClass("up")){
+            arrow.removeClass("up");
+            arrow.addClass("down");
+            $(this).css('color','#959595');
+        }else if(arrow.hasClass("down")){
+            arrow.removeClass("down");
+            arrow.addClass("up");
+            $(this).css('color','#333');
+        }
+        $(this).parent().find(".animate").slideToggle();
+
+    }
+$(function(){
+    $(".info_list1").click(show_menu);
+
+    $(".info_list1").each(
+        show_menu
+    );
+})
+</script>

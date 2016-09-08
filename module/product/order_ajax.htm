@@ -1,0 +1,192 @@
+<form action="" method="post">
+    <div id="step-2" class="step">
+        <h3>确认订单信息</h3>
+        <table width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <th class="first">产品</th>
+                <th width="150">单价(元)</th>
+                <th width="120">数量</th>
+                <th width="190">优惠方式(元)</th>
+                <th width="140">小计(元)</th>
+            </tr> 
+			
+            <{foreach item=list from=$cart}>
+			<{if $list.invalid_count != $list.prolist|@count}>
+            <tr class="shop">
+                <td colspan="8">
+                店铺:&nbsp;<a target="_blank" href="shop.php?uid=<{$list.seller_id}>"><{$list.company}></a>
+                </td>
+            </tr>
+            <{foreach item=pro from=$list.prolist}>
+            <{if !$pro.invalid}>
+            <tr class="item">
+                <td class="name">
+                    <div class="fl">
+                    <a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$pro.pid}>"><img height="60" alt="<{$pro.pname}>" src="<{$pro.pic}>_60X60.jpg"></a>
+                    </div>
+                    <p><a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$pro.pid}>"><{$pro.pname}></a></p>
+                    <{if $pro.is_tg=='true'}>
+                    <p><span class="tg">团购</span></p>
+                    <{/if}>
+				</td>
+                <td><{$pro.price|number_format:2}></td>
+                <td><{$pro.num}></td>
+                <td>
+                	<{if $pro.market_price>0}>
+                    省 <{$pro.market_price-$pro.price|number_format:2}> 元
+                    <{else}>
+                    无
+                    <{/if}>
+                </td>
+                <td class="price"><b><{$pro.sumprice|number_format:2}></b></td>
+            </tr>
+            <{/if}>
+            <{/foreach}>
+            <tr class="other">
+            	<td colspan="2" rowspan="2" class="msg">
+                <p>补充说明: <input placeholder="选填，可告诉卖家您的特殊要求" name="msg_<{$list.seller_id}>"></p>
+                
+                <input type="hidden" name="invoice_<{$list.seller_id}>" value="<{$list.is_invoice}>" />
+                
+                <{if $list.is_invoice>0}>
+                <p>发票抬头: <input style="width:100px;" type="text" name="invoice_title_<{$list.seller_id}>" value="<{$re}>" /></p>
+                <{/if}>
+                
+                </td>
+            	<td>运费方式：</td>
+                <td>
+                普通配送&nbsp;
+                <{if $list.mail>0 or $list.express>0 or $list.ems>0}>
+                <{assign var="m_price" value="0.00"}>
+                <select id='cem_<{$list.seller_id}>' onchange="count_price('<{$list.seller_id}>');">
+                    
+                <{if $list.express>0}>
+                <{assign var="m_price" value=$list.express}>
+				<option value="快递,<{$list.express}>">
+                    快递&nbsp;&nbsp;<{$list.express|number_format:2}>元
+                </option>
+                <{/if}>
+                    
+                <{if $list.mail>0}>
+                <{if $list.express eq 0}><{assign var="m_price" value=$list.mail}><{/if}>
+                <option value="平邮,<{$list.mail}>">
+                	平邮&nbsp;&nbsp;<{$list.mail|number_format:2}>元
+                </option>
+                <{/if}>
+                    
+                <{if $list.ems>0}>
+                <{if $list.express eq 0}><{assign var="m_price" value=$list.ems}><{/if}>
+                <option value="EMS,<{$list.ems}>">
+                	EMS&nbsp;&nbsp;<{$list.ems|number_format:2}>元
+                </option>
+                <{/if}>
+                </select>
+                <{else}>
+                卖家承担
+                <{/if}>
+                </td>
+                <td class="price">  
+                <{if $m_price>0}>
+                    <b id="show_cem_<{$list.seller_id}>">
+                    <{$m_price|number_format:2}>
+                    </b>
+                <{else}>
+                <b>0.00</b>    
+                <{/if}>
+                </td>
+            </tr>
+            <tr class="total">
+            	<td></td>
+                <td valign="top">
+                <select name="voucher_<{$list.seller_id}>" uid="<{$list.seller_id}>">
+                <option value="" item=0>不使用代金券</option>
+                <{foreach from=$list.voucher item=vo}>
+                <option item="<{$vo.price}>" value="<{$vo.id}>"><{$vo.name}></option>
+                <{/foreach}>
+                </select><i></i>
+                <br/>
+                店铺合计(含运费)
+                <input name="logistics_type_<{$list.seller_id}>" id="logistics_type_<{$list.seller_id}>" type="hidden" value="快递" />
+                <input name="logistics_price_<{$list.seller_id}>" id="logistics_price_<{$list.seller_id}>" type="hidden" value="<{$m_price}>" />
+                </td>
+                <td class="price">
+                    <b class="vouchers" id="voucher_<{$list.seller_id}>">0.00</b>
+                    <br/>
+                    <b class="shop_total_price" id="s_csumprice_<{$list.seller_id}>" org="<{$list.sumprice+$m_price|number_format:2}>">
+                    <{$list.sumprice+$m_price|number_format:2}>
+                    </b>
+                </td>
+            </tr>
+			<{/if}>
+            <{/foreach}>
+            <tr class="sum">
+            	<td colspan="4">
+                <input type="hidden" name="act" value="order" />
+                <input type="hidden" name="hidden_consignee_id" id="hidden_consignee_id" value="<{if $consignee_id}><{$consignee_id}><{else}><{$consignee.0.id}><{/if}>" />
+                实付款
+                </td>
+                <td class="price">
+                <b><{$config.money}> <span id="s_sumprice"></span></b>
+                </td>
+            </tr>
+		</table>      
+   		<input type="submit" value="" class="order_submit">
+   </div>
+</form>
+<script>
+ $("select[name^='voucher_']").change(function(){
+     uid = $(this).attr("uid")
+     num = $(this).find("option:selected").attr("item")*1;
+     $('#voucher_'+uid).html("-"+roundAmount(num));
+     var price_s =$('#s_csumprice_'+uid).attr("org").replace(',','')*1
+     $('#s_csumprice_'+uid).html(roundAmount(price_s-num))
+     count_all_price()
+ })
+var cid = $("#hidden_consignee_id").val();
+if(!cid)
+{
+	alert("请先添加收货地址!");
+	window.location="main.php?m=member&s=admin_orderadder&type=add&cg_u_type=1&act=return";
+}
+
+function count_price(id)
+{	//计算单店铺
+	v=$('#cem_'+id).val();
+	value=v.split(',');
+	
+	$('#logistics_type_'+id).val(value[0]);
+	$('#logistics_price_'+id).val(value[1]);
+	
+	//单店总价-物流=商品总价
+	//zj=$('#s_csumprice_'+id).html().replace(',','')*1-$('#show_cem_'+id).html()*1;
+     zj=$('#s_csumprice_'+id).html().replace(',','')*1-parseFloat($('#show_cem_'+id).html().replace(',',''));
+	
+	$('#show_cem_'+id).html(roundAmount(value[1]));//选中的快递费
+	$('#s_csumprice_'+id).html(roundAmount(value[1]*1+zj*1));
+	
+	count_all_price();
+}
+function count_all_price()
+{	//计算本次购物总价,购物总价+所有物流价格
+	var total=0;
+	var stotal=$('.shop_total_price');
+	for (var i=0;i<stotal.length;i++)
+	{
+		total+=stotal[i].innerHTML.replace(',','')*1;
+	}
+	
+	$('#s_sumprice').html(roundAmount(total));
+}
+count_all_price();
+function roundAmount(n)
+{  
+  var   s   =   ""   +   Math.round(n*100)/100  
+  var   i   =   s.indexOf('.')  
+  if(i<0)   return   s   +   ".00"  
+  var   t=s.substring(0,   i   +   1)   +    
+		  s.substring(i   +   1,   i   +   3)  
+  if(i   +   2   ==   s.length)   t   +=   "0"  
+  return   t  
+}
+
+</script>

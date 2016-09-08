@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<title>SNS</title>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>SNS</h3>
+                <ul>
+                    <li class="current"><a href="#"><span>管理</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div>   
+       
+        <script type="text/javascript">
+        $(function(){
+            /* 全选 */
+             $('.checkall').click(function(){
+                var _self = this;
+                $('.checkitem').each(function(){
+                    if (!this.disabled)
+                    {
+                        $(this).attr('checked', _self.checked);
+                    }
+                });
+                $('.checkall').attr('checked', this.checked);
+            });	 
+        });
+        </script>
+        <form action="" method="post">
+<style>
+.sns-item .sns-wrap{font-size:14px;}
+.sns-item .sns-wrap p{width:100%;margin-bottom:7px;display:inline-block;word-break:break-all;word-wrap:break-word;color:#006A92;font-weight:bold;}
+.sns-item .sns-text{line-height:1.5;margin-bottom:7px;}
+.sns-item .sns-title{color:#646464;line-height:23px;overflow:hidden;word-break:break-all;word-wrap:break-word;}
+.sns-item .sns-img{margin:7px 0;}
+.sns-item .sns-img li{float:left;overflow:hidden;}
+.sns-item .sns-img img.small{cursor: zoom-in;max-height:120px;max-width:118px;}
+.sns-item .sns-img img.large{cursor: zoom-out;max-width:570px;}
+.sns-item .sns-extra{color:#AAAAAA;font-size:12px;height:18px;}
+.sns-item .sns-extra .sns-time{float:left;margin-right:25px;color:#759AAD;}
+</style>
+        <table class="table">
+            <tbody>
+                <tr class="header">
+                    <th width="30" class="al">删</th>
+                    <th width="50"></th>
+                   	<th class="al">SNS</th>
+          		</tr>
+                <{foreach item=list from=$de.list}>
+                <tr>
+					<td valign="top"><input type="checkbox" value="<{$list.id}>" class="checkitem" name="chk[]"></td>
+                    <td valign="top">
+                    <img width="60" src="<{$list.member_img}>">
+                    </td>
+                    <td class="al sns-item">
+                    <div class="sns-wrap">
+                    	<p class="clearfix"><{$list.member_name}></p>
+                        <div class="sns-text">
+                            <div class="sns-title clearfix"><{$list.title}></div>
+                            <{if $list.img}>
+                                <div class="sns-img clearfix">
+                                    <{foreach item=slist from=$list.img}>
+                                    <li><img width="100" src="<{$slist}>_220X220.jpg"></li>
+                                    <{/foreach}>
+                                </div>
+                            <{/if}>
+                        </div>
+                        <div class="sns-extra clearfix">
+                        <a class="sns-time" href="javascript:void(0);">
+                        <{$list.create_time|date_format:"%m月&nbsp;%d日&nbsp;%H:%M"}>
+                        </a>
+                       
+                        </div>
+                    </div>
+                    </td>
+                </tr>
+                <{foreachelse}>
+                <tr>
+                    <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+            <tfoot>
+                <tr>
+                	<td colspan="2">
+                        <input type="checkbox" class="checkall" id="del">
+                        <input type="hidden" name="act" value="op" />
+                        <input type="submit" value="删除" />
+                    </td>
+                    <td><div class="page"><{$de.page}></div></td>
+                </tr>
+            </tfoot>
+        </table>
+        </form>
+      
+    </div>
+</body>
+</html>

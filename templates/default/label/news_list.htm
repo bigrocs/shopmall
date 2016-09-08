@@ -1,0 +1,9 @@
+<{foreach item=list key=num from=$news }>
+<li>
+    <a style="float:left; margin-right:10px;" class="new_neiy_a" href="<{$list.url}>" title="<{$list.title}>" target="_blank"><img height="123" width="183" src="<{$list.titlepic}>" /></a>
+    <div>
+        <p style="height:55px; overflow:hidden;"><a <{$list.style}> href="<{$list.url}>" title="<{$list.title}>" target="_blank"> <{$list.ftitle|strip_tags|replace:"%":"％"|truncate:100:'...'}></a></p>
+        <p style="padding-top:5px; color:#999999;"><{$list.uptime|date_format}></p>
+    </div>
+</li>
+<{/foreach}>

@@ -1,0 +1,52 @@
+<div class="path">
+    <div>
+        <a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span>
+        发货
+    </div>
+</div>
+<div class="main">
+	<div class="wrap">
+    <form method="post" id="deliver_form" name="deliver_form">
+    <input type="hidden" name="status" value="send" />
+    <input type="hidden" name="id" value="<{$smarty.get.order_id}>" />
+	<table class="table-list-style fast" style="width:auto;">
+        <tr>
+            <td width="150" class="bdl">物流公司名称</td>
+            <td width="10"></td>
+            <td class="tl" width="350">运单号</td>
+            <td width="90" class="bdr">操作</td>
+        </tr>
+        <{if $logistics_kdniao_connect and $kdniao_flag}>
+        <tr>
+            <td class="bdl"> 快递鸟 - <{$logistics_row.order_logistics_name}></td>
+            <td class="bdl"></td>
+            <td class="tl"><input type="text" class="text w300" name="deliver_code" value="" values="<{$logistics_row.id}>" genre="send"></td>
+            <td class="bdl bdr"><a class="btn2" href="javascript:void(0);" values="<{$logistics_row.id}>" values1="<{$logistics_row.order_logistics_name}>" genre="send" >确认</a></td>
+        </tr>
+        <{/if}>
+        <{foreach item=list from=$fastmail}>
+        <tr>
+            <td class="bdl"><{$list.company}></td>
+            <td class="bdl"></td>
+            <td class="tl"><input type="text" class="text w300" name="deliver_code" value="" values="<{$list.id}>" genre="send"></td>
+            <td class="bdl bdr"><a class="btn2" href="javascript:void(0);" values="<{$list.id}>" values1="<{$list.company}>" genre="send" >确认</a></td>
+        </tr>
+        <{/foreach}>
+    </table>
+    <input type="hidden" id="deliver_id" name="deliver_id" value="" />
+    <input type="hidden" id="deliver_name" name="deliver_name" value="" />
+    </form>
+    <script type="text/javascript">
+    $('a[genre="send"]').live('click',function(){
+		if ($('input[values="'+$(this).attr('values')+'"]').val() == ''){
+				alert('请填写物流单号！');return false;
+		}
+		$('input[genre="send"]').attr('disabled',true);
+        $('input[values="'+$(this).attr('values')+'"]').attr('disabled',false);
+        $('#deliver_id').val($(this).attr('values'));
+        $('#deliver_name').val($(this).attr('values1'));
+        $('#deliver_form').submit();
+    });
+    </script> 
+    </div>
+</div>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<meta charset="utf-8" />
+<title><{$shopconfig.hometitle}>商品评价-<{$config.company}></title>
+<meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
+<meta name="viewport" media="(device-height: 568px)" content="initial-scale=1.0,user-scalable=no,maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta property="wb:webmaster" content="c51923015ca19eb1">
+<link href="<{$config.weburl}>/templates/wap/css/page.css?v=1.0" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<link href="<{$config.weburl}>/templates/wap/css/comment.css?v=1.0" rel="stylesheet" type="text/css" />
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="main.php?cg_u_type=2&st=1"><nav>卖家中心</nav></a></section>
+        
+    	<section class="nav-c"><span>商品评价</span></section>
+    	<section class="nav-e"></section>
+       
+    </div>
+</header>
+ <div class="clear"></div>
+ <div class="commentContent">
+ 
+ <{if $smarty.get.uid}>
+ 
+ <div class="commentSubmit">
+ 
+ <form action="" method="post">
+ 
+  <ul>
+     <li><input type="radio" name="g<{$n}>" value="1"/>&nbsp;&nbsp;好评</li>
+     <li><input type="radio" name="g<{$n}>" value="0"/>&nbsp;&nbsp;中评</li>
+     <li><input type="radio" name="g<{$n}>" value="-1"/>&nbsp;&nbsp;差评</li>
+     <div class="clear"></div>
+     <textarea name="comment_text<{$n}>" rows="10" cols="34"></textarea>
+  </ul>
+  
+   <input type="hidden" name="submit" value="submit" />
+   <div class="submit"><input type="submit" value="提交评论"/></div>
+ 
+ 
+ 
+ </form>
+ 
+ <div class="clear"></div>
+ 
+ 
+ 
+ </div>
+ 
+ <div class="clear"></div>
+ 
+ 
+ 
+ 
+ 
+ <{else}>
+ <div class="commentHead">
+ 
+   <div class="chLeft">
+    <span><font><{$hcomment|string_format:"%.0f"}></font>%</span>
+    <p>好评度</p>
+   </div>
+   
+   <div class="chRight">
+      <ul>
+         <li class="review">好评（<{$hcomment|string_format:"%.0f"}>%）</li>
+         <li>
+         <div class="progressBar">
+            <div style=" width:<{$hcomment}>%; height:15px; background:#e93639;"></div>
+         </div>
+         
+         </li>
+      </ul>
+       <div class="clear"></div>
+       <ul>
+         <li class="review">中评（<{$zcomment|string_format:"%.0f"}>%）</li>
+         <li>  <div class="progressBar">
+            <div style=" width:<{$zcomment}>%; height:15px; background:#e93639;"></div>
+         </div></li>
+      </ul>
+       <div class="clear"></div>
+       <ul>
+         <li class="review">差评（<{$ccomment|string_format:"%.0f"}>%）</li>
+         <li>  <div class="progressBar">
+            <div style=" width:<{$ccomment}>%; height:15px;background:#e93639;"></div>
+         </div></li>
+      </ul>
+    <div class="clear"></div>
+   </div>
+<div class="clear"></div>
+ </div>
+ 
+  <div class="clear"></div>
+ <div class="commentList">
+    
+    <ul>
+       <li <{if $smarty.get.catid=='3'}>class="now" <{/if}>   id="marginRight"><a href="<{$config.weburl}>/?m=product&s=comment&catid=3&id=<{$id}>"><p>好评</p><p><{$gcounts}></p></a></li>
+       <li  <{if $smarty.get.catid=='2'}>class="now" <{/if}>  id="marginRight"><a href="<{$config.weburl}>/?m=product&s=comment&catid=2&id=<{$id}>"><p>中评</p><p><{$zcounts}></p></a></li>
+       <li  <{if $smarty.get.catid=='1'}>class="now" <{/if}>><a href="<{$config.weburl}>/?m=product&s=comment&catid=1&id=<{$id}>"><p>差评</p><p><{$ccounts}></p></a></li>
+    </ul>
+   
+    
+    <div class="list" id="test1_1" style="display:block;">
+    
+    <{foreach item=list from=$re.list}>
+      <dl>
+         <dt><{$list.con}></dt>
+         <dd><em></em> <span><{$list.user}>&nbsp;&nbsp;<{$list.uptime}></span></dd>
+         <div class="clear"></div>
+      </dl>
+      
+      <{foreachelse}>
+      
+      <dl>
+        
+        暂无符合的数据！
+      
+      </dl>
+      
+      
+     <{/foreach}>
+    
+    
+    
+    </div>
+    
+    <div class="list" id="test1_2" style="display:none;">
+    
+       <{foreach item=list from=$re.list}>
+      <dl>
+         <dt><{$list.con}></dt>
+         <dd><em></em> <span><{$list.user}>&nbsp;&nbsp;<{$list.uptime}></span></dd>
+         <div class="clear"></div>
+      </dl>
+      
+      <{foreachelse}>
+      
+      <dl>
+        
+        暂无符合的数据！
+      
+      </dl>
+      
+      
+     <{/foreach}>
+    
+    </div>
+    
+    <div class="list" id="test1_3" style="display:none;">
+         
+          <{foreach item=list from=$re.list}>
+      <dl>
+         <dt><{$list.con}></dt>
+         <dd><em></em> <span><{$list.user}>&nbsp;&nbsp;<{$list.uptime}></span></dd>
+         <div class="clear"></div>
+      </dl>
+      
+      <{foreachelse}>
+      
+      <dl>
+        
+        暂无符合的数据！
+      
+      </dl>
+      
+      
+     <{/foreach}>
+         
+         
+    </div>
+ 
+ 
+ </div>
+ 
+ 
+ <{$re.page}>
+ <{/if}>
+ 
+ </div>
+ 
+
+ 
+ 
+  <div class="clear"></div>
+
+</body>

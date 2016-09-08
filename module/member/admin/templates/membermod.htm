@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>会员管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../script/district.js" ></script>
+<script>
+var weburl="<{$config.weburl}>";
+</script>
+</head>
+<body>
+<div class="container">
+    <div class="flow"> 
+        <div class="itemtitle">
+            <h3>会员管理</h3>
+            <ul>
+                <li class="current"><a href="?m=member&s=member.php"><span>管理</span></a></li>
+               
+            </ul>
+        </div>
+    </div>
+    <div class="h35"></div>
+    
+    <div class="member">
+        <div class="member_top">
+            <dl class="clearfix">
+                <dt><img width="90" src="<{if $de.logo|truncate:4:""!='http'}>../<{/if}><{$de.logo}>" /></dt>
+                <dd>
+                <table width="100%">
+                	<tr>
+                    	<th width="100">会员ID：</th>
+                        <td width="180"><{$de.userid}></td>
+                        <th width="100">用户名：</th>
+                        <td>
+                            <{$de.user}>
+                            <img align="absmiddle" src="<{$de.pic}>">
+                        </td>
+                    </tr>
+                    <tr>
+                    	<th>昵称：</th>
+                        <td><{$de.name}></td>
+                        <th>积分：</th>
+                        <td><b class="red"><{$de.points}></b></td>
+                    </tr>
+                    <tr>
+                    	<th>注册时间：</th>
+                        <td><{$de.regtime}></td>
+                        <th>IP：</th>
+                        <td><{$de.ip}> <{$de.ips}></td>
+                    </tr>
+                    <tr>
+                    	<th>最近登入时间：</th>
+                        <td><{$de.lastLoginTime|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                    </tr>
+                </table>
+                </dd>
+            </dl>
+        </div>
+    	<div class="member_bottom">
+        	<ul class="mt clearfix">
+            	<li <{if !$smarty.get.t}>class="current"<{/if}>><a href="module.php?m=member&s=membermod.php&userid=<{$de.userid}>">个人资料</a></li>
+            	<li <{if $smarty.get.t==o}>class="current"<{/if}>><a href="module.php?m=member&s=membermod.php&userid=<{$de.userid}>&t=o">购买记录</a></li>
+            	<li class="fr <{if $smarty.get.t==p}>current<{/if}>"><a href="module.php?m=member&s=membermod.php&userid=<{$de.userid}>&t=p">积分记录</a></li>
+            </ul>
+        	<div class="mc">
+            	<div class="i-mc <{if $smarty.get.t}>hidden<{/if}>">
+                <form action="" method="post">
+                <input type="hidden" name="act" value="act" />
+                <input type="hidden" name="userid" value="<{$de.userid}>" />
+               	<table width="100%" class="talbe1">
+                	<tr>
+                    	<th width="70">昵称：</th>
+                    	<td width="450"><input class="text" type="text" name="name" value="<{$de.name}>" /></td>
+                    	<th width="80">性别：</th>
+                    	<td>
+                        <label><input checked="checked" type="radio" name="sex" value="1" />男</label>
+                        <label><input <{if $de.sex==2}>checked="checked"<{/if}> type="radio" name="sex" value="2" />女</label>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<th>密码：</th>
+                        <td><input class="text" type="password" name="password" value="" /></td>
+                     	<th>积分：</th>
+                        <td>
+                        <input type="text" class="fl" name="points" value="" />
+                        </td>
+                    </tr>
+                    <tr>
+                    	<th>等级：</th>
+                        <td>
+                        <select name="grade">
+                        	<{foreach item=list from=$re}>
+                            	<option <{if $list.id==$de.grade_id}>selected="selected"<{/if}> value="<{$list.id}>"><{$list.name}></option>
+                            <{/foreach}>
+                        </select>
+                        </td>
+                        <th>管理员</th>
+                        <td>
+                        <select name="invite">
+                        	<option value="">请选择管理员</option>
+                        	<{foreach item=list from=$invite}>
+                            	<option <{if $list.name==$de.invite}>selected="selected"<{/if}> value="<{$list.name}>"><{$list.name}></option>
+                            <{/foreach}>
+                        </select>
+                        </td>
+                     </tr>
+                     <tr>   
+                    	<th>所在地区：</th>
+                        <td colspan="3">
+                        <input type="hidden" name="t" id="t" value="<{$de.area}>" />
+                        <input type="hidden" name="province" id="id_1" value="<{$de.provinceid}>" />
+                        <input type="hidden" name="city" id="id_2" value="<{$de.cityid}>" />
+                        <input type="hidden" name="area" id="id_3" value="<{$de.areaid}>" />
+                        <input type="hidden" name="street" id="id_4" value="<{$de.streetid}>" />
+                        <{if $de.area}><div id="d_1"><{$de.area}>&nbsp;&nbsp;<a href="javascript:sd();"><{$lang.edit}></a></div><{/if}>
+                        <div id="d_2" <{if $de.area}>class="hidden"<{/if}>>
+                        <select id="select_1" name="select_1" onChange="district(this);">
+                        <option value="">--<{$lang.please_select}>--</option>
+                        <{$prov}>
+                        </select>
+                        <select id="select_2" name="select_2" onChange="district(this);" class="hidden"></select>
+                        <select id="select_3" name="select_3" onChange="district(this);" class="hidden"></select>
+                        <select id="select_4" name="select_4" onChange="district(this);" class="hidden"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<th>邮箱：</th>
+                        <td>
+                        <input type="text" class="text" name="email" value="<{$de.email}>" />
+                        <label class="label">
+                        <input <{if $de.email_verify==1}>checked="checked"<{/if}> type="checkbox" name="email_verify" value="1" />已验证
+                        </label>
+                        </td>
+                        <th>手机：</th>
+                        <td>
+                        <input type="text" class="text" name="mobile" value="<{$de.mobile}>" />
+                        <label class="label">
+   						<input <{if $de.mobile_verify==1}>checked="checked"<{/if}> type="checkbox" name="mobile_verify" value="1" />已验证
+                        </label>
+                        </td>
+                    </tr>
+                    <tr>
+                    	<th>QQ：</th>
+                        <td><input type="text" class="text" name="qq" value="<{$de.qq}>" /></td>
+                        <th>旺旺：</th>
+                        <td><input type="text" class="text" name="ww" value="<{$de.ww}>" /></td>
+                    </tr>
+                    <tr>
+                    	<th></th>
+                    	<td colspan="2">
+                        <input type="submit" class="submit" value="保存" />
+                        </td>
+                    </tr>
+                </table>
+                </form>
+                </div>
+                <div class="i-mc <{if $smarty.get.t!=o}>hidden<{/if}>">
+                <ul class="clearfix">
+                	<li <{if !$smarty.get.zt}>class="current"<{/if}>><a href="module.php?m=member&s=membermod.php&userid=<{$de.userid}>&t=o">所有订单</a></li>
+                	<{foreach item=list key=key from=$order_status}>
+                    <{if $key>=0}>
+                	<li <{if $smarty.get.zt==$key+1}>class="current"<{/if}>><a href="module.php?m=member&s=membermod.php&userid=<{$de.userid}>&t=o&zt=<{$key+1}>"><{$list}></a></li>
+                    <{/if}>
+                    <{/foreach}>
+                </ul>
+                <table class="table-list-style order">
+                    <thead>
+                        <tr>
+                            <th width="*">商品</th>
+                            <th width="130">单价(元)</th>
+                            <th width="130">数量</th>
+                            <th width="130">实付款(元)</th>
+                            <th width="130">交易状态</th>
+                        </tr>
+                    </thead>
+                    <{foreach item=buylist from=$blist.list}>
+                    <{assign var=count value=$buylist.product|@count}>
+                    <{assign var=count value=$count+1}>
+                    <tbody <{if $buylist.status==0||$buylist.status==4}>class="success-order"<{/if}>>
+                        <tr>
+                            <td class="sep-row" colspan="20"></td>
+                        </tr>
+                        <tr>
+                            <th class="bdl">
+                            <span class="dealtime"><{$buylist.create_time|date_format:"%Y-%m-%d"}></span>
+                            <span class="number">订单号：<{$buylist.order_id}></span>
+                            </th>
+                            <th colspan="2"><a title="<{$buylist.company}>" href="shop.php?uid=<{$buylist.seller_id}>"><{$buylist.company|truncate:30}></a></th>
+                            <th></th>
+                            <th class="bdr" colspan="3"></th>
+                        </tr>
+                        <{foreach item=plist key=key from=$buylist.product}>
+                        <tr> 
+                            <td class="bdl product">
+                                <a class="pic" target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$plist.pid}>"><img width="80" height="80" src="<{$plist.pic}>_220X220.jpg" /></a>
+                                <div class="desc"><a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$plist.pid}>"><{$plist.name}></a></div>
+                            </td>
+                            <td><{$plist.price|number_format:2}></td>
+                            <td><{$plist.num}></td>
+                            
+                            <{if $key==0}>
+                            <td class="bl" rowspan="<{$count}>"><b><{$buylist.product_price+$buylist.logistics_price|number_format:2}></b></td>
+                           
+                            <td class="bl bdr" rowspan="<{$count}>">
+                            <a href="#"><{$buylist.statu_text}></a>
+                            <a href="module.php?m=product&s=order_detail.php&oid=<{$buylist.order_id}>">订单详情</a>
+                            
+                            <{if $buylist.status==4 && $buylist.buyer_comment==1 && $buylist.seller_comment!=1}>已评
+                            <{elseif $buylist.status==4 && $buylist.buyer_comment==1 && $buylist.seller_comment==1}>双方已评
+                            <{/if}>
+                            </td>
+                            <{/if}>
+                        </tr>
+                        <{/foreach}>
+                        <tr>
+                            <td class="bdl bdb product">运送方式：<{$buylist.logistics_type}></td>
+                            <td class="bdb"><{$buylist.logistics_price|number_format:2}></td>
+                            <td class="bdb">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                    <{foreachelse}>
+                        <tr>
+                            <td colspan="20" class="norecord">
+                                <i></i><span>暂无符合条件的数据记录</span>	
+                            </td>
+                        </tr>
+                    <{/foreach}>
+                    <{if $blist.page!=""}>
+                    <tfoot>
+                    <tr>
+                        <td class="ac" colspan="20"><div class="page"><{$blist.page}></div></td>
+                    </tr>
+                    </tfoot>
+                    <{/if}>
+                </table>
+                </div>
+                <div class="i-mc <{if $smarty.get.t!=p}>hidden<{/if}>">
+                <table class="table table2">
+            		<tr class="header">
+                        <th class="al">添加时间</th>
+                        <th class="al">操作</th>
+                    	<th class="al">积分变更</th>
+                    </tr>
+                    <{foreach item=list from=$points.list}>
+                    <tr>
+                        <td><{$list.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+                        <td><{$list.desc}></td>
+                    	<td><{$list.points}></td>
+                    </tr>
+                    <{foreachelse}>
+                        <tr>
+                            <td colspan="20" class="norecord">
+                                <i></i><span>暂无符合条件的数据记录</span>	
+                            </td>
+                        </tr>
+                    <{/foreach}>
+                    <{if $points.page!=""}>
+                    <tr>
+                    	<td colspan="3" class="ac"><div class="page"><{$points.page}></div></td>
+                    </tr>
+                    <{/if}>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

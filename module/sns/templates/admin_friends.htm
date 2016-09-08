@@ -1,0 +1,294 @@
+<style>
+    .black_overlay{  display: none;  position: absolute;  top: 0%;  left: 0%;  width: 100%;  height: 100%; background-color: rgb(0, 0, 0); opacity: 0.5; z-index:1001;  -moz-opacity: 0.8;   filter: alpha(opacity=80);  }
+    .white_content {  display: none;  position: absolute;  top: 25%;  left: 37%;  width: 300px;  height: 200px;  padding: 16px;  border: 1px solid orange;  background-color: white;  z-index:1002;  overflow: auto;  }
+</style>
+<link href="script/dialog/dialog.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="script/my_lightbox.js"></script>
+<script type="text/javascript" src="script/dialog/dialog.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".hua").click(function () {
+
+//                                ==============
+                                var gid =$(this).attr('fid');
+                                //var emp=$(this).html("");
+                                  //alert(date);
+                                $('#shows').html('');
+                                $('#shows').load('<{$config.weburl}>/main.php?m=sns&s=ajax_friends_group&gid='+gid);
+
+
+ //======================================
+                            });
+
+
+    });
+</script>
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=1">我的商城</a> <span>&gt;</span> 
+        好友
+    </div>
+</div>
+<script>
+
+$(function(){
+
+	//加关注
+	$("[genre='followbtn']").live('click',function(){
+		var url = '<{$config.weburl}>/module/sns/ajax_update.php';
+		var uname='<{$smarty.cookies.USER}>';
+		var data_str = $(this).attr('data-param');
+		var index=$(this).parent().parent().parent().parent().index();
+        eval( "data_str = "+data_str);
+		var pars = 'mid='+data_str.mid+'&uname='+uname+'&op=add';
+		$.post(url, pars,showResponse);
+		function showResponse(originalRequest)
+		{
+			if(originalRequest>1)
+				$(".friend_list li").eq(index).find('span[id="gz_statu"]').html('成功添加');
+			else if (originalRequest>0)
+				$(".friend_list li").eq(index).find('span[id="gz_statu"]').html('已添加');
+			else
+				alert('参数传递错误，无法完成操作');
+		}
+	});
+	//取消关注
+	$("[genre='cancelbtn']").live('click',function(){
+		var url = '<{$config.weburl}>/module/sns/ajax_update.php';
+		var uname='<{$smarty.cookies.USER}>';
+		var data_str = $(this).attr('data-param');
+        eval( "data_str = "+data_str);
+		var pars = 'fid='+data_str.fid+'&op=del';
+		$.post(url, pars,showResponse);
+		function showResponse(originalRequest)
+		{
+			if(originalRequest>1)
+				document.location.reload();
+			else
+				alert('参数传递错误，无法完成操作');
+		}
+	});
+
+});
+</script>
+<div class="main">
+	<div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="<{if $smarty.get.type}>normal<{else}>active<{/if}>"><a href="main.php?m=sns&s=admin_friends">我关注的</a></li>
+                <li class="<{if $smarty.get.type==fan}>active<{else}>normal<{/if}>"><a href="main.php?m=sns&s=admin_friends&type=fan">关注我的</a></li>
+            </ul>
+        </div>
+        <table class="table-list-style">
+            
+            <tbody>
+            <{if $re.list}>
+            <tr>
+                <td style="border-top:none">
+                <ul class="friend_list">
+                    <{if $smarty.get.type!=fan}>
+                    <span style="width: 100%;height:30px;border: 1px solid #C4D5E0;float: left;">
+                        <p  style="line-height: 30px;width:110px;height:30px;color: #498CD0;font-weight: 400;float: left">好友分组</p>
+                        <p style="line-height: 25px;height:25px;float: left;margin-left: 550px;margin-top: 3px;">
+                            移动到&nbsp;&nbsp;&nbsp;
+                            <select id="btn_getValue"  name="">
+                                <option value="">--组名--</option>
+
+                                <{foreach item=list from=$gronmame}>
+                            <option value="<{$list.group_id}>"><{$list.name}></option>
+                                <{/foreach}>
+                        </select>
+                        </p>
+                        <p style="line-height: 25px;height:25px;float: left;width:100px;margin-top: 3px;"> 群发信息
+                            <a class="message" id="mess" href="#">&nbsp;</a>
+                        </p>
+                    </span>
+                    <div style="width: 20%;height:900px;background: #EDF5FF;float: left;margin-top: 5px">
+                    <div style="width: 70%;height: auto;margin-left: 26px;margin-top: 15px;">
+                        <p class="hua" style="height: 35px;line-height: 35px;width: 80px">
+                            <a href="#" fid="0" class="hua">全部好友(<{$cou}>)</a></p>
+                        <dl>
+                            <{foreach item=list from=$gronmame}>
+                        <span class="zuu">
+                            <dd class="group hua" fid="<{$list.group_id}>">
+                            <a href="#"><{$list.name}>(<{$list.group_id|get_num}>)</a>
+                            <span class="zu1" style="display:none">
+                            <a  href="javascript:alertWin('修改分组','',300,180,'main.php?m=sns&s=admin_friends_group&ope=upda&editid=<{$list.group_id}>'); "><img src="<{$config.weburl}>/image/default/edi.png" alt="修改"></a>
+                            <a  onclick="return confirm('确定删除吗');" href="<{$config.weburl}>/main.php?m=sns&s=admin_friends_group&delid=<{$list.group_id}>"><img src="<{$config.weburl}>/image/default/del.png" alt="删除"></a>
+                       </span>
+                        </dd></span>
+                            <{/foreach}>
+                        <dd  class="group hua"><a class="adds" href="#">+添加分组</a></dd>
+                        </dl>
+                    </div>
+
+                    </div>
+                    <script type="text/javascript">
+                        $(function(){
+                            /* 全选 */
+                            $('.checkall').click(function(){
+                                var _self = this;
+                                $('.checkitem').each(function(){
+                                    if (!this.disabled)
+                                    {
+                                        $(this).attr('checked', _self.checked);
+                                    }
+                                });
+                                $('.checkall').attr('checked', this.checked);
+                            });
+
+                        $(function(){
+                            $("#btn_getValue").change(function(){
+
+                                var va=$(this).val();
+
+                                var strr="";
+                                $("input.checkitem:checked").each(function(){
+                                    strr+=$(this).val()+",";
+                                });
+
+                                $.post('<{$config.weburl}>/main.php?m=sns&s=ajax_friends_group',{"id":va,"ddd":strr },function(date){
+                                         //----alert(date);
+                                   window.location.reload();
+                                });
+                            });
+                        });
+                            $(function(){
+
+                                $("#mess").click(function(){
+                                    var stt="";
+                                    $("input.checkitem:checked").each(function(){
+                                        stt+=$(this).val()+",";
+
+//                                      stt+=stt.substring(0,stt.Length-1);
+                                    });
+                                    location.href = "<{$config.weburl}>/main.php?m=message&s=admin_message_sed&uid="+stt;
+                                });
+                            });
+
+                            $(function(){
+                                $(".zuu").hover(function(){
+                                    var index = $(this).index();
+                                   $("dd").find('span').eq(index).css('display','inline');
+                                },function(){
+                                    var index = $(this).index();
+                                    $("dd").find('span').eq(index).css('display','none');
+                                });
+
+                            })
+                            $(function(){
+                                $(".nick1").hover(function(){
+                                   if($(this).find('a').css("display") =="none"){
+
+                                       $(this).find('a').css("display","inline");
+                                       //alert( $(this).find('a').css("display"));
+                                   }else{
+                                       $(this).find('a').css("display","none");
+
+                                   };
+                                    //alert(haha);
+                                });
+
+                            })
+                        });
+                    </script>
+                    <div style="width: 79%;height:40px;background:#EDF5FF;float: left;margin-top: 5px;margin-left: 8px;">
+                        <dl>
+                            <dd style="float: left;line-height: 40px;font-weight: 500;font-size: 15px;width: 10%"><input style="margin-top:14px" type="checkbox" class="checkall" name=""></dd>
+                            <dd style="float: left;line-height: 40px;font-weight: 500;font-size: 15px;width: 12%">头像</dd>
+                            <dd style="float: left;line-height: 40px;font-weight: 500;font-size: 15px;width: 15%">好友名称</dd>
+                            <dd style="float: left;line-height: 40px;font-weight: 500;font-size: 15px;width: 15%">好友昵称</dd>
+                            <dd style="float: left;line-height: 40px;font-weight: 500;font-size: 15px;width: 15%">分组</dd>
+                            <dd style="float: left;line-height: 40px;font-weight: 500;font-size: 15px;width: 15%">组备注</dd>
+                            <dd style="float: left;line-height: 40px;font-weight: 500;font-size: 15px;width: 18%">操作</dd>
+                        </dl>
+                    </div>
+
+                    <{/if}>
+                    <div  id="shows">
+                    <{foreach item=slist from=$re.list}>
+                    <{if $smarty.get.type==fan}>
+                    	<li>
+                        <div class="friend_img"><a target="_blank" href="<{$config.weburl}>/home.php?uid=<{$slist.uid}>"><img width="100" height="100" src="<{if $slist.uimg}><{$slist.uimg}><{else}>image/default/user_admin/default_user_portrait.gif<{/if}>"></a></div>
+                        <dl>
+                            <dt>
+                            <a class="friend_name" target="_blank" href="<{$config.weburl}>/home.php?uid=<{$slist.uid}>"><{$slist.uname}></a>
+                            <a class="message" target="_blank" href="main.php?m=message&s=admin_message_sed&uid=<{$slist.uid}>">&nbsp;</a>
+                            <em class=""></em></dt>
+                        <dd class="credit"><{if $slist.buyerpointsimg}><img align="absmiddle" src="<{$config.weburl}>/image/points/<{$slist.buyerpointsimg}>" /><{else}>买家信用：<{$slist.buyerpoints}><{/if}></dd>
+                        <dd class="area"><{$slist.area}></dd>
+                        <dd>
+						<span id="gz_statu">
+							<{if $slist.state==2}>
+								互相关注
+							<{else}>
+								<a class="btn2" href="javascript:void(0)" genre="followbtn" data-param="{'mid':'<{$slist.uid}>'}">加关注</a>
+							<{/if}>
+						</span>
+						</dd>
+                        </dl>
+                        </li>
+                    <{else}>
+						<li style="width: 77%">
+                            <div style="float: left;width: 76px;">
+                                <input style="margin-top:15px" name="duoxuan" class="checkitem" value="<{$slist.id}>" type="checkbox"></div>
+                            <div class="friend_img" style="margin-left: 28px;border: 1px solid #E7EFF8;border-radius: 5px 5px 5px 5px;float: left;height: 40px;padding: 1px;width: 40px;"><a target="_blank" href="<{$config.weburl}>/home.php?uid=<{$slist.fuid}>"><img width="40" height="40" src="<{if $slist.fuimg}><{$slist.fuimg}><{else}>image/default/user_admin/default_user_portrait.gif<{/if}>"></a></div>
+                            <div style="margin-left: 40px;float: left;">
+                                <p style="width: 80px;margin-left: 5px;"> <a class="friend_name" target="_blank" href="<{$config.weburl}>/home.php?uid=<{$slist.fuid}>"><{$slist.funame}></a>
+                                    <em class=""></em></p>
+                                <{if $slist.buyerpointsimg}><img align="absmiddle" src="<{$config.weburl}>/image/points/<{$slist.buyerpointsimg}>" /><{else}><{$slist.buyerpoints}><{/if}>
+
+                                <dd class="area"><{$slist.province}><{$slist.city}></dd>
+                            </div>
+                            <div style="margin-left: 15px;float: left;">
+                                <p style="width: 90px;margin-top: 2px;margin-left: 25px;"> <{if !$slist.fnickname}><span><a href="javascript:void(0)"  class="nicheng" nid="<{$slist.id}>">点我修改昵称</a></span><{else}><span class="nick1"><{$slist.fnickname}> <a style="display:none" href="javascript:alertWin('修改昵称','',300,150,'main.php?m=sns&s=admin_nick&ope=upda&editid=<{$slist.id}>'); "><img src="<{$config.weburl}>/image/default/edi.png" alt="修改"></span></a>
+                                    <{/if}></p>
+                            </div>
+                            <div style="margin-left: 15px;float: left;">
+                                <p style="width: 60px;margin-top: 2px;margin-left: 25px;"> <{$slist.name}></p>
+                            </div>
+                            <div style="margin-left: 5px;float: left;">
+                                <p style="width: 90px;margin-top: 2px;margin-left: 40px;"> <{$slist.describe}></p>
+                            </div>
+                            <dd style="margin-top:2px;width: 100px;float: right">
+                             <span class="cancel">
+                                 <a class="btn2" href="javascript:void(0)" genre="cancelbtn" data-param="{'fid':'<{$slist.id}>'}">取消关注</a>
+                             <a class="message" target="_blank" href="main.php?m=message&s=admin_message_sed&uid=<{$slist.fuid}>">&nbsp;</a></span>
+                            </dd>
+                            </dl>
+                            <hr style="width: 100%;float:left">
+
+
+                        </li>
+					<{/if}>
+                    <{/foreach}>
+
+                    </div>
+                </ul>
+                </td>
+            </tr>
+            <{/if}>
+            <{if !$re.list}>
+            <tr>
+            	<td colspan="20" class="norecord ntb nbt">
+                	<i></i><span>暂无符合条件的数据记录</span>	
+                </td>
+            </tr>
+            <{/if}>
+            </tbody>
+            <tfoot>
+
+            </tfoot>
+        </table>
+     </div>   
+</div>
+<script>
+    $(".adds").click(function(){
+        alertWin('添加分组', '', 300, 180, 'main.php?m=sns&s=admin_friends_group');
+        return false;
+    })
+    $('.nicheng').click(function(){
+        var data = $(this).attr('nid');
+       alertWin('添加昵称', '', 300, 150, 'main.php?m=sns&s=admin_nick&nid='+data);
+    })
+</script>

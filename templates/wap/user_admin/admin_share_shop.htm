@@ -1,0 +1,60 @@
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s iconfont"><a href="<{$config.weburl}>/main.php"><font>&#xe60d</font></a></section>
+    	<section class="nav-c">
+            <span class="select">
+                <{if $smarty.get.s=='admin_share_product'}>收藏商品
+                <{else}>收藏店铺<{/if}>
+                <em></em>
+            </span>
+            <div style="display:none;" class="i-select">
+                <ul>
+                    <li key="" class="sub-line"><a href="main.php?m=sns&s=admin_share_shop">收藏店铺</a></li>
+                    <li key="1"><a href="main.php?m=sns&s=admin_share_product">收藏商品</a></li>
+                </ul>
+            </div></section>
+    	<section class="nav-e"></section>
+    </div>
+</header>
+<script>
+    $(function(){
+        $(".select").click(function(){
+            var obj=$(this);
+            $(this).next().slideToggle("fast",function(){
+                if($(obj).next().is(":visible")){
+                    $(document).one('click',function(){
+                        $(".select").next().slideUp("fast");
+                    });
+                }});
+        });
+        $(".i-select li").click(function(){
+            var str=$(this).html();
+            $(this).parent().parent().prev().html(str+" <em class='up'></em>");
+            $(this).parent().parent().slideToggle();
+        });
+    });
+</script>
+<link href="<{$config.weburl}>/templates/wap/css/list.css" rel="stylesheet" type="text/css" />
+<section class="itemSearchList">
+<{if $re.list}>
+<div class="itemSearchResult clearfix">
+    <{foreach item=slist key=num from=$re.list}>
+    <dl>
+        <dt><a class="p-img" href="<{$config.weburl}>/shop.php?uid=<{$slist.shopid}>">  <img height="80" width="80" alt="<{$list.pname}>" src="<{if $slist.logo!=''}><{$slist.logo}><{else}>image/default/user_admin/default_user_portrait.gif<{/if}>"></a> </dt>
+        <dd>
+            <p class="p-name"><a target="_blank" href="<{$config.weburl}>/shop.php?uid=<{$slist.shopid}>"><{$slist.company}></a></p>
+            <p class="p-name color"><{$slist.area}></p>
+            <p class="p-name color">店主：<{$slist.user}></p>
+            <div class="handle"><a href="main.php?m=sns&s=admin_share_shop&type=del&id=<{$slist.id}>">删除</a></div>
+        </dd>
+    </dl>
+    <{/foreach}>
+    <{$re.page}>
+</div>
+<{else}>
+<div class="itemsNull">
+    <h3>暂无符合条件的数据记录</h3>
+</div>
+<{/if}>
+</section>

@@ -1,0 +1,82 @@
+<script language="javascript">
+    $(function(){
+        /* 全选 */
+        $('.checkall').click(function(){
+            var _self = this;
+            $('.checkitem').each(function(){
+                if (!this.disabled)
+                {
+                    $(this).attr('checked', _self.checked);
+                }
+            });
+            $('.checkall').attr('checked', this.checked);
+        });
+
+        $('#btn').click(function(){
+
+            if($('.checkitem:checked').length == 0){
+                return false;
+            }
+            var url = "main.php?m=message&s=admin_message_list_inbox";
+            var name = $(this).attr('name');
+            var items = '';
+            $('.checkitem:checked').each(function(){
+                items += this.value + ',';
+            });
+            items = items.substr(0, (items.length - 1));
+            $.get(url, name + '=' + items,showResponse);
+            function showResponse(originalRequest)
+            {
+                document.location.reload();
+            }
+            return false;
+
+        });
+    });
+</script>
+
+<div class="main">
+    <div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="<{if $smarty.get.level==''}>active<{else}>normal<{/if}>"><a href="main.php?m=distribution&s=admin_distribution_settlement"><{$lang.distribution_settlement_all}></a></li>
+                <li class="<{if $smarty.get.level=='0'}>active<{else}>normal<{/if}>"><a href="main.php?m=distribution&s=admin_distribution_settlement&level=0"><{$lang.distribution_settlement_apply}></a></li>
+                <li class="<{if $smarty.get.level=='1'}>active<{else}>normal<{/if}>"><a href="main.php?m=distribution&s=admin_distribution_settlement&level=1"><{$lang.distribution_settlement_done}></a></li>
+            </ul>
+        </div>
+        <table class="table-list-style">
+            <thead>
+            <tr>
+                <th width="20%">申请额度</th>
+                <th width="20%">申请日期</th>
+                <th width="20%">
+                    处理状态
+                </th>
+                <!--<th width="20%">详情</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach item=list from=$dist_user_settlement_rows}>
+            <tr>
+                <td><{$list.distribution_user_settlement_amount|string_format:"%.2f"}></td>
+                <td><{$list.distribution_user_settlement_apply_time|date_format:"%Y-%m-%d"}></td>
+                <td><{$list.state_label}></td>
+                <!--<td><a href="<{$config.weburl}>/main.php?m=message&s=admin_message_det&id=<{$list.user_id}>">详情</a></td>-->
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td colspan="3" class="norecord">
+                    <i></i><span>暂无符合条件的数据记录</span>
+                </td>
+            </tr>
+            <{/foreach}>
+            <tr>
+                <td colspan="3" >
+                    <{$page}>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>

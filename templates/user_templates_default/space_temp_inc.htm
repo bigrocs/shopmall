@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><{if $com.shop_title!=''}><{$com.shop_title}> - <{$config.company}><{else}><{$title}> - <{$config.company}><{/if}></title>
+<meta name="description" content="<{if $com.shop_keywords!=''}><{$com.shop_keywords}><{else}><{$keyword}><{/if}>">
+<meta name="keywords" content="<{if $com.shop_description!=''}><{$com.shop_description}><{else}><{$de.description|truncate:100:"...":true}><{/if}>">
+<link rel="stylesheet" type="text/css" href="<{$config.weburl}>/templates/user_templates_default/space.css"/>
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script language="javascript" src="<{$config.weburl}>/templates/user_templates_default/jquery.Sonline.js"></script>
+<script language="javascript" src="<{$config.weburl}>/script/jquery.flexslider-min.js"></script>
+<script type="text/javascript">
+function getfavshop()
+{	
+	var url = '<{$config.weburl}>/module/sns/ajax_update.php';
+	
+	var uname='<{$smarty.cookies.USER}>';
+	if(uname=='')
+	{
+		alert('<{$lang.no_logo}>');
+		window.location.href='<{$config.weburl}>/login.php?forward=shop.php?uid=<{$smarty.get.uid}>';
+		return false;
+	}
+	var shopid='<{$smarty.get.uid}>';
+	var shopname="<{$com.company|regex_replace:"/[\r\t\n]/":""}>";
+	var pars = 'uname='+uname+'&shopid='+shopid+'&shopname='+shopname;
+	$.post(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		if(originalRequest>1)
+			alert('<{$lang.fav_ok}>');
+		else if (originalRequest>0)
+			alert('<{$lang.fav_isbing}>');
+		else
+			alert('<{$lang.error}>');
+	 }
+	
+}
+$(function(){
+	$("body").Sonline({
+		<{if !$cs}>
+		DefaultsOpen:false,
+		<{/if}>
+		Qqlist:"<{$cs}>" //多个QQ用','隔开，QQ和客服名用'|'隔开
+	});
+})	
+</script>
+</head>
+<body>
+
+<div class="site-nav">
+	<div class="w">
+    	<ul class="left">
+			<li><script src="<{$config.weburl}>/login_statu.php"></script></li>
+        </ul>
+    	<ul class="right">
+			<li class="nbr"><a href="<{$config.weburl}>/main.php?m=message&s=admin_message_list_inbox" class="note"><{$lang.news_station}></a></li>
+			<li><a href="<{$config.weburl}>/main.php?m=sns&s=admin_share_product">收藏夹</a></li>
+			<li><a href="<{$config.weburl}>/?m=product&s=cart" class="shopping">购物车<span><script src="<{$config.weburl}>/?m=product&s=cart_number"></script></span>件</a></li>
+            <li><a href="<{$config.weburl}>/main.php?cg_u_type=2">卖家中心</a></li>
+            <li><a href="<{$config.weburl}>/main.php?cg_u_type=1">我的商城</a></li>
+            <li><a href="<{$config.weburl}>" class="index"><{$config.company}>首页</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="header">
+	<div class="w">
+        <div class="logo">
+        <a href="<{$config.weburl}>/shop.php?uid=<{$smarty.get.uid}>">
+       
+        <img width="180" height="40" src="<{if $com.shop_logo}><{$com.shop_logo}><{else}><{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.gif<{/if}><{/if}>" >
+        </a>
+        </div>
+         
+         <div class="shop_info">
+        	<div class="shop_info_simple">
+            	<p><a class="shop_name" href="#"><{$com.company}></a> <{if $chat_open_flag}>&nbsp; <a href="javascript:void(0);" onclick="return chat(<{$com.shop_id}>);"><span class="iconfont" style="color: #FF6600;font-size: 16px;">&#xe635;</span></a><{/if}></p>
+                <div class="shop_credit">
+                    <span><{if $com.sellerpointsimg}><img alt="<{$com.sellerpoints}>" title="<{$com.sellerpoints}>" align="absmiddle" src="<{$config.weburl}>/image/points/<{$com.sellerpointsimg}>"><{else}><{$com.sellerpoints}><{/if}></span>
+                </div>
+            </div>
+            <div class="shop_info_details">
+            	<dl style="width:190px">
+                	<dt>描述相符：</dt>
+                    <dd><span class="star"><em style=" width:<{$score.aw}>%"><{$score.a|number_format:1}></em></span><span class="num"><{$score.a|number_format:1}>分</span></dd>
+                    <dt>服务态度：</dt>
+                    <dd><span class="star"><em style=" width:<{$score.bw}>%"><{$score.b|number_format:1}></em></span><span class="num"><{$score.b|number_format:1}>分</span></dd>
+                    <dt>发货速度：</dt>
+                    <dd><span class="star"><em style=" width:<{$score.cw}>%"><{$score.c|number_format:1}></em></span><span class="num"><{$score.c|number_format:1}>分</span></dd>
+                </dl>
+                <dl style="width:160px">
+                	<{if $com.name}>
+                    <dt>店主：</dt>
+                    <dd><{$com.name}></dd>
+                    <{/if}>
+                    <dt>创店时间：</dt>
+                    <dd><{$com.regtime|strip_tags|truncate:10:""}></dd>
+				</dl>
+              	<dl style="width:150px">
+					<dt>商品数量：</dt>
+                    <dd><{$com.count}></dd>
+                   
+                </dl>
+                <dl style="width:320px">
+                    <dt>所在地区：</dt>
+                    <dd><{$com.area}></dd>
+                </dl>
+            </div>
+        </div>
+        
+		<div class="shop-search">
+            <div>
+            <form action="<{$config.weburl}>/shop.php" method="get" id="search_form">
+                <input type="text" autocomplete="off" onkeyup="get_search_word(this.value);" value="<{$smarty.get.keyword}>" id="keyword"  name="keyword" class="search_input">
+                <input type="submit" value="搜本店" class="search_btn">
+                <input type="submit" value="搜平台" class="search_btn_platform">
+                <input id="search" type="hidden" name="search" value="search" />
+                <input id="uid" name="uid" type="hidden" value="<{$smarty.get.uid}>" />
+                <input id="action" name="action" type="hidden" value="product_list" />
+                <input id="s" name="s" type="hidden" value="list" />
+                <input id="m" name="m" type="hidden" value="product" />
+
+            </form>
+            </div>
+            <div id="key_select"></div>
+		</div>
+    </div>
+</div>
+
+<div style="background:url(<{if $com.shop_banner}><{$com.shop_banner}><{else}><{$config.weburl}>/templates/user_templates_default/img/ad.gif<{/if}>) center top no-repeat;">
+	<div id="nav">
+		<div class="banner"></div>
+		<div class="nav_bg">
+            <div class="w">
+            <ul class="clearfix">
+                <a href="javascript:getfavshop();" class="collection"></a>
+                <{foreach item=list from=$nav_menu}>
+                <{if $list.menu_show=='1'}>
+                    <{if $list.menu_link!=''}>
+                        <li class="<{if $list.menu_link==$smarty.get.action}>active<{else}>normal<{/if}>"  ><a href="shop.php?uid=<{$com.userid}>&action=<{$list.menu_link}>&m=<{$list.module}>"><span><{$list.menu_name}></span></a></li>
+                        <{else}>
+                        <li class="<{if $smarty.get.action==''}>active<{else}>normal<{/if}>" ><a href="<{geturl user=$com.number uid=$com.userid com=$com.company}>"><span><{$list.menu_name}></span></a></li>
+                    <{/if}>
+                <{/if}>
+                <{/foreach}>
+                <{foreach item=list key=key from=$shop_nav}>
+                	<{if $key < 4}>
+                    <li class="<{if $smarty.get.action=='public' and $smarty.get.id==$list.id }>active<{else}>normal<{/if}>"  ><a <{if $list.new_open==1}>target="_blank"<{/if}> href="<{if $list.url}><{$list.url}><{else}>shop.php?uid=<{$com.userid}>&action=public&m=shop&id=<{$list.id}><{/if}>"><span><{$list.title}></span></a></li>
+                    <{/if}>
+                <{/foreach}>
+            </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="w">
+    <{if $smarty.get.m=='product' and $smarty.get.s=='detail'}>
+    <{$output}>
+    <{else}>
+    <{if !$smarty.get.action}>
+    <div class="flexslider clearfix">
+        <ul class="slides">
+            <{if $com.slide.0}>
+            <{foreach item=list key=num from=$com.slide}>
+            <li style="width: 100%; float: left; margin-right: -100%; display: <{if $num==0}>list-item<{else}>none<{/if}>;"><{if $com.slideurl.$num}><a target="_blank" href="<{$com.slideurl.$num}>"><img src="<{$list}>"></a><{else}><img src="<{$list}>"><{/if}></li>
+            <{/foreach}>  
+            <{else}> 
+            <li style="width: 100%; float: left; margin-right: -100%; display: list-item;"> <img src="<{$config.weburl}>/templates/user_templates_default/img/f01.jpg"> </li>
+            <li style="width: 100%; float: left; margin-right: -100%; display: none;"> <img src="<{$config.weburl}>/templates/user_templates_default/img/f02.jpg"> </li>
+            <li style="width: 100%; float: left; margin-right: -100%; display: none;"> <img src="<{$config.weburl}>/templates/user_templates_default/img/f03.jpg"> </li>
+            <li style="width: 100%; float: left; margin-right: -100%; display: none;"> <img src="<{$config.weburl}>/templates/user_templates_default/img/f04.jpg"> </li>
+           <{/if}>
+        </ul>
+    </div>
+    <script type="text/javascript">
+	$(window).load(function() {
+		$('.flexslider').flexslider();
+	}); 
+	</script> 
+    <{/if}>
+    <div id="left">
+        <div class="user clearfix">
+            <div class="user_photo">
+                <h2><{$com.company}> <{if $chat_open_flag}>&nbsp; <a href="javascript:void(0);" onclick="return chat(<{$com.shop_id}>);"><span class="iconfont" style="color: #FF6600;font-size: 18px;">&#xe635;</span></a><{/if}></h2>
+                <dl>
+                    <dt>
+                        <{if $com.logo}>
+                            <img width="65" height="60" src="<{$com.logo}>">
+                        <{else}>
+                            <img src="image/default/nopic.gif" width="65" height="60" />
+                        <{/if}>
+                    </dt>
+                    <dd><b><a target="_blank" href="home.php?uid=<{$com.userid}>"><{$com.name}></a></b></dd>
+					<dd><img title="<{$lang.credit_of_seller}><{$com.sellerpoints}>" align="absmiddle" src="<{$config.weburl}>/image/points/<{$com.sellerpointsimg}>"></dd>
+                    <dd>好评率：<{if $com.favorablerate=='100'}><{$com.favorablerate|number_format:0}><{else}><{$com.favorablerate|number_format:2}><{/if}>%</dd>
+                </dl> 
+            </div>
+            <div class="clear"></div>
+            <div class="user_data">
+                <h2>动态评价</h2>
+                <p>描述相符：<span class="star"><em style=" width:<{$score.aw}>%"><{$score.a|number_format:1}></em></span><span class="num"><{$score.a|number_format:1}>分</span></p>
+                <p>服务态度：<span class="star"><em style=" width:<{$score.bw}>%"><{$score.b|number_format:1}></em></span><span class="num"><{$score.b|number_format:1}>分</span></p>
+                <p>发货速度：<span class="star"><em style=" width:<{$score.cw}>%"><{$score.c|number_format:1}></em></span><span class="num"><{$score.c|number_format:1}>分</span></p>
+                <p>物流速度：<span class="star"><em style=" width:<{$score.dw}>%"><{$score.d|number_format:1}></em></span><span class="num"><{$score.d|number_format:1}>分</span></p>			
+				<h2>店铺信息</h2>
+                <p>认证信息：
+                <img src="image/default/certification<{if $com.shop_auth!='1'}>_no<{/if}>.gif" />
+                <img src="image/default/certautonym<{if $com.shopkeeper_auth!='1'}>_no<{/if}>.gif" />
+                </p>
+                <p>保证金：<{$com.earnest}></p>
+                <p>商品数量：<{$com.count}></p>
+                <p>创店时间：<{$com.regtime|strip_tags|truncate:10:""}></p>
+            </div>
+            <div class="shop_other">
+                <ul>
+                    <li class="info_qrcode">
+                        <a href="javascript:void(0)">
+                        <span>店铺二维码</span><b></b>
+                        <!--<p class="qrcode"><img src="<{$config.weburl}>/uploadfile/phpqrcode/<{$smarty.get.uid}>.jpg"></p>-->
+                        <p class="qrcode"><img src="api/share_qrcode.php?type=shop&shop_id=<{$smarty.get.uid}>&rand=<{math equation=rand(1,10000)}>"></p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="i-search">
+            <h2>店内搜索</h2>
+            <div class="con">
+                <form method="get" action="shop.php" name="" id="">
+                	<table>
+                    	<tr>
+                        	<td width="40">商品：</td>
+                        	<td><input type="text" name="keyword" value="<{$smarty.get.keyword}>" class="text w112"></td>
+                        </tr>
+                    	<tr>
+                        	<td>价格：</td>
+                        	<td>
+                            <input type="text" name="price1" value="<{$smarty.get.price1}>" onkeyup="value=value.replace(/[^\d.]/g,'')" class="text w48">
+                            -
+                            <input type="text" name="price2" value="<{$smarty.get.price2}>" onkeyup="value=value.replace(/[^\d.]/g,'')" class="text w48">
+                            </td>
+                        </tr>
+                    	<tr>
+                        	<td></td>
+                        	<td><input type="submit" value="搜索" class="btn"></td>
+                        </tr>
+                    </table>
+                    <input id="search" type="hidden" value="search" />
+                    <input id="uid" name="uid" type="hidden" value="<{$smarty.get.uid}>" />
+                    <input id="action" name="action" type="hidden" value="product_list" />
+                    <input id="m" name="m" type="hidden" value="product" />
+                </form>
+            </div>
+        </div>
+        <{if $custom_cat}>
+        <div class="module_common">
+            <h2>分类</h2>
+            <div class="con">
+                <ul class="submenu">
+                    <li><a class="block_ico" href="shop.php?uid=<{$smarty.get.uid}>&action=product_list&m=product" title="<{$lang.whole}>">全部</a>
+                    </li></li>
+                    <{foreach item=list from=$custom_cat}>
+                    <li>
+                    <a class="<{if $list.con}>none_ico<{else}>block_ico<{/if}>" href="shop.php?uid=<{$smarty.get.uid}>&action=product_list&m=product&cat=<{$list.id}>" title="<{$list.name}>"><{$list.name}></a>
+                    <{if $list.con}>
+                    <ul>
+                        <{foreach item=lists from=$list.con}>
+                            <li><a href="shop.php?uid=<{$smarty.get.uid}>&action=product_list&m=product&cat=<{$lists.id}>" title="<{$lists.name}>"><{$lists.name}></a></li>
+                        <{/foreach}>
+                    </ul>
+                    <{/if}>
+                    </li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        </div>
+        <{/if}>
+        <{if count($ulink)>0}>
+        <div class="module_common">
+            <h2>友情链接</h2>
+            <div class="con">
+                <div class="con_child">
+                    <ul class="submenu">
+                        <{foreach item=link from=$ulink}>
+                        <li><a target="_blank" class="link_ico" href="<{$link.url}>" title="<{$link.desc}>"><{$link.name}></a></li>
+                        <{/foreach}>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <{/if}>
+    </div>
+	<div id="right"><{$output}></div>
+    <div class="clear"></div>
+	<{/if}>
+</div>
+<script type="text/javascript">
+    $(".block_ico,.none_ico").click(function(e){
+        var xx = e.originalEvent.x || e.originalEvent.layerX || 0; 
+        var lo = $(this).offset().left
+
+        if($(this).parents("li").find("ul").length > 0)
+        {
+            if($(this).parents("li").find("ul").is(":visible"))
+            {
+
+                $(this).parents("li").find("ul").slideUp()
+                $(this).removeClass("none_ico").addClass("block_ico")
+            }
+            else
+            {
+                $(this).parents("li").find("ul").slideDown()
+                 $(this).removeClass("block_ico").addClass("none_ico")
+            }
+        }
+        
+        if(xx*1 - lo*1 < 22)
+        {
+            return false
+        }
+    })
+
+
+    $(".search_btn").mouseover(function(e){
+        $('#search_form').attr('action', "<{$config.weburl}>/shop.php");
+    })
+
+    $(".search_btn_platform").mouseover(function(e){
+        $('#search_form').attr('action', "<{$config.weburl}>/?m=product&s=list");
+    })
+
+
+    function get_search_word(k)
+    {
+        if(k!='')
+        {
+            var url = '<{$config.weburl}>/ajax_back_end.php';
+            var sj = Math.random();
+            var pars = 'shuiji=' + sj+'&search_flag=1&key='+k;
+            $.post(url, pars,showResponse);
+        }
+
+        function showResponse(originalRequest)
+        {
+            if(originalRequest)
+            {
+                $('#key_select').show();
+                //$('#key_select').css("display",'block');
+                $('#key_select').html(originalRequest);
+            }
+            else
+                $('#key_select').hide();
+        }
+
+    }
+    function select_word(v)
+    {
+        $('#keyword').val(v);
+        $('#key_select').hide();
+    }
+
+</script>
+
+
+<div id="footer">
+    <p><{$web_con}></p><{$bt}> 
+</div>
+
+<{$chat_html}>
+
+</body>
+</html>

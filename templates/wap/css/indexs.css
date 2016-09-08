@@ -1,0 +1,52 @@
+@charset "utf-8";
+.xiaoke_header{width: 100%;height: 45px;background: #FF4C00;}
+.xiaoke_header .header_left{float:left; margin: 12px;}
+.xiaoke_header .header_left a{color:#fff}
+.xiaoke_header .header_font{width: 70%;height: 45px;text-align: center;line-height: 45px;margin: 0px auto;float: left }
+.xiaoke_header .header_font a{font-size: 20px;color: #fff;font-weight: bold;font-family: "微软雅黑";letter-spacing:2px; }
+.xiaoke_centent{width: 100%;height: auto;background: #fff;float: left;}
+.xiaoke_centent .centent_topnum{width: 98%;height: 110px;margin: 0px auto;border-bottom: 1px solid #BEBEBE;}
+.xiaoke_centent .centent_topnum dl{width: 46%;max-height:150px;margin: 0px auto; float: left;}
+.xiaoke_centent .centent_topnum dl dt{width: 100%;height: 65px;font-size: 45px;color: red;line-height: 70px;padding-top:10px;text-align: center;}
+.xiaoke_centent .centent_topnum dl dd{color: #868686;font-weight: bold;font-family: "微软雅黑";font-size: 15px;text-align: center;}
+.xiaoke_centent .centent_topnum .centent_left{width: 26%;height: 110px;float: left;text-align: center;}
+.xiaoke_centent .centent_topnum .centent_left .header_topleft{width:75px;height:75px;background: #fff;margin-top:15px;}
+.xiaoke_centent .centent_topnum .centent_left  .header_topleft img{width: 70px;height: 70px;border-radius: 35px;border: 1px solid #EC7E33;margin-top:7px;}
+.xiaoke_centent .centent_topnum .header_erweima{width: 28%;height: 110px;float: right;}
+.xiaoke_centent .centent_topnum .header_erweima .header_erweima1{width: 45px;height: 65px;margin-left: 15px;}
+.xiaoke_centent .centent_topnum .header_erweima img{width: 45px;height: 45px;margin-top:20px;}
+.xiaoke_centent .centent_topnum .header_erweima dt{font-size: 9px;margin-top:10px;}
+.centent_cennum{width: 100%;height:auto;float: left;}
+.centent_cennum dl{width: 33%;height:70px;text-align: center;float: left;}
+.centent_cennum dl dt{width: 100%;height: 50%;font-size: 30px;line-height: 50px;color: #000;}
+.centent_cennum dl dd{width: 100%;font-size: 13px;color: #868686;margin-top:10px;}
+.centent_bomnum{width: 100%;height: 55px;background: #FAFAFA;border-top: 1px solid #BEBEBE;border-bottom: 1px solid #BEBEBE;margin: 3px 0px;}
+.centent_bomnum .bomnum_shop{width: 100%;height: auto;text-align: center;line-height: 55px;}
+.centent_bomnum .bomnum_shop  img{max-width: 45px;max-height: 45px;margin-right: 10px;margin-bottom: 10px;}
+.centent_bomnum .bomnum_shop a span{font-size: 20px;color: #FF4C01;font-weight: bold;font-family: "微软雅黑";}
+.centent_cen{width: 100%;height: auto;text-align: center;border-top: 1px solid #BEBEBE;border-bottom: 1px solid #BEBEBE;padding: 30px 0;}
+.centent_cen .cen_shop{width: 33%;float: left;margin: 5px 0;}
+.centent_cen .cen_shop img{max-width: 45px;max-height: 40px;margin-top:6px ;}
+.centent_cen .cen_shop a dd{text-align: center;margin-top:5px;font-size: 13px;}
+.cententnoll{width: 100%;height: 60px;border-top: 1px solid #BEBEBE;border-bottom: 1px solid #BEBEBE;clear: both;padding: 2px 0px;margin-bottom: 80px}
+
+
+.centent_cen .cen_shop1 p{border: 2px solid #CF6748;width:50%;margin-left:25%;padding:15% 0;color: #CF6748;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop2 p{border: 2px solid #EBC347;width:50%;margin-left:25%;padding:15% 0;color: #EBC347;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop3 p{border: 2px solid #854C96;width:50%;margin-left:25%;padding:15% 0;color: #854C96;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop4 p{border: 2px solid #4CB0EB;width:50%;margin-left:25%;padding:15% 0;color: #4CB0EB;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop5 p{border: 2px solid #34C3AA;width:50%;margin-left:25%;padding:15% 0;color: #34C3AA;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop6 p{border: 2px solid #FD4900;width:50%;margin-left:25%;padding:15% 0;color: #FD4900;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop7 p{border: 2px solid #51A817;width:50%;margin-left:25%;padding:15% 0;color: #51A817;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop8 p{border: 2px solid #dd3030;width:50%;margin-left:25%;padding:15% 0;color: #dd3030;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop9 p{border: 2px solid #579AD1;width:50%;margin-left:25%;padding:15% 0;color: #579AD1;border-radius: .5em;font-size: 28px;}
+.centent_cen .cen_shop1 a dd{color: #CF6748;}
+.centent_cen .cen_shop2 a dd{color: #EBC347;}
+.centent_cen .cen_shop3 a dd{color: #854C96;}
+.centent_cen .cen_shop4 a dd{color: #4CB0EB;}
+.centent_cen .cen_shop5 a dd{color: #34C3AA;}
+.centent_cen .cen_shop6 a dd{color: #FD4900;}
+.centent_cen .cen_shop7 a dd{color: #51A817;}
+.centent_cen .cen_shop8 a dd{color: #dd3030;}
+.centent_cen .cen_shop9 a dd{color: #579AD1;}
+

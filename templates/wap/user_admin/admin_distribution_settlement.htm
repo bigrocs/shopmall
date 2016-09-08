@@ -1,0 +1,66 @@
+<link href="<{$config.weburl}>/templates/wap/css/buyorder.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<header>
+    <div class="nav-w">
+        <section class="nav-s"><a href="<{$config.weburl}>/main.php">
+            <nav>分销中心</nav>
+        </a></section>
+        <section class="nav-c"> <span class="select"> <{if $smarty.get.level=='0'}><{$lang.distribution_settlement_apply}>
+
+    <{elseif $smarty.get.level=='1'}><{$lang.distribution_settlement_done}>
+    <{else}><{$lang.distribution_settlement_all}><{/if}> <em></em> </span>
+            <div style="display:none;" class="i-select">
+                <ul>
+                    <li key="" class="sub-line"><a href="main.php?m=distribution&s=admin_distribution_settlement"><{$lang.distribution_settlement_all}></a></li>
+                    <li key="1"><a href="main.php?m=distribution&s=admin_distribution_settlement&level=0"><{$lang.distribution_settlement_apply}></a></li>
+                    <li key="2"><a href="main.php?m=distribution&s=admin_distribution_settlement&level=1"><{$lang.distribution_settlement_done}></a></li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="nav-e"></section>
+    </div>
+</header>
+<script>
+    $(function(){
+        $(".select").click(function(){
+            var obj=$(this);
+            $(this).next().slideToggle("fast",function(){
+                if($(obj).next().is(":visible")){
+                    $(document).one('click',function(){
+                        $(".select").next().slideUp("fast");
+                    });
+                }});
+        });
+        $(".i-select li").click(function(){
+            var str=$(this).html();
+            $(this).parent().parent().prev().html(str+" <em class='up'></em>");
+            $(this).parent().parent().slideToggle();
+        });
+    });
+</script>
+<section class="order"> <{foreach item=list from=$dist_user_settlement_rows}>
+    <div class="distributionUser">
+        <dl>
+            <dt>申请金额</dt>
+            <dd><{$list.distribution_user_settlement_amount|string_format:"%.2f"}></dd>
+        </dl>
+        <dl>
+            <dt>申请日期</dt>
+            <dd><{$list.distribution_user_settlement_apply_time|date_format:"%Y-%m-%d"}></dd>
+        </dl>
+        <dl>
+            <dt>处理状态</dt>
+            <dd><{$list.state_label}></dd>
+        </dl>
+    </div>
+    <{foreachelse}>
+    <div class="itemsNull">
+        <h3> 尚无结算记录</h3>
+    </div>
+    <{/foreach}>
+
+    <{$page}>
+
+</section>
+

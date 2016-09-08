@@ -1,0 +1,29 @@
+<div class="block fn-clear">
+	<div class="i-block">
+		<h2>记录详情</h2>
+        <dl class="detail">
+            <dt><{$re.note}></dt>
+            <{if $re.seller_email}>
+            <dd><span>收款方：</span><{if $re.real_name}><{$re.real_name}><{else}><{$re.seller_email}><{/if}></dd>
+            <{elseif $re.buyer_email}>
+            <dd><span>付款方：</span><{if $re.real_name}><{$re.real_name}><{else}><{$re.buyer_email}><{/if}></dd>
+            <{/if}>
+            <dd><span>交易号：</span><{$re.flow_id}></dd>
+            <dd><span>交易金额：</span><{$re.price|number_format:2}>元</dd>
+            <dd><span>付款时间：</span><{$re.time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></dd>
+            <dd><span>描述：</span><{$re.note}></dd>
+            <{if $re.mold==8}>
+            <dd><span>提现银行：</span><{$re.bank}></dd>
+            <dd><span>银行卡号：</span><{$re.cardno}></dd>
+            <dd><span>开户人：</span><{$re.cardname}></dd>
+            <dd><span>提现金额：</span><{$re.amount}></dd>
+            <dd><span>服务费：</span><{$re.fee}></dd>
+            <dd><span>到账时间：</span><{$re.supportTimeName}></dd>
+            <{if $re.bankflow}><dd><span>回执流水号：</span><{$re.bankflow}></dd><{/if}>
+            <{if $re.con}><dd><span>备注：</span><{$re.con}></dd><{/if}>
+            <{if $re.censor}><dd><span>操作者：</span><{$re.censor}></dd><{/if}>
+            <{if $re.check_time}><dd><span>操作时间：</span><{$re.check_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></dd><{/if}>
+            <{/if}>
+        </dl>
+	</div>
+</div>

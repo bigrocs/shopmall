@@ -1,0 +1,74 @@
+<{include file="../../../templates/default/site_nav.htm"}>
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/product/templates/order.css">
+<script type="text/javascript" src="<{$config.weburl}>/script/district.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/order.js"></script>
+<script type="text/javascript">
+weburl="<{$config.weburl}>";
+</script>
+<div class="header">
+	<div class="w fn-clear">
+        <div class="logo">
+        <a title="<{$config.company}>" href="<{$config.weburl}>"><img src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.gif<{/if}>" /></a>
+        </div>
+		<div class="search">
+            <form action="" class="form" method="get">
+            <div class="i-search">
+                <input type="hidden" value="product" name="m" id="m">
+                <input type="hidden" value="list" name="s" id="s">
+                <input type="text" class="text" name="key" id="key" value="<{$smarty.get.key}>" autocomplete="off">
+			</div>
+            <input type="submit" value="搜&nbsp;索" class="button">
+            </form>
+        </div>
+    </div>  
+</div>
+
+<{if $smarty.get.type=='login'}>
+    <div class="w" style="margin:80px auto;">
+    	<a href="<{$config.weburl}>/login.php">请先登录</a>
+    </div>
+<{elseif  $smarty.get.type=='orders'}>
+    <div class="w" style="margin:80px auto;">
+        订单提交成功<br>
+        <a href="<{$config.weburl}>/?m=product">继续购物</a>
+        <a href="<{$config.weburl}>/main.php?m=product&s=admin_buyorder">进入后台</a>
+    </div>
+<{elseif $smarty.get.type=='orderf'}>
+    <div class="w" style="margin:80px auto;">产品库存不足</div>
+<{else}>
+
+<div class="w order">
+    <div id="step-1" class="step">
+    <form action="" method="post">
+        <h3>
+            确认收货地址
+            <a target="_blank" href="main.php?m=member&s=admin_orderadder&cg_u_type=1">管理收货地址</a>
+        </h3>
+        <ul>
+            <{foreach item=list key=key from=$consignee}>
+			<li class="fn-clear<{if $list.default==2||$key==0}> selected<{/if}>">
+                <s></s>
+                <span>寄送至</span>
+                <label>
+                <input <{if $list.default==2||$key==0}>checked <{/if}>type="radio" name="id" value="<{$list.id}>" />
+                <{$list.area}> <{$list.address}>&nbsp;&nbsp;(<{$list.name}>&nbsp;收) 
+                 <em><{$consignee.mobile}></em>
+                </label>
+			</li>
+            <{/foreach}>
+        </ul>
+    </form>  
+    </div>
+    <div id="cart"></div>
+</div> 
+<script>
+$('#cart').load('<{$config.weburl}>/?m=product&s=confirm_order&ajax=ajax<{if $smarty.session.dist_user_id}>&dist_user_id=<{$smarty.session.dist_user_id}><{/if}>');
+$("#step-1").find("input[type='radio']").bind("click",function(){
+	var id=$(this).val();
+	$('#cart').html('<div class="loading"><p>正在努力加载中...</p></div>');
+	$(this).parent().parent().addClass('selected').siblings().removeClass("selected");
+	$('#cart').load('<{$config.weburl}>/?m=product&s=confirm_order&ajax=ajax&id='+id+'<{if $smarty.session.dist_user_id}>&dist_user_id=<{$smarty.session.dist_user_id}><{/if}>');
+});
+</script>
+<{/if}>
+<{include file="../../../templates/default/footer.htm"}>

@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<title>开店申请</title>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>开店申请</h3>
+                <ul>
+                	<li class="current"><a href="?m=<{$smarty.get.m}>&s=<{$smarty.get.s}>"><span>管理</span></a></li>
+                    
+                    <li><a href="?m=<{$smarty.get.m}>&s=shop.php"><span>店铺管理</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div>  
+        <script type="text/javascript">
+        $(function(){
+            /* 全选 */
+             $('.checkall').click(function(){
+                var _self = this;
+                $('.checkitem').each(function(){
+                    if (!this.disabled)
+                    {
+                        $(this).attr('checked', _self.checked);
+                    }
+                });
+                $('.checkall').attr('checked', this.checked);
+            });	 
+        });
+        </script>
+        <table class="select_table">
+            <tr>
+                <td>
+                    <div class="select_box">
+                        <form action="" method="get">
+                        <input type="hidden" name="m" value="<{$smarty.get.m}>">
+                        <input type="hidden" name="s" value="shop_application.php">
+                        <input type="hidden" id="shop_type" name="shop_type" value="<{$smarty.get.shop_type}>">
+                        <input placeholder="请输入店铺名称..." type="text" name="shop_name" class="txt w250" value="<{$smarty.get.shop_name}>"  />
+                        <div class="catalogBox">
+                            <input type="hidden" value="<{$smarty.get.st}>" name="st" id="st">
+                            <div class="select" style="width:100px;">
+                                <span>
+                                <{if $smarty.get.st==1 AND $smarty.get.shop_type==1}>分销商待审核
+                                <{elseif  $smarty.get.st==1 AND $smarty.get.shop_type==2}>卖家商铺待审核
+                                <{elseif $smarty.get.st==2 AND $smarty.get.shop_type==1}>分销商不通过
+                                <{elseif $smarty.get.st==2 AND $smarty.get.shop_type==2}>卖家商铺不通过
+                                <{else}>
+                                    全部
+                                <{/if}>
+                                </span>
+                                <b></b>
+                            </div>
+                            <div style="display:none;" class="i-select">
+                                <ul>
+                                    <li key="" class="sub-line">全部</li>
+                                    <li key="1" shop_type="1" class="sub-line">分销商待审核</li>
+                                    <li key="1" shop_type="2" class="sub-line">卖家商铺待审核</li>
+                                    <li key="2" shop_type="1" class="sub-line">分销商不通过</li>
+                                    <li key="2" shop_type="2" class="sub-line">卖家商铺不通过</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <input type="submit" value="搜索" />
+                        </form>
+                    </div>
+                    <a class="refresh" href="?m=<{$smarty.get.m}>&s=shop_application.php"></a>
+                </td>
+            </tr>
+        </table>
+        <form action="" method="post">
+        <table class="table">
+            <tbody>
+                <tr class="header">
+                    <th width="30"></th>
+                    <th width="120" class="al">店主用户名</th>
+                    <th class="al">商铺名称</th>
+                    <th width="120">店铺分类</th>
+                    <th width="120">店铺等级</th>
+                    <th width="120">创店时间</th>
+                    <th width="120">状态</th>
+                   	<th width="50"></th>
+          		</tr>
+                <{foreach item=list from=$de.list}>
+                <tr>
+                    <td><input type="checkbox" value="<{$list.userid}>" class="checkitem" name="chk[]"></td>
+                    <td class="al"><a target="_blank" href="../home.php?uid=<{$list.userid}>"><{$list.user}></a></td>
+                    <td class="al">
+                    <a target="_blank" href="../shop.php?uid=<{$list.userid}>"><{$list.company}></a>&nbsp;
+                    <{if $list.shop_auth==1}>
+                    <a target="_blank" href="<{$list.shop_auth_pic}>"><img align="absmiddle" src="../image/default/certification.gif" /></a>
+                    <{else}>
+                        <{if $list.shop_auth_pic}><a target="_blank" href="<{$list.shop_auth_pic}>"><img align="absmiddle" src="../image/default/certification_no.gif" /></a><{else}><{/if}>
+                    <{/if}>
+                    <{if $list.shopkeeper_auth==1}>
+                    <a target="_blank" href="<{$list.shopkeeper_auth_pic}>"><img align="absmiddle" src="../image/default/certautonym.gif" /></a>
+                    <{else}>
+                        <{if $list.shopkeeper_auth_pic}><a target="_blank" href="<{$list.shopkeeper_auth_pic}>"><img align="absmiddle" src="../image/default/certautonym_no.gif" /></a><{else}><{/if}>
+                    <{/if}>
+                    </td>
+                    <td><{$list.cat}></td>
+                    <td><{$list.grade}></td>
+                    <td><{$list.create_time|date_format:"%Y-%m-%d <br> %H:%M:%S"}></td>
+
+                    <td><{if $list.shop_statu==-2}>卖家店铺审核不通过<{elseif $list.shop_statu==-5}>分销店铺审核不通过<{elseif $list.shop_statu==-4}>分销店铺待审核<{else}>卖家店铺待审核<{/if}></td>
+                    <td>
+                    <a href="?m=shop&s=shop.php&operation=edit&type=application&editid=<{$list.userid}>&<{$getstr}>"><{$editimg}></a>
+                    <a href="to_login.php?action=submit&user=<{$list.user}>" target="_blank"><{$setimg}></a>
+                    </td>
+                    
+                </tr>
+                <{foreachelse}>
+                <tr>
+                    <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+            <tfoot>
+                <tr>
+                	<td colspan="2">
+                        <input type="checkbox" class="checkall" id="del">
+                        <input type="hidden" name="act" value="op" />
+                        <input type="submit" name="submit" value="<{$lang.pass1}>" />
+                        <input type="submit" name="submit" value="<{$lang.npass}>" />
+                    </td>
+                    <td colspan="99"><div class="page"><{$de.page}></div></td>
+                </tr>
+            </tfoot>
+        </table>
+        </form>
+    </div>
+<script>
+$(function(){
+	$(".select").click(function(){ 
+		var obj=$(this);
+		$(this).next().slideToggle("fast",function(){
+			if($(obj).next().is(":visible")){
+				$(document).one('click',function(){
+					$(".select").next().slideUp("fast");
+				});
+			}
+		});
+	});
+	$(".i-select li").click(function(){
+		var str=$(this).html();
+		$(this).parent().parent().prev().prev().attr("value",$(this).attr("key"));
+
+        $('#shop_type').attr("value", $(this).attr("shop_type"));;
+		$(this).parent().parent().prev().children().html(str);
+		$(this).parent().parent().slideToggle();
+	});
+});
+</script>
+</body>
+</html>

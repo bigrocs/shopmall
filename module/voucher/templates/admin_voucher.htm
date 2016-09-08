@@ -1,0 +1,225 @@
+<script src="<{$config.weburl}>/script/my_lightbox.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/Calendar.js"></script>
+<script type="text/javascript">
+var cdr = new Calendar("cdr");
+document.write(cdr);
+cdr.showMoreDay = true;
+</script>
+<div class="path">
+  <div> <a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span> <a href="main.php?m=voucher&s=admin_voucher">代金券管理</a><{if $smarty.get.listid}><span>&gt;</span> <a href="">代金券统计</a><{/if}> <{if $smarty.get.type=='add' && !$smarty.get.act}><span>&gt;</span> <a href="">添加代金券</a><{elseif $smarty.get.type=='add' && $smarty.get.act}><span>&gt;</span> <a href="">编辑代金券</a><{/if}></div>
+</div>
+<div class="main">
+  <div class="wrap">
+    <div class="hd">
+      <ul class="tabs">
+         <{if $shop_app_status eq 1}><li class="<{if $smarty.get.type || $smarty.get.listid}>normal<{else}>active<{/if}>"><a href="main.php?m=voucher&s=admin_voucher">代金券管理</a></li>
+       <{if !$smarty.get.listid}><li class="<{if $smarty.get.type=='add'}>active<{else}>normal<{/if}>"><a href="main.php?m=voucher&s=admin_voucher&type=add"><{if $smarty.get.act eq "edit"}>编辑代金券<{else}>添加代金券<{/if}></a></li><{/if}><{/if}>
+       <{if !$smarty.get.listid}><li class="<{if $smarty.get.type=='buy'}>active<{else}>normal<{/if}>" style="<{if $shop_app_status eq 1}>float:right<{/if}>"><a href="<{if $shop_app_status eq 1}>main.php?m=voucher&s=admin_voucher&type=buy<{else}>#<{/if}>">代金券功能申请</a></li><{/if}>
+      </ul>
+    </div>
+    <p style="height:15px;"></p>
+    <{if !$smarty.get.type && !$smarty.get.listid &&  $shop_app_status eq 1}>
+    <div class="tips">应用过期时间：<{if $de.end_time}><{$de.end_time|date_format:"%Y-%m-%d %H:%M:%S"}><{else}>您还没有购买此应用<{/if}><br/>1、手工设置代金券失效后,用户将不能领取该代金券,但是已经领取的代金券仍然可以使用。<br/>2、代金券模版和已发放的代金券过期后自动失效。</div>
+        <table class="table-list-style">
+            <thead>
+            <tr >
+                <th></th>
+                <th class="al">代金券名称</th>
+                <th>消费金额限制</th>
+                <th>面额</th>
+                <th>有效期</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <{foreach from=$re.list item="vo"}>
+            <tr>
+                <td><a href="main.php?m=voucher&s=admin_voucher&listid=<{$vo.id}>"><img class="bor0" src="<{$vo.logo}>" width="32px"/></a></td>
+                <td class="al"><a href="main.php?m=voucher&s=admin_voucher&listid=<{$vo.id}>"><{$vo.name}></a></td>
+                <td><{$vo.limit}></td>
+                <td><{$vo.price}></td>
+                <td width="180px"><{$vo.start_time|date_format:"%Y-%m-%d"}> ~ <{$vo.end_time|date_format:"%Y-%m-%d"}></td>
+                <td><{if $vo.status eq 1}>有效<{else}>失效<{/if}></td>
+                <td width="100px"><a href="main.php?m=voucher&s=admin_voucher&type=add&act=edit&id=<{$vo.id}>">编辑</a> <a onclick="return confirm('确认删除吗？')" href="main.php?m=voucher&s=admin_voucher&delid=<{$vo.id}>">删除</a> <a href="main.php?m=voucher&s=admin_voucher&listid=<{$vo.id}>">统计</a></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td colspan="8" class="norecord"><i></i><span>暂无符合条件的数据！</span></td>
+            </tr>
+            <{/foreach}>
+            <tr>
+                <td colspan="8"><div class="page"><{$re.page}></div></td>
+            </tr>
+        </table>
+    <{elseif $smarty.get.type eq 'add'}>
+    <form method="post">
+    <table class="table">
+        <tr>
+            <td width="120px" align="right">* 代金券名称：</td>
+            <td><input type="text" class="text w250" name="name" value="<{$mu.name}>"/></td>
+        </tr>
+        <tr>
+            <td align="right">* 有效期：</td>
+            <td><input type="text" class="text" name="etime" readonly="readonly" onfocus="cdr.show(this);" value="<{$mu.end_time|date_format:'%Y-%m-%d'}>"/><p class="hint"> 有效期应在应用有效期内，正使用的应用有效期为<{$re.start_time|date_format:"%Y-%m-%d"}> ~ <{$re.end_time|date_format:"%Y-%m-%d"}></p>
+</i></td>
+        </tr>
+        <tr>
+            <td align="right">* 面额：</td>
+            <td><{*}><select name="price" style="width:123px">
+                        <{foreach from=$de item=vo}>
+                        <option <{if $mu.price eq $vo.price}>selected<{/if}> value="<{$vo.id}>"><{$vo.name}></option>
+                        <{/foreach}>
+                        </select><{*}>
+                        <input name="price" value="<{$mu.price}>" onblur="this.value=isNaN(this.value*1)?1:this.value*1" maxlength="5"  class="text"/>
+                    </td>
+        </tr>
+        <tr>
+            <td align="right">* 积分：</td>
+            <td><input name="points"onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" value="<{if $mu.points}><{$mu.points}><{else}>0<{/if}>"  class="text"/><p class="hint"> 会员用多少积分来兑换该券,0表示会员不用花费积分，也可以领取本券。</p></td>
+        </tr>
+        <tr>
+            <td align="right">* 可发放张数：</td>
+            <td><input type="text" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" class="text" name="total" value="<{$mu.total}>"/></td>
+        </tr>
+        <tr>
+            <td align="right">* 每人限领：</td>
+            <assign var="count_p" value="<{$voucher_config.p_v_eachlimit}>"/>
+            <assign var="count_p_i" value="0"/>
+            <td><select name="eachlimit" style="width:123px">
+                    <{if $voucher_config.p_v_eachlimit}>
+                    <{assign var=i value=0}>
+                    <{section name=total loop=$voucher_config.p_v_eachlimit}>
+                    <{assign var=i value=$i+1}>
+                    <option <{if $mu.eachlimit eq $i}>selected<{/if}> value="<{$i}>"><{$i}>张</option>
+                    <{/section}>
+                   <{else}>
+                    <option value="1">1张</option>
+                    <{/if}>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">* 消费最低金额限制：</td>
+            <td><input type="text" class="text" name="limit" value="<{$mu.limit}>"/><p class="hint">会员在本店铺消费满多少元后方可使用该券。</p></td>
+        </tr>
+        <tr>
+            <td align="right">* 代金券描述：</td>
+            <td><textarea name="desc" class="w250"><{$mu.desc}></textarea></td>
+        </tr>
+        <tr>
+            <td align="right">* 代金券图片：</td>
+            <td><input type="text" class="text w250" name="logo" readonly="readonly" id="logo" value="<{$mu.logo}>"/> [<a href="javascript:uploadfile('上传代金券图片','logo',160,160,'')">上传</a>] </td>
+        </tr>
+        <{if $mu}>
+        <tr>
+            <td align="right">* 代金券状态：</td>
+            <td><input type="radio" <{if $mu.status eq 1}>checked<{/if}> name="status" value="1"> 有效　<input type="radio" <{if $mu.status eq 2}>checked<{/if}> name="status" value="2"> 失效</td>
+        </tr>
+        <{/if}>
+        <tr>
+            <td>
+                <{if $mu}><input type="hidden" name="act" value="edit_voucher" /><input type="hidden" name="id" value="<{$mu.id}>" /><{else}><input type="hidden" name="act" value="add_voucher" /><{/if}></td>
+            <td><input type="submit" class="submit" value="提交" /></td>
+        </tr>
+    </table>
+    </form>
+    <script>
+        $("form").submit(function(){
+            if(!$("input[name='name']").val())
+            {
+                $("input[name='name']").focus();
+                alert("代金券名称不能为空")
+                return false;
+            }
+            if(!$("input[name='etime']").val())
+            {
+                $("input[name='etime']").focus();
+                alert("有效期不能为空")
+                return false;
+            }
+            if(!$("input[name='price']").val())
+            {
+                $("input[name='price']").focus();
+                alert("面额不能为空")
+                return false;
+            }
+            if(!$("input[name='total']").val())
+            {
+                $("input[name='total']").focus();
+                alert("可发放张数不能为空")
+                return false;
+            }
+            if(!$("input[name='limit']").val())
+            {
+                $("input[name='limit']").val(0);
+            }
+            
+            if(!$("input[name='logo']").val())
+            {
+                $("input[name='logo']").focus();
+                alert("代金券图片不能为空")
+                return false;
+            }   
+        })
+    </script>
+    <{elseif  $smarty.get.type eq 'buy' || $shop_app_status neq 1}>
+    <div class="tips"><{if $de.end_time}>1、应用过期时间：<{$de.end_time|date_format:"%Y-%m-%d %H:%M:%S"}><{else}>1、<font color="red">您还没有购买此应用</font><{/if}><br/>2、只有缴纳本应用费用后方可使用此功能。</div>
+        <form method="post">
+        <table class="table">
+            <tr>
+                <td align="right" width="120">* 购买月数：</td>
+                <td><input type="text" class="text w100" name="mounth" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"  value=""/> <p class="hint"><{if $voucher_config.p_v_price}>购买价格：<{$voucher_config.p_v_price}>元/月<{/if}> <{if $re.start_time}>当前有效期：<{$re.start_time|date_format:"%Y-%m-%d"}> ~ <{$re.end_time|date_format:"%Y-%m-%d"}><{else}>暂无购买使用记录<{/if}></p></td>
+            </tr>
+             <tr>
+                 <td><input type="hidden" name="act" value="buy" /><input type="hidden" name="tlimit" value="<{$voucher_config.p_v_limittimes}>" /></td>
+                <td><input type="submit" class="submit" value="提交" /></td>
+            </tr>
+        </table>
+        </form>
+    <script>
+        $("form").submit(function(){
+            if($("input[name='mounth']").val()*1 < 1)
+            {
+                alert("购买月份填写不正确")
+                $("input[name='mounth']").focus()
+                return false;
+            }
+        })
+    </script>
+    <{else}>
+    <table class="table">
+        <tr>
+            <td colspan="12"> <font  style="display: inline-block;width: 250px;">代金券名称：<{$mu.name}></font> 代金券状态：<{if $mu.status eq 1}> 有效　<{else}> 失效<{/if}></td>
+        </tr>
+      
+        <tr>
+            <td colspan="12"> <font style="display: inline-block;width: 250px;">已领取次数：<b><{$mu.giveout}></b> 次</font>  已使用次数：<b><{$mu.used}></b> 次</td>
+        </tr>
+        
+        <tr class="vouch_t_h">
+            <th>领取编号</th>
+            <th >领取会员(昵称)</th>
+            <th>领取时间</th>
+            <th>代金券状态</th>
+        </tr>
+       
+        <{foreach item=n from=$total.list}>
+        <tr>
+            <td><{$n.serial}></td>
+            <td ><a href="<{$config.weburl}>/home.php?uid=<{$n.member_id}>" target="_blank"><{$n.member_name}></a></td>
+            <td><{$n.create_time|date_format:"%Y-%m-%d %H:%M:%S"}></td>
+            <td><{if $n.status eq 1}>未使用<{elseif $n.status eq 2}>已使用<{elseif $n.status eq 3}>已过期<{else}>已收回<{/if}></td>
+        </tr>
+        <{foreachelse}>
+        <tr>
+            <td colspan="12"  class="norecord"><i></i><span>暂无统计信息！</span></td>
+        </tr>
+        <{/foreach}>
+        <tr>
+            <td colspan="12"><div class="pagination"><{$total.page}></div></td>
+        </tr>
+    </table>
+    <{/if}>    
+</div>
+  </div>
+</div>

@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>打印订单</title>
+<style type="text/css">
+body{width:900px; margin:15px auto; font-size:12px;}
+.w1{background: none repeat scroll 0 0 #FFFFFF; border: 1px solid #D5E5F5; border-radius: 5px; padding: 10px 20px;}
+.w1 h2{border-bottom: 1px solid #C4D5E0; color: #498CD0; font-family: "微软雅黑"; font-size: 20px; height: 40px; line-height: 40px;padding-left: 10px;}
+.table{clear:both;margin-top:2px;width:100%;}
+.table th{height:25px;padding:5px;}
+.table td{height:25px;padding:8px 5px;}
+.table .tr td{height:25px;padding:10px 5px 5px;}
+.table tbody td ,.table tfoot td{border-top:1px dotted #DEEFFB;}
+.table .partition{background:#F2F9FD;padding:5px 10px;color:#0099CC;font-weight:700;line-height:21px;}
+.alc{text-align:center !important;}
+.al{text-align:left !important;}
+.npb{padding-bottom:0px !important;}
+.table tbody .other td{border-top:none;padding-top:0px;}
+.partition{ text-align:left; font-size:14px;}
+</style>
+</head>
+
+<body>
+<div class="w1">
+    <h2>订单详情</h2>
+    <table class="table">
+        <tbody><tr class="tr">
+        <td width="80"><{$list.creat_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+        <td>订单创建</td>
+    </tr>
+        </tbody></table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th colspan="99" class="partition">订单信息</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr class="tr">
+            <td width="50">订单编号</td>
+            <td width="150"><{$list.order_id}></td>
+            <td width="50">订单状态</td>
+            <td width="100"><{if $list.status eq 1}>等待买家付款<{elseif $list.status eq 2}>等待卖家发货<{elseif $list.status eq 3}>等待买家收货<{elseif $list.status eq 4}>已完成<{else}>其它<{/if}></td>
+            <td width="50">配送方式</td>
+            <td width="150"><{$list.logistics_type}></td>
+            <td width="50">配送状态</td>
+            <td><{if $list.invoice_no}>已配送 <{$list.logistics_name}>(单号：<{$list.invoice_no}>)<{else}>未配送<{/if}></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="table alc">    
+        <thead>
+            <tr>
+                <th colspan="99" class="partition">产品信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="80" class="al">编号</td>
+                <td class="al">产品</td>
+                <td width="150">单价</td>
+                <td width="150">数量</td>
+                <td width="100">总价</td>
+            </tr>
+            <{foreach from=$list.product item=productList}>
+			<tr>
+                <td class="al"><{$productList.pcatid}></td>
+                <td class="al "><{$productList.name}><{if $productList.spec_value}><br/>规格：<{$productList.spec_value}><{/if}></td>
+                <td>￥<{$productList.price}></td>
+                <td>x<{$productList.num}></td>
+                <td>￥<{$productList.price*$productList.num}></td>
+            </tr>
+            <{/foreach}>
+			<tr>
+                <td align="right" class="pr20" colspan="99">
+                商品重量: 0.00kg &nbsp;&nbsp;
+                商品总金额: ￥<{$list.product_price|number_format:2}>&nbsp;&nbsp;
+                配送费用: ￥<{$list.logistics_price|number_format:2}>&nbsp;&nbsp;
+                订单总金额: <b class="red">￥<{$list.product_price+$list.logistics_price|number_format:2}></b><{if $list.voucher_price gt 0}>（优惠券抵：<b><{$sellist.voucher_price|number_format:2}></b>元）<{/if}>
+                </td>
+            </tr>
+                    </tbody>
+    </table>
+    <table class="table">         
+      <thead>
+            <tr>
+                <th colspan="99" class="partition">收货地址</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="100">收货人</td>
+                <td><{$list.consignee}></td>
+            </tr>
+            <tr>
+                <td>联系电话</td>
+                <td><{$list.consignee_mobile}> </td>
+            </tr>
+            <tr>
+                <td>收货地址</td>
+                <td><{$list.consignee_address}></td>
+            </tr>
+        </tbody>
+    </table>
+    <!--<table class="table">         
+        <thead>
+            <tr>
+                <th colspan="99" class="partition">发票信息</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="100">发票信息</td>
+                <td>普通发票</td>
+            </tr>
+                        <tr>
+                <td>发票抬头</td>
+                <td>个人</td>
+            </tr>
+                        <tr>
+                <td>发票内容</td>
+                <td>明细</td>
+            </tr>
+        </tbody>
+    </table>-->
+</div>
+</body>
+</html>

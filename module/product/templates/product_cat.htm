@@ -1,0 +1,27 @@
+<link href="<{$config.weburl}>/module/product/templates/pro.css" rel="stylesheet" type="text/css" />
+<div class="cat-main w">
+	<{foreach item=list from=$de}>
+    <{if $list.scat}>
+    <div class="item fn-clear">
+    	<div class="link clearfix"><a href="<{$config.weburl}>/?m=product&s=list&id=<{$list.catid}>"><{$list.cat}>商品 ></a></div>
+    	<div class="title clearfix"><h4><{$list.cat}></h4></div>
+    	<div class="list clearfix">
+        	<ul>
+            <{foreach item=slist from=$list.scat}>
+            <{if $slist.scat}>
+            <li class="fn-clear">
+            	<h5><a href="<{$config.weburl}>/?m=product&s=list&id=<{$slist.catid}>"><{$slist.cat}></a></h5>
+                <div class="sublist">
+                <{foreach item=clist from=$slist.scat}>
+				<a href="<{$config.weburl}>/?m=product&s=list&id=<{$clist.catid}>"><{$clist.cat}></a>
+           		<{/foreach}>
+                </div>
+            </li>
+            <{/if}>
+            <{/foreach}>
+            </ul>
+        </div>
+    </div>
+    <{/if}>
+    <{/foreach}>
+</div>

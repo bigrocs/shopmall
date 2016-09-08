@@ -1,0 +1,107 @@
+财付通支付接口
+商品退换货
+晒图评论
+自营店铺管理员管理
+商家中心页面 管理员信息
+会员论坛整合
+订单快照
+在线投诉
+
+
+
+http://121.197.13.124:8088/svn/app/MallBuilder2015
+yum  install ntsysv lrzsz lsof sysstat iotop nohup bzip2-devel openssl-devel svn nginx php php-fpm php-mysqlnd php-msgpack php-mbstring php-gd redis php-redis memcached php-memcache php-bcmath php-mcrypt
+
+
+采购退货类型
+采购类型
+采购订单 数据库表设计
+采购管理-需求分析
+
+核心点文档记录
+前端实现基本功能-调用wap-登录独立实现
+前端实现基本功能-调用wap-具备推送
+
+method  GET和POST
+
+
+
+服务器配置(已启用)修改配置 停用
+停用服务器配置后，用户消息和开发者需要的事件推送，将不会被转发到该URL中
+URL(服务器地址) http://wx.4vtk.com/index.php?s=/home/weixin/index/id/114.html
+Token(令牌) weiphp
+EncodingAESKey(消息加解密密钥) fkOQ03GIZOeapHVpHiL6xq6WprSI0PknZEbdXa3LM1q
+消息加解密方式 明文模式
+
+ svn switch --relocate http://b2b-builder.com:8088/svn/b2bbuilder/mallbuilder   http://121.197.13.124:8088/svn/b2bbuilder/mallbuilder
+
+mall.4vtk.com
+
+
+
+        var user_name = $.cookie('USER');
+
+        if (user_name)
+        {
+            var tags = new Array(user_name);
+        }
+
+30819c300d06092a864886f70d010101050003818a003081860281807d339c8be6818680fbfc8ba1e6f04d971a04b9e1cb31746aef97d7b505eee87422cdae771e64344b1b2a255faa9a89fff5f13ced131c55a73410528b2a84af81423225e29d9767abd9455357050c16e01e120f93a5075baee5497c800ed38f2b8c4318be8f27b7428c8917bddf6e9e6a0901495ed40864f250396049251ce14f020113
+
+wx.onMenuShareAppMessage({
+          title: '<?php echo $news['Title'];?>',
+          desc: '<?php echo $news['Description'];?>',
+          link: '<?php echo $news['Url'];?>',
+          imgUrl: '<?php echo $news['PicUrl'];?>',
+          trigger: function (res) {
+            // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+            // alert('用户点击发送给朋友');
+          },
+          success: function (res) {
+            // alert('已分享');
+          },
+          cancel: function (res) {
+            // alert('已取消');
+          },
+          fail: function (res) {
+            // alert(JSON.stringify(res));
+          }
+        });
+
+        wx.onMenuShareTimeline({
+          title: '<?php echo $news['Title'];?>',
+          link: '<?php echo $news['Url'];?>',
+          imgUrl: '<?php echo $news['PicUrl'];?>',
+          trigger: function (res) {
+            // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+            // alert('用户点击分享到朋友圈');
+          },
+          success: function (res) {
+            // alert('已分享');
+          },
+          cancel: function (res) {
+            // alert('已取消');
+          },
+          fail: function (res) {
+            // alert(JSON.stringify(res));
+          }
+        });
+
+
+
+
+		{
+			"android":{"title":"Message Title","builder_id":1,"extras":{"key2":"value2","key1":"value1"},"alert":"Hi, Android"},
+			"ios":{"sound":"happy","content-available":1,"alert":"Hi, IOS","extras":{"key2":"value2","key1":"value1"},"category":"Ios8 Category","badge":"+1"},"alert":"Hi, JPush"
+		}
+
+        $result = $notification_client->push()
+                ->setPlatform(M\Platform('android', 'ios'))
+                ->setAudience(M\Audience(M\Tag(array($userid, $shop_id))))
+                ->setNotification(M\notification('Hi, JPush',
+                    M\android('Hi, Android', 'Message Title', 1, array("key1"=>"value1", "key2"=>"value2")),
+                    M\ios("Hi, IOS", "happy", "+1", true, array("key1"=>"value1", "key2"=>"value2"), "Ios8 Category")
+                ))
+                ->setMessage(M\message('Message Content', 'Message Title', 'Message Type', array("key1"=>"value1", "key2"=>"value2")))
+                ->printJSON()
+                ->send();

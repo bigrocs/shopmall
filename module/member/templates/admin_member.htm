@@ -1,0 +1,310 @@
+<script src="script/my_lightbox.js" language="javascript"></script>
+<script type="text/javascript" charset="utf-8" src="<{$config.weburl}>/script/district.js" ></script>
+<script>
+$(function(){
+	$('#form').validate({
+		errorPlacement: function(error, element){
+			element.nextAll('.form-error').append(error);
+		},      
+		rules : {
+			name:{
+				required:true
+			}
+		},
+		messages : {
+			name:{
+				required:"请填写昵称",
+			}
+		}
+	});
+});
+</script>
+<div class="path">
+    <div>
+    	<{if $cg_u_type==1}>
+    		<a href="main.php?cg_u_type=1"><{$lang.my_mall}></a> <span>&gt;</span>
+        <{else}>
+    		<a href="main.php?cg_u_type=2"><{$lang.seller_center}></a> <span>&gt;</span>
+        <{/if}>
+        <a href="main.php?m=member&s=admin_member"><{$lang.personal_information}></a> <span>&gt;</span>
+        <{if $smarty.get.type=='password'}><{$lang.change_password}><{elseif $smarty.get.type=='mail'}><{$lang.change_email}><{else}><{$lang.basic_information}><{/if}>
+    </div>
+</div>
+<div class="main">
+	<div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="<{if $smarty.get.type}>normal<{else}>active<{/if}>"><a href="main.php?m=member&s=admin_member">基本信息</a></li>
+               
+                <li class="<{if $smarty.get.type=='password'}>active<{else}>normal<{/if}>"><a href="main.php?m=member&s=admin_member&type=password">修改密码</a></li>
+                <li class="<{if $smarty.get.type=='email'}>active<{else}>normal<{/if}>"><a href="main.php?m=member&s=admin_member&type=email">修改邮箱</a></li>
+                <li class="<{if $smarty.get.type=='mobile'}>active<{else}>normal<{/if}>"><a href="main.php?m=member&s=admin_member&type=mobile">修改手机</a></li>
+            </ul>
+        </div>
+        <{if $smarty.get.type=='password'}>
+        <div class="form-style">
+            <form action="" method="post">
+            <input type="hidden" value="password" name="submit">
+            <dl>
+                <dt><em>*</em><{$lang.your_password}></dt>
+                <dd><input name="oldpass" type="password" id="oldpass" class="text w150" /></dd>
+            </dl>
+            <dl>
+                <dt><em>*</em><{$lang.new_pass}></dt>
+                <dd><input name="newpass" type="password" id="newpass" class="password w150" /></dd>
+            </dl>
+            <dl>
+                <dt><em>*</em><{$lang.con_pass}></dt>
+                <dd><input name="renewpass" type="password" id="renewpass" class="password w150" /></dd>
+            </dl>
+            <dl class="foot">
+                <dt>&nbsp;</dt>
+                <dd><input type="submit" value="<{$lang.submit}>" class="submit"></dd>
+            </dl>
+            </form>
+        </div>  
+        <{elseif $smarty.get.type=='email'}>
+        <div class="form-style">
+            <form action="" method="post">
+            <input type="hidden" value="email" name="submit">
+           	<dl>
+                <dt><em>*</em>邮箱</dt>
+                <dd><input name="email" id="email" type="text" class="text w300" /></dd>
+            </dl>
+            <dl>
+                <dt><em>*</em>邮件验证码</dt>
+                <dd>
+                <input name="yzm" type="text" class="text w150" />
+               <input type="button" class="send" value="获取邮件验证码" />
+                </dd>
+            </dl>
+            <dl class="foot">
+                <dt>&nbsp;</dt>
+                <dd><input type="submit" value="<{$lang.submit}>" class="submit"></dd>
+            </dl>
+            </form>
+            <script>
+            $(".send").click(function(){
+				var val = $("#email").val();
+				var patrn = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+				if(!val){
+					alert("请输入邮箱");return false;
+				}
+				else if(!patrn.test(val)){  
+					alert("邮箱格式错误");return false;
+				}
+				else{
+                    var flag = true;
+					var url = 'ajax_back_end.php';
+					var sj = new Date();
+					var pars = 'shuiji=' + sj+'&verify_type=email&verify_field='+val; 
+					$.post(url, pars, function (originalRequest)
+					{
+                        var flag = true;
+						if(originalRequest=="true"){
+							
+							msg = "获取邮件验证码";
+							$(".send").attr("disabled", "disabled");
+							$("#email").attr("disabled", "disabled");
+							$("#email").attr("readonly", "readonly");
+							t=setTimeout(countDown,1000);
+					
+							var url = 'ajax_back_end.php';
+							var sj = new Date();
+							var pars = 'shuiji=' + sj +'&email='+val; 
+							$.post(url, pars, function (originalRequest){})
+						}
+						else{				
+							alert("该邮箱已经认证!");
+							flag = false;
+						}
+						return flag;
+					});
+					return flag;
+				}
+			})
+			var delayTime = 10;
+			function countDown()
+			{
+				delayTime--;
+				$(".send").val(delayTime + '秒后重新获取');
+				if (delayTime == 0) {
+					delayTime = 10;
+					$(".send").val(msg);
+					$(".send").removeAttr("disabled");
+					$("#email").removeAttr("disabled");
+					clearTimeout(t);
+				}
+				else
+				{
+					t=setTimeout(countDown,1000);
+				}
+			}
+            </script>
+        </div>
+        <{elseif $smarty.get.type=='mobile'}>
+        <div class="form-style">
+            <form action="" method="post">
+            <input type="hidden" value="mobile" name="submit">
+            <dl>
+                <dt><em>*</em>手机</dt>
+                <dd><input name="mobile" id="mobile" type="text" class="text w300" /></dd>
+            </dl>
+            <dl>
+                <dt><em>*</em>短信验证码</dt>
+                <dd>
+                <input name="yzm" type="text" class="text w150" />
+               <input type="button" class="send" value="获取短信验证码" />
+                </dd>
+            </dl>
+            <dl class="foot">
+                <dt>&nbsp;</dt>
+                <dd><input type="submit" value="<{$lang.submit}>" class="submit"></dd>
+            </dl>
+            </form>
+            <script>
+            $(".send").click(function(){
+				var val = $("#mobile").val();
+				var mobile = new RegExp("^0?(13|15|17|18|14)[0-9]{9}$");//手机
+				
+				if(!val){
+					alert("请输入手机");return false;
+				}
+				else if(!mobile.test(val)){  
+					alert("手机格式错误");
+					return false;
+				}
+				else{
+					var url = 'ajax_back_end.php';
+					var sj = new Date();
+					var pars = 'shuiji=' + sj+'&verify_type=mobile&verify_field='+val; 
+					$.post(url, pars, function (originalRequest)
+					{
+						if(originalRequest=="true"){
+							
+							msg = "获取短信验证码";
+							$(".send").attr("disabled", "disabled");
+							$("#mobile").attr("disabled", "disabled");
+							$("#mobile").attr("readonly", "readonly");
+							t=setTimeout(countDown,1000);
+					
+							var url = 'ajax_back_end.php';
+							var sj = new Date();
+							var pars = 'shuiji=' + sj +'&mobile='+val; 
+							$.post(url, pars, function (originalRequest){})
+						}
+						else{				
+							alert("该手机已注册，请更换其他手机");
+							flag = false;
+						}
+						return flag;
+					});
+					return flag;
+				}
+			})
+			var delayTime = 10;
+			function countDown()
+			{
+				delayTime--;
+				$(".send").val(delayTime + '秒后重新获取');
+				if (delayTime == 0) {
+					delayTime = 10;
+					$(".send").val(msg);
+					$(".send").removeAttr("disabled");
+					$("#mobile").removeAttr("disabled");
+					clearTimeout(t);
+				}
+				else
+				{
+					t=setTimeout(countDown,1000);
+				}
+			}
+            </script>
+        </div>
+        <{else}>
+        <div class="form-style">
+            <form action="" method="post" name="form" id="form">
+            <input type="hidden" value="edit" name="submit">
+            <h5>亲爱的<{$smarty.cookies.USER}>，填写真实的资料，有助于好友找到你哦。</h5>
+            <dl>
+                <dt>用户名</dt>
+                <dd><{$de.user}></dd>
+            </dl>
+            <{if $de.email}>
+            <dl>
+                <dt>邮箱：</dt>
+                <dd><{$de.email}><{if $de.email_verify==1}><span class="verify">已验证</span><{/if}></dd>
+            </dl>
+            <{/if}>
+            <{if $de.mobile}>
+            <dl>
+                <dt>手机：</dt>
+                <dd><{$de.mobile}><{if $de.mobile_verify==1}><span class="verify">已验证</span><{/if}></dd>
+            </dl>
+            <{/if}>
+            <dl>
+                <dt>当前头像：</dt>
+                <dd>
+                <p class="pic" style=" width:120px; height:120px; "><img id="logo_img" src="<{if $de.logo}><{$de.logo}><{else}><{$config.weburl}>/image/default/user_admin/default_user_portrait.gif<{/if}>" height="120" width="120" /></p>
+				
+                <p><input class="text w300" name="logo" type="text" id="logo" value="<{$de.logo}>"> <a class="upload-button" href="javascript:uploadfile('LOGO','logo',120,120,'member')"><{$lang.upload}></a></p>
+                </dd>
+            </dl>
+            
+            <dl>
+                <dt><em>*</em>昵称：</dt>
+                <dd><input name='name' type='text' id="name" value="<{$de.name}>" dataType="Require" msg="<{$lang.ar_con_user}>" class="text w150"><div class="form-error"></span></div>
+            </dl>
+            <dl>
+                <dt>性别：</dt>
+                <dd>
+                <input name="sex" id="s1" type="radio"  value="1" <{if $de.sex==1}>checked="checked"<{/if}> />
+                <label for="s1"><{$lang.male}></label>
+                <input name="sex" id="s2" type="radio"  value="2" <{if $de.sex==2}>checked="checked"<{/if}> />
+                <label for="s2"><{$lang.female}></label>   
+                </dd>
+            </dl>
+            <dl>
+                <dt>所在地区：</dt>
+                <dd>
+                <input type="hidden" name="t" id="t" value="<{$de.area}>" />
+                <input type="hidden" name="province" id="id_1" value="<{$de.provinceid}>" />
+                <input type="hidden" name="city" id="id_2" value="<{$de.cityid}>" />
+                <input type="hidden" name="area" id="id_3" value="<{$de.areaid}>" />
+                <input type="hidden" name="street" id="id_4" value="<{$de.streetid}>" />
+                <{if $de.area}><div id="d_1"><{$de.area}>&nbsp;&nbsp;<a href="javascript:sd();"><{$lang.edit}></a></div><{/if}>
+                <div id="d_2" <{if $de.area}>class="hidden"<{/if}>>
+                <select id="select_1" name="select_1" onChange="district(this);">
+                <option value="">--<{$lang.please_select}>--</option>
+                <{$prov}>
+                </select>
+                <select id="select_2" name="select_2" onChange="district(this);" class="hidden"></select>
+                <select id="select_3" name="select_3" onChange="district(this);" class="hidden"></select>
+                <select id="select_4" name="select_4" onChange="district(this);" class="hidden"></select>
+                <div class="form-error"></div>
+                </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>QQ：</dt>
+                <dd><input name="qq" type="text" value="<{$de.qq}>" class="text w200"></dd>
+            </dl>
+            <{if $wechat_connect_flag}>
+            <dl>
+                <dt>微信：</dt>
+                <dd><{if $wechat_connect_row.userid}>已经绑定 <{$wechat_connect_row.nickname}><{else}><a href="<{$wechat_url}>" target="_blank">未绑定，点击进行绑定</a><{/if}></dd>
+            </dl>
+            <{/if}>
+            <dl>
+                <dt>旺旺：</dt>
+                <dd><input name="ww" type="text" value="<{$de.ww}>" class="text w200"></dd>
+            </dl>
+            <dl class="foot">
+                <dt>&nbsp;</dt>
+                <dd><input type="submit" value="<{$lang.submit}>" class="submit"></dd>
+            </dl>
+            </form>
+        </div> 
+        <{/if}>
+    </div>
+</div>

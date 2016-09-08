@@ -1,0 +1,22 @@
+<link href="<{$config.weburl}>/templates/wap_app/css/main.css" rel="stylesheet" type="text/css" />
+<ul class="v_ul">
+	<{foreach from=$list.list item=vo key=key}>
+	<li class="for_<{$key%4}>">
+		<div class="v_l">
+			<p class="line-name"><{$vo.shop_name}></p>
+			<p class="line-money"><{$config.money}><font class="price"><{$vo.price|string_format:"%.2f"}></font></p>
+			<p class="line-limit"><i>订单满<{$vo.limit}>元</i></p>
+		</div>
+		<div class="v_r">
+			<p>使用期限</p>
+			<p><{$vo.start_time|date_format:"%m.%d"}></p>
+			<p><{$vo.end_time|date_format:"%m.%d"}></p>
+			<p><{if $vo.status eq 1}><a href="<{$config.weburl}>/shop.php?uid=<{$vo.shop_id}>">立即使用</a><{elseif $vo.status eq 2}>已使用<{elseif $vo.status eq 3}>过期<{else}>收回<{/if}></p>
+		</div>
+	</li>
+	<{foreachelse}>
+	<div class="itemsNull">
+    <h3>暂无符合条件的数据记录</h3>
+	</div>
+	<{/foreach}>
+</ul>

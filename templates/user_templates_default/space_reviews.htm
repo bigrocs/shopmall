@@ -1,0 +1,56 @@
+<div class="reviews-hd">
+	<div class="reviews-hd-fore1 clearfix">
+    	<div class="score">
+            <span>商品与描述相符</span>
+            <strong><{$score.a|number_format:1}></strong>
+            <span>分</span>
+        </div>
+    	<div class="links"><a target="_blank" href="shop.php?uid=<{$smarty.get.uid}>&action=credit&m=shop"><i></i>店铺评价</a></div>
+    </div>
+	<div class="reviews-hd-fore2">
+    	<div class="filter clearfix">
+        	<ul>
+            	<li><label><input type="radio" name="reviews-type" <{if !$smarty.get.catid}> checked="checked"<{/if}> value="0" /><span>全部</span></label></li>
+            	<li><label><input type="radio" name="reviews-type" <{if $smarty.get.catid == 3}> checked="checked"<{/if}>value="3" /><span>好评</span></label></li>
+            	<li><label><input type="radio" name="reviews-type" <{if $smarty.get.catid == 2}> checked="checked"<{/if}>value="2" /><span>中评</span></label></li>
+            	<li><label><input type="radio" name="reviews-type" <{if $smarty.get.catid == 1}> checked="checked"<{/if}>value="1" /><span>差评</span></label></li>
+			</ul>
+        </div>
+    </div>
+</div>
+<div class="reviews-bd clearfix">
+<ul>
+<{foreach item = list from = $re.list}>
+    <li class="clearfix">
+        <div class="buyer">
+            <div class="avatar">
+                <span>
+                    <img width="40" height="40" src="<{$list.logo}>"><Br />
+                    <span><{$list.user}></span>
+                </span><br />
+                <img src="image/points/<{$list.buyerpoints}>" />
+            </div>
+        </div>
+        <dl>
+            <dt><{$list.con}></dt>
+            <dd><{$list.uptime}></dd>
+        </dl>
+    </li>
+<{foreachelse}>
+	<li class="no-result">没有找到结果</li>
+<{/foreach}>
+</ul>
+<div class="pages"><{$re.page}></div>
+</div>
+<script type="text/javascript">
+$(".pages a").click(function(){
+	$("body,html").animate({scrollTop:$(".inner-wrap").offset().top});
+	$('.reviews-bd').html('<div class="loading"><p>正在努力加载中...</p></div>');
+	$('#reviews').load($(this).attr("href"));
+	return false;
+});
+$(".filter input").click(function(){
+	$('.reviews-bd').html('<div class="loading"><p>正在努力加载中...</p></div>');
+	$('#reviews').load('<{$config.weburl}>/?m=product&s=detail&id=<{$de.id}>&ajax=reviews&catid='+$(this).val());
+})
+</script>

@@ -1,0 +1,123 @@
+<div class="snap">
+<div class="detail">
+	<div class="detail-bd clearfix">
+    	<div class="summary clearfix">
+        	<div class="item-info clearfix">
+            	<div class="left">
+                	<div class="gallery">
+                    	<div class="main-pic">
+                        <a target="_blank" href="<{$de.pic}>"><img class="jqzoom" height="400" width="400" alt="<{$de.pname}>" src="<{$de.pic}>" title="<{$de.pname}>"></a>
+                        </div>
+                        <ul id="jqzoom" class="clearfix">         
+                            <{foreach item=pic key=num from=$de.pic_more}>
+                            <li class="<{if $num==0}>hover<{/if}>"><img src="<{$pic}>_60X60.jpg" big="<{$pic}>" height="60" width="60"></li>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                </div>
+            	<div class="right">
+                	<div class="wrap">
+                		<div class="title">
+                        	<h3><{$de.name}></h3>
+                            <{if $de.subhead}><p><{$de.subhead}></p><{/if}>
+                        </div>
+                    	<ul class="promo-meta clearfix">
+                            <li class="price">
+                                <span>价　　格</span>
+                                <strong>
+                                <em><{$config.money}></em> <font id="price"><{$de.price|number_format:2}></font>
+                            	</strong>
+                            </li>
+                            <li>
+                                <span>运　　费</span>
+                                <em><{$config.money}></em> <{$de.freight|number_format:2}>
+                            </li>
+                        </ul>
+                        
+                        <{if $de.spec}>
+                        <ul class="properties clearfix">
+                            <{foreach item = slist from = $de.spec}>
+                                <li><span><{$slist.name}></span><{$slist.value}></li>
+                            <{/foreach}>
+                        </ul>
+                        <{/if}>
+                        <div class="snapbar">
+                            <p class="msg">您现在查看的是交易快照</p>
+                            <p>该商品在<{$de.time}>已被编辑。</p>
+                            <a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$de.product_id}>">点此查看最新商品详情</a>
+                    	</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    	<div class="sidebar clearfix">
+       		<div class="shop-info">
+            	<a class="shop-info-bg" href=""><img width="198" height="45" src="image/points/<{$com.sellerpointsid}>.png" /></a>
+                <div class="shop-info-wrap clearfix">
+                	<div class="shop-info-hd">
+                    	<dl>
+                        	<dt>店铺：</dt>
+                            <dd><{$com.company}></dd>
+                        </dl>
+                    	<dl>
+                        	<dt>信誉：</dt>
+                            <dd><img align="absmiddle" src="image/points/<{$com.sellerpointsimg}>" /></dd>
+                        </dl>
+                    	<dl>
+                        	<dt>掌柜：</dt>
+                            <dd><{$com.name}></dd>
+                        </dl>
+                    	<dl>
+                        	<dt>资质：</dt>
+                            <dd><span><{$com.earnest}>元</span></dd>
+                        </dl>
+                    </div>
+                	<div class="shop-info-bd">
+                    	<div class="shop-rate">
+                            <dl>
+                                <dt>描述&nbsp;&nbsp;</dt>
+                                <dd><b><{$score.a|number_format:1}></b></dd>
+                            </dl>
+                            <dl>
+                                <dt>物流&nbsp;&nbsp;</dt>
+                                <dd><b><{$score.c|number_format:1}></b></dd>
+                            </dl>
+                            <dl>
+                                <dt>服务&nbsp;&nbsp;</dt>
+                                <dd><b><{$score.b|number_format:1}></b></dd>
+                            </dl>
+                        </div>
+                    </div>
+                	<div class="shop-info-fd clearfix">
+                    	<a target="_blank" href="shop.php?uid=<{$smarty.get.uid}>">进入店铺</a>
+                    	<a href="javascript:#" onclick="javascript:getfavshop();">收藏店铺</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tabbar-wrap clearfix">
+	<div class="inner-wrap clearfix">
+        <ul class="clearfix"> 
+            <li class="cur"><a href="javascript:void(0);">商品详情</a></li>
+        </ul>
+    </div>
+</div>
+<div class="layout clearfix">
+    <div class="con clearfix">
+        <div class="i-con">
+        	<{if $de.brand || $de.extfiled.s}>
+            <div class="attributes clearfix">
+            	<ul class="clearfix">
+                	<li>品牌：<{$de.brand}></li>
+					<{foreach item=list from=$de.extfiled.s}><{$list}><{/foreach}>
+                </ul>
+            </div>
+            <{/if}>
+			<div class="description"><{$de.detail}></div>
+        </div>
+    </div>
+</div>
+</div>

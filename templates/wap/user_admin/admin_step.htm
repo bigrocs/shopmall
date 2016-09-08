@@ -1,0 +1,27 @@
+<{include file="../header.htm"}>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery-1.4.4.min.js"></script>
+<link href="<{$config.weburl}>/templates/wap/css/index.css" rel="stylesheet" type="text/css" />
+<link href="<{$config.weburl}>/templates/default/user_admin.css" rel="stylesheet" type="text/css" />
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span>申请开店</span></section>
+    	<section class="nav-e"></section>
+    </div>
+</header>
+<section style="width:100%;margin-top:18px;"><img width="100%" src="<{$config.weburl}>/image/wap/mobile_shop_step.png" /></section>
+
+<div class="shop_grade">
+	<table>
+	    <tbody>
+			<{foreach item=list key=num from=$re}>  
+	        <tr>
+	            <th width="40%"><{$list.name}></th>
+	            <td><{$list.desc}></td>
+	            <td width="30%"><a class="btn2" href="main.php?m=shop&s=admin_step&grade=<{$list.id}>">立即开店</a></td>
+	    	</tr>
+	    <{/foreach}>   
+	    </tbody>
+	</table>
+</div>    
+<{include file="../footer.htm"}>

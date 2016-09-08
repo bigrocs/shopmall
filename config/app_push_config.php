@@ -1,0 +1,1 @@
+<?php $app_push_config = unserialize('a:3:{s:13:"jpush_app_key";s:24:"c175a36014b5d0075bb8c7fd";s:16:"jpush_app_secret";s:24:"f9070472732b697803d82d48";s:3:"act";s:4:"save";}');$config = array_merge($config, $app_push_config);?>

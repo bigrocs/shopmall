@@ -1,0 +1,1 @@
+<?php $wmark_config = unserialize('a:5:{s:10:"wmark_type";s:1:"1";s:11:"wmark_words";s:11:"B2B-Builder";s:17:"wmark_words_color";s:7:"#339900";s:11:"wmark_image";s:8:"logo.gif";s:15:"wmark_locaction";s:1:"9";}');?>

@@ -1,0 +1,38 @@
+
+<div class="path">
+    <div>
+        <a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span>
+        <a href="main.php?m=shop&s=myshop">店铺设置</a> <span>&gt;</span>
+        店铺设置
+    </div>
+</div>
+<div class="main">
+    <div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="normal"><a href="main.php?m=shop&s=myshop">店铺设置</a></li>
+                <li class="normal"><a href="main.php?m=shop&s=admin_custom_service">客服中心</a></li>
+                <li class="normal"><a href="main.php?m=shop&s=admin_certification">认证设置</a></li>
+                <li class="normal"><a href="main.php?m=shop&s=admin_shop_set">幻灯片设置</a></li>
+                <li class="normal"><a href="main.php?m=shop&s=admin_wechat">微信公共平台</a></li>
+                <li class="active"><a href="main.php?m=shop&s=admin_wapset">wap端设置</a></li>
+                <li class="active"><a href="main.php?m=shop&s=admin_freightset">免运费设置</a></li>
+            </ul>
+        </div>
+
+        <div class="form-style">
+            <form action="" method="post">
+                <dl>
+                    <dt>单笔购物免运费：</dt>
+                    <dd>
+                        <p>单笔购物超过 <input  type="text" value="<{$shop_free_shipping}>"  name="shop_free_shipping" style="text-align: center;"/> 元， 免运费！</p>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><input type="hidden" name="act" value="submit"></dt>
+                    <dd><input type="submit" value="提交" class="submit"></dd>
+                </dl>
+            </form>
+        </div>
+    </div>
+</div>

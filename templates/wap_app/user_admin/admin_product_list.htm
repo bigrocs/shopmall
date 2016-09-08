@@ -1,0 +1,172 @@
+<link href="<{$config.weburl}>/templates/wap_app/css/index.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type=text/javascript></script>
+<script type="text/javascript">
+function ref(id,type,v)
+{	
+	var url = 'module/product/ajax_update.php';
+	var sj = new Date();
+	var pars = 'shuiji=' + sj+'&'+v;
+	$.get(url, pars,showResponse);
+	function showResponse(originalRequest)
+	{
+		var tempStr = originalRequest;
+		if(tempStr!=''&&type=='rec')
+		{
+			if(tempStr==1)
+			{
+				$('#rec2_'+id).hide();
+				$('#rec1_'+id).show();
+			}
+		}
+		if(tempStr!=''&&type=='unrec')
+		{
+			if(tempStr==1)
+			{
+				$('#rec2_'+id).show();
+				$('#rec1_'+id).hide();
+			}
+		}
+	}
+}
+
+$(function(){
+    /* 全选 */
+	 $('.checkall').click(function(){
+        var _self = this;
+        $('.checkitem').each(function(){
+            if (!this.disabled)
+            {
+                $(this).attr('checked', _self.checked);
+            }
+        });
+        $('.checkall').attr('checked', this.checked);
+    });
+	$('#del').click(function(){
+		if($('.checkitem:checked').length == 0){
+			return false;
+		}
+		var url = "main.php?m=product&s=admin_product_storage";
+		var items = '';
+			$('.checkitem:checked').each(function(){
+				items += this.value + ',';
+		});
+		items = items.substr(0, (items.length - 1));
+		$.get(url, 'pid=' + items,showResponse);
+		function showResponse(originalRequest)
+		{
+			document.location.reload();
+		}
+		return false;
+	});
+
+    $('#chenges').click(function(){
+        if($('.checkitem:checked').length == 0){
+            return false;
+        }
+        var url = "main.php?m=product&s=admin_product_storage";
+        var items = '';
+        $('.checkitem:checked').each(function(){
+                items += this.value + ',';
+        });
+        items = items.substr(0, (items.length - 1));
+        $.get(url, 'pcsid=' + items,showResponse);
+        function showResponse(originalRequest)
+        {
+            document.location.reload();
+        }
+        return false;
+    });
+});
+</script>
+<!--<header>
+    <div class="nav-w">
+        <section class="nav-s"><a  onclick="location.href='main.php?cg_u_type=2'"><nav>返回</nav></a></section>
+        <section class="nav-c"><span>出售中的商品</span></section>
+        <section class="nav-e"></section>
+    </div>
+</header>-->
+<section class="certcenter wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <form method="get">
+					<input type="hidden" name="m" value="product" />
+					<input type="hidden" name="s" value="admin_product_list" />
+                    <input type="text"  style="width:68%" placeholder="请输入商品关键字或商家编码" name="key" value="<{$smarty.get.key}>" />
+                    <input type="submit" class="btn2" value="搜索" />
+                </form>
+            </ul>
+        </div>
+        <table class="table-list-style">
+        	<thead>
+            <tr>
+            	<th></th>
+            	<th></th>
+
+            	<th class="al">商品名称</th>
+
+                <{*}>
+                <th>价格</th>
+            	<th>库存</th>
+                <{*}>
+
+            	<{*}> <th>推荐</th> <{*}>
+            	<th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach item=list from=$re.list}>
+            <tr> 
+                <td class="cent" style="width:26px"><input type="checkbox" value="<{$list.id}>" class="checkitem" name="chk[]"></td>
+                <td class="td_list" style="width:62px">
+                <div class="pic-small">
+                    <a href="<{$config.weburl}>/?m=product&s=detail&id=<{$list.id}>">
+                    	<img width="58px" height="58px"  src="<{if !$list.pic }><{$config.weburl}>/image/default/nopic.gif<{else}><{$list.pic}>_60X60.jpg<{/if}>" alt="<{$list.pname}>" />
+                    </a>
+                </div>
+                </td>
+                <td class="tl" valign="top">
+                    <a href="<{$config.weburl}>/?m=product&s=detail&id=<{$list.id}>"><{$list.pname}></a><br/>
+                    价格：<font color="#f22e00"><{$list.price|number_format:2}></font><br/>
+                    发布日期：<{$list.uptime|date_format}>
+                </td>
+               
+
+                <{*}>
+                <td><{$list.amount}></td><
+                <td>
+                <span <{if $list.shop_rec==0 }>style="display:none"<{/if}> id="rec1_<{$list.id}>"><a href="javascript:ref(<{$list.id}>,'unrec','rec=<{$list.id}>&action=admin_list&type=0')">点击取消推荐</a></span>
+               
+                <span <{if $list.shop_rec==1 }>style="display:none"<{/if}> id="rec2_<{$list.id}>"><a href="javascript:ref(<{$list.id}>,'rec','rec=<{$list.id}>&action=admin_list&type=1')">点击橱窗推荐</a></span>
+                </td>
+                <{*}>
+
+
+                <td class="cent dbutton" style="width:100px;">
+                    <a href="?m=product&s=admin_product_list&cstatu=0&pid=<{$list.id}>">下架</a><br/>
+                    <a href="?edit=<{$list.id}>&m=product&s=admin_product">编辑</a><br/>
+                    <a href="?deid=<{$list.id}>&m=product&s=admin_product_list" onClick="return confirm('<{$lang.sure_del}>');">删除</a>
+                </td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+            	<td colspan="20" class="norecord">
+                	<i></i><span>暂无符合条件的数据记录</span>	
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td class="tc"><input type="checkbox" class="checkall"></td>
+                <td colspan="3" class="pt10">
+                <a id="del" confirm="您确定要删除吗?" class="btn2" href="javascript:void(0);">删除</a>　<a id="chenges" confirm="您确定吗?" class="btn3" href="javascript:void(0);">下架</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                <div class="pagination"><{$re.page}></div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+</section>

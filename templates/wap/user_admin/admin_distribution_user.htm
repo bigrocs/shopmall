@@ -1,0 +1,63 @@
+<link href="<{$config.weburl}>/templates/wap/css/buyorder.css" rel="stylesheet" type="text/css" />
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<header>
+<div class="nav-w">
+  <section class="nav-s iconfont"><a href="<{$config.weburl}>/main.php"><font>&#xe60d</font></a></section>
+  <section class="nav-c"> <span class="select"> <{if $smarty.get.level=='1'}>一级用户
+    
+    <{elseif $smarty.get.level=='2'}>二级用户
+    <{else}>所有<{/if}> <em></em> </span>
+    <div style="display:none;" class="i-select">
+      <ul>
+        <li key="" class="sub-line"><a href="main.php?m=distribution&s=admin_distribution_user">所有</a></li>
+        <li key="1"><a href="main.php?m=distribution&s=admin_distribution_user&level=1">一级用户</a></li>
+        <li key="2"><a href="main.php?m=distribution&s=admin_distribution_user&level=2">二级用户</a></li>
+      </ul>
+    </div>
+  </section>
+
+    <section class="nav-e"></section>
+</div>
+</header>
+<script>
+$(function(){
+	$(".select").click(function(){ 
+		var obj=$(this);
+		$(this).next().slideToggle("fast",function(){
+		if($(obj).next().is(":visible")){
+			$(document).one('click',function(){
+				$(".select").next().slideUp("fast");
+			});
+		}});
+	});
+	$(".i-select li").click(function(){
+		var str=$(this).html();
+		$(this).parent().parent().prev().html(str+" <em class='up'></em>");
+		$(this).parent().parent().slideToggle();
+	});
+});
+</script>
+<section class="order"> <{foreach item=list from=$re}>
+  <div class="distributionUser">
+    <dl>
+      <dt>下线用户</dt>
+      <dd><{$list.user_name}></dd>
+    </dl>
+    <dl>
+      <dt>分销层级</dt>
+      <dd><{$list.user_relationship_level}></dd>
+    </dl>
+    <dl>
+      <dt>佣金收益</dt>
+      <dd><{$list.user_commission_shop_amount|string_format:"%.2f"}></dd>
+    </dl>
+  </div>
+  <{foreachelse}>
+  <div class="itemsNull">
+    <h3>暂无下线</h3>
+  </div>
+  <{/foreach}>
+  
+  <{$page}>
+  
+   </section>

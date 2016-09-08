@@ -1,0 +1,10 @@
+.dis_num{width: 100%;height:auto;margin-top: 10px;}
+.dis_dl{width: 99%;height:auto;}
+.dis_dl dl{width: 33%;background: #fff;margin-bottom: 10px;float: left;}
+.dis_dl dl dt{width: 100%;height:30px;float: left;text-align: center;line-height: 30px;border-bottom:1px solid #DFDFDF;}
+.dis_dl dl dd{width: 100%;height: 30px;float: left;text-align: center;line-height: 30px}
+
+
+.dis_dl_4 dl{width: 24.5%;background: #fff;margin-bottom: 10px;float: left;}
+.dis_dl_4 dl dt{width: 100%;height:30px;float: left;text-align: center;line-height: 30px;border-bottom:1px solid #DFDFDF;}
+.dis_dl_4 dl dd{width: 100%;height: 30px;float: left;text-align: center;line-height: 30px}

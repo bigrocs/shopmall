@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<title>新建网页</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="script/jquery-1.4.4.min.js"></script>
+<style type="text/css">
+body{color:#333333;font:12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif;}
+tr{height:30px;}	
+</style>
+</head>
+    <body>
+    <script type="text/javascript">
+        function checkname(id) {
+            var name = $("#" + id).val();
+            // alert(user);
+            //var user_name=document.getElementById(id).value;
+            var num = name.length;
+            var flag = false;
+            if (num < 1) {
+                $("." + id).html('<span style="color:red">组名不可以为空！</span>');
+                //$("#"+id).focus();
+                flag = false;
+            }
+            else if (num < 4) {
+                $("." + id).html('<span style="color:red">组名长度大于4位</span>');
+                //$("#"+id).focus();
+                flag = false;
+            }
+            return flag;
+        }
+    </script>
+<table border="0" cellpadding="0" cellspacing="1" class="admin_table">
+<form action="" method="post" enctype="multipart/form-data">
+	<tr>
+		<td>组名：</td>
+        <td><input type="text" name="name" id="name" onblur="checkuname('name')" value="<{$groname.name}>"><span class="name"></span></td>
+	</tr>
+	<tr>     
+		<td>组备注：</td>
+		<td><input type="text" name="describe" value="<{$groname.describe}>"></td>
+	</tr>
+	<tr>     
+		<td></td>
+        <{if $smarty.get.editid==''}>
+		<td><input type="submit" name="submit1" value="添加"></td>
+        <{else}>
+        <td><input type="submit" name="submit" value="修改"></td>
+        <{if $result eq 2}>
+        <script type="text/javascript">
+            parent.location.reload();
+        </script>
+        <{/if}>
+        <{/if}>
+    </tr>
+</form>
+    <script>
+        <{if $result eq 1}>
+        pload();
+
+        function pload(){
+            setTimeout(closeThis,0);
+        }
+        function closeThis(){
+            parent.document.body.removeChild(parent.document.getElementById("bgObj"));parent.document.body.removeChild(parent.document.getElementById("msgObj"));
+        }
+
+        var time = 0;
+        var int = setInterval(gotourl, 0);
+        function gotourl()
+        {
+            time--;
+            document.getElementById('goToTime').innerHTML = time;
+            if(time == 0){clearInterval(int); closeThis();}
+
+        }
+    </script>
+    <script type="text/javascript">
+        parent.location.reload();
+    </script>
+    <{/if}>
+</table>
+
+    </body>
+</html>

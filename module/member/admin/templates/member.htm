@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>会员管理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../script/moderate.js"></script>
+<script type="text/javascript" src="../script/Calendar.js"></script>
+<script type="text/javascript">
+var cdr = new Calendar("cdr");
+document.write(cdr);
+cdr.showMoreDay = true;
+</script>
+</head>
+<body>
+<div class="container">
+    <div class="flow"> 
+        <div class="itemtitle">
+            <h3>会员管理</h3>
+            <ul>
+                <li class="<{if !$smarty.get.statu}>current<{else}>normal<{/if}>"><a href="?m=member&s=member.php"><span>管理</span></a></li>
+                <li class="<{if $smarty.get.statu==2}>current<{else}>normal<{/if}>"><a href="?m=member&s=member.php&statu=2"><span>已审核</span></a></li>
+                <li class="<{if $smarty.get.statu==1}>current<{else}>normal<{/if}>"><a href="?m=member&s=member.php&statu=1"><span>待审核</span></a></li>
+                <li class="<{if $smarty.get.statu==-2}>current<{else}>normal<{/if}>"><a href="?m=member&s=member.php&statu=-2"><span>禁止访问</span></a></li>
+				<li class="<{if $smarty.get.cardnum==1}>current<{else}>normal<{/if}>"><a href="?m=member&s=member.php&cardnum=1"><span>有卡会员</span></a></li>
+				<li class="<{if $smarty.get.cardnum==-1}>current<{else}>normal<{/if}>"><a href="?m=member&s=member.php&cardnum=-1"><span>线上注册</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="h35"></div>
+    <table class="select_table">
+        <tr>
+            <td>
+                <div class="select_box">
+                    <form action="" method="get">
+                    <input type="hidden" name="m" value="member">
+                    <input type="hidden" name="s" value="member.php">
+                    <div class="catalogBox">
+                        <input type="hidden" value="<{if $smarty.get.type}><{$smarty.get.type}><{else}>user<{/if}>" name="type" id="type">
+                        <div class="select">
+                            <span>
+                            <{if $smarty.get.type}>
+                                <{assign var=n value=$smarty.get.type}>
+                                <{$arr.$n}>
+                            <{else}>
+                            	<{$arr.user}>
+                            <{/if}></span>
+                            <b></b>
+                        </div>
+                        <div style="display:none;" class="i-select">
+                            <ul>
+                                <{foreach item=list key=num from=$arr}>
+                                <li key="<{$num}>"><{$list}></li>
+                                <{/foreach}>
+                            </ul>
+                        </div>
+                    </div>
+                    <input placeholder="请输入关键字..." type="text" name="name" class="txt s w250" value="<{$smarty.get.name}>"  />
+                    <div class="catalogBox">
+                        <input type="hidden" value="<{$smarty.get.grade}>" name="grade" id="grade">
+                        <div class="select">
+                            <span>
+                            <{if $smarty.get.grade}>
+                                <{assign var=n value=$smarty.get.grade-1}>
+                                <{$re.$n.name}>
+                            <{else}>
+                            	会员等级
+                            <{/if}></span>
+                            <b></b>
+                        </div>
+                        <div style="display:none;" class="i-select">
+                            <ul>
+                                <li key="" class="sub-line">会员等级</li>
+                                <{foreach item=list key=num from=$re}>
+                                <li key="<{$list.id}>"><{$list.name}></li>
+                                <{/foreach}>
+                            </ul>
+                        </div>
+                    </div>
+                    <input readonly="readonly" onFocus="cdr.show(this);" class="txt c w100" type="text" name="stime" id="stime" value="<{$smarty.get.stime}>" placeholder="请输入注册时间"> 
+                    <em class="fl mr5">-</em> 
+                    <input readonly="readonly" onFocus="cdr.show(this);" class="txt c w100" type="text" name="etime" id="etime" value="<{$smarty.get.etime}>" placeholder="请输入注册时间">
+                    <input type="submit" value="搜索" />
+                    </form>
+                </div>
+                <a class="refresh" href="?m=member&s=member.php"></a>
+            </td>
+        </tr>
+    </table>
+    <div style="position: relative;" id="threadlist">   
+    <form action="" method="post" id="form" name="form">
+    <input type="hidden" name="act" id="act" value="op" />
+    <table class="table">
+        <tbody>
+            <tr class="header">
+                <th colspan="2" class="al">操作</th>
+                <th colspan="2" class="al">会员</th>
+                <!--<th width="100" class="al">联系人</th>
+                <th width="240" class="al">邮箱</th>
+                <th width="150" class="al">手机</th>
+                <th width="80" class="al">最后登陆</th>
+                <th width="80" class="al">积分</th>
+                <th width="100" class="al">登录</th>-->
+                <th width="8%" class="al">联系人</th>
+                <th width="15%" class="al">邮箱</th>
+                <th width="10%" class="al">手机</th>
+                <th width="15%" class="al">最后登陆</th>
+                <th width="6%" class="al">积分</th>
+                <th width="6%" class="al">登录</th>
+            </tr>
+            <{foreach item=list from=$de.list}>
+            <tr>
+                <td width="10"><input type="checkbox" value="<{$list.userid}>" class="checkitem" onclick="tmodclick(this)" name="chk[]"></td>
+                <td width="30">
+                <p style="width:30px"><a href="?m=member&s=membermod.php&userid=<{$list.userid}>">编辑</a></p>
+                <p style="width:30px"><a target="_blank" href="to_login.php?action=submit&user=<{$list.user}>">查看</a></p>
+                </td>
+                <td class="al" width="80"><img class="img" width="60" src="<{if $list.logo|truncate:4:""!='http'}>../<{/if}><{$list.logo}>" /></td>
+                <td class="al" valign="top">
+                <p>
+                    <{if $list.statu<2}>
+                        <{assign var=num value=$list.statu}>
+                        [<{$member_group.$num}>]&nbsp;
+                    <{/if}>
+                    <b><{$list.user}></b>
+                    <img align="absmiddle" src="<{$list.pic}>" />
+                </p>
+                <p class="lh30">注册时间：<{$list.regtime}></p>
+                <p>
+                <{if $list.ww}><a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=<{$list.ww}>&siteid=cntaobao&status=2&charset=utf-8"><img align="absmiddle" border="0" src="http://amos.alicdn.com/realonline.aw?v=2&uid=<{$list.ww}>&site=cntaobao&s=2&charset=utf-8" /></a><{/if}>
+                <{if $list.qq}><a target="blank" href="http://wpa.qq.com/msgrd?V=1&Uin=<{$list.qq}>&Site=&Menu=yes"><img align="absmiddle" border="0" src="http://wpa.qq.com/pa?p=1:<{$list.qq}>:4" ></a><{/if}>        
+                </p>
+                </td>
+                <td class="al"><{$list.name}></td>
+                <td class="al">
+                <{if $list.email_verify==1}><img title="已验证"  align="absmiddle" src="../image/admin/icon.png" />&nbsp;<{/if}>
+                <{$list.email}>
+                </td>
+                <td class="al">
+                <{if $list.mobile_verify==1}><img title="已验证"  align="absmiddle" src="../image/admin/icon.png" />&nbsp;<{/if}>
+                <{$list.mobile}>
+                </td>
+                <td>
+                <p><{$list.lastLoginTime|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></p>
+                <p><{$list.ip}></p>
+                </td>
+                <td><{$list.points}></td>
+                <td><{if $list.statu!=-2}>允许<{else}>不允许<{/if}></td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="al">每页最多显示： 10条</td>
+                <td colspan="99"><div class="page"><{$de.page}></div></td>
+            </tr>
+        </tfoot>
+    </table>
+    <div id="mdly" class="hidden">
+        <a onclick="$('#mdly').addClass('cpd');" href="javascript:;" class="min">最小化</a>
+        <label>
+        <input type="checkbox" onclick="if(!($('.max')[0].innerHTML = modclickcount = checkall(this.form, 'chk'))) {$('#mdly').hide();}" name="chkall">
+        全选
+        </label>
+        <h6>
+            <span>选中</span>
+            <strong class="max" onclick="$('#mdly').removeClass('cpd');">0</strong>
+            <span>个会员: </span>
+        </h6>
+        <p>
+            <a id="button" key="s1" href="javascript:;"><b>审核通过</b></a>
+            <span>|</span>
+            <a id="button" key="s2" href="javascript:;"><b>待审核</b></a>
+        </p>
+        <p>
+            <a id="button" key="s3" href="javascript:;"><b>禁止访问</b></a>
+        </p>
+    </div>
+    </form>
+    </div>
+</div>
+<script>
+$("#button").live('click',function(){
+    var key=$(this).attr("key")
+	$("#act").val(key);		
+	$("#form")[0].submit();
+	return false;
+});
+
+$(function(){
+	$(".select").click(function(){ 
+		var obj=$(this);
+		$(this).next().slideToggle("fast",function(){
+			if($(obj).next().is(":visible")){
+				$(document).one('click',function(){
+					$(".select").next().slideUp("fast");
+				});
+			}
+		});
+	});
+	$(".i-select li").click(function(){
+		var str=$(this).html();
+		$(this).parent().parent().prev().prev().attr("value",$(this).attr("key"));
+		$(this).parent().parent().prev().children().html(str);
+	});
+});
+</script>
+</body>
+</html>

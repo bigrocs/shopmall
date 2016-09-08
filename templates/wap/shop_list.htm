@@ -1,0 +1,103 @@
+<link rel="stylesheet" type="text/css" href="<{$config.weburl}>/templates/wap/css/new_page.css" />
+<link href="<{$config.weburl}>/templates/wap/css/list.css" rel="stylesheet" type="text/css" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<header>
+	<div class="nav-w">
+    	<section class="nav-s"><a href="<{$config.weburl}>"><nav>首页</nav></a></section>
+    	<section class="nav-c"><span>附近的店铺</span></section>
+    	<section class="nav-e"></section>
+    </div>
+</header>
+<section class="locate_self">
+  <div class="locate_area">
+    <span class="flag_l"><s></s></span>　<span id="wlocate"></span> <span class="reload"><a href="<{$config.weburl}>/?m=shop&s=list&act=renew"><img src="<{$config.weburl}>/image/wap/reload.png"></a></span>
+  </div>
+</section>
+<section class="itemSearchList">
+<p style="text-align:center;padding-top:30px;font-size:12px;">加载中……</p>
+</section>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GAGiz9gdoRfTpImL6A2RZYxH"></script>
+<script src='<{$config.weburl}>/script/jquery.cookie.js' type='text/javascript'></script>
+<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+<script>
+function getPositionError(error) {
+      //  HTML5 定位失败时，调用百度地图定位   
+        var geolocation = new BMap.Geolocation();
+        geolocation.getCurrentPosition(function(r){
+            if(this.getStatus() == BMAP_STATUS_SUCCESS){
+                var mk = new BMap.Marker(r.point);
+                var pt = r.point;
+
+                $.cookie("lng",pt.lng,{expires:7});
+                $.cookie("lat",pt.lat,{expires:7});
+
+                $.post("ajax_back_end.php",{"act":"reposition","lng":pt.lng,"lat":pt.lat},function(){})
+                              
+            }
+        },{enableHighAccuracy: true});
+    }
+
+    function getPositionSuccess(position){
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+
+      var ggPoint = new BMap.Point(lng,lat);
+      //转换成百度地图坐标
+      var trunback = function (point){
+           $.cookie("lng",point.lng,{expires:7});
+           $.cookie("lat",point.lat,{expires:7});
+           $.post("ajax_back_end.php",{"act":"reposition","lng":pt.lng,"lat":pt.lat},function(){})
+      }
+      BMap.Convertor.translate(ggPoint,0,trunback);     
+    }
+
+
+
+  // 先HTML5定位，定位不到再百度地图定位
+  if(!$.cookie("lng")  || !$.cookie("lat") || "$act" == "renew")
+  {
+    var position_option = {enableHighAccuracy: true,maximumAge: 30000,timeout: 20000};
+    navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, position_option);
+  }
+  else
+  {
+    var t_lng = "<{$smarty.session.lng}>"
+    var t_lat = "<{$smarty.session.lat}>"
+    if(!t_lng || !t_lat)
+    {
+      $.post("ajax_back_end.php",{"act":"reposition","lng":$.cookie("lng"),"lat":$.cookie("lat")},function(){})
+    }
+  }
+
+  // 地址定位
+  function showArea(BMap)
+  {
+    var point = new BMap.Point($.cookie("lng"),$.cookie("lat"));
+    var geoc = new BMap.Geocoder();    
+    geoc.getLocation(point, function(rs){
+      var addComp = rs.addressComponents;
+      var address = addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber;
+      $("#wlocate").html(address)
+    });        
+   
+  }
+
+  // 首页附近的店铺异步获取信息
+  function getHtmlSecond()
+  {
+    $.post("ajax_back_end.php",{"act":"getNearInfo","limit":20},function(data){
+      if(data == 1)
+      {
+        var t = setTimeout(getHtmlSecond,1000);
+      }
+      else
+      {
+        $(".itemSearchList").html(data);
+        showArea(BMap);
+      }
+    });
+  }
+
+  getHtmlSecond();
+</script>

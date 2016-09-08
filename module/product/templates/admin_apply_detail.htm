@@ -1,0 +1,220 @@
+<script src="script/my_lightbox.js" language="javascript"></script>
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=1">我的商城</a> <span>&gt;</span>	已买到的商品 
+    </div>
+</div>
+<div class="main">
+<div class="wrap">
+<div class="apply clearfix">
+    <div class="apply_left">
+    	<div class="main-box">
+        	<{if $de.status==0}>
+                <h2>退款关闭</h2>
+                <ul>
+                    <li><i>·</i><{$de.close_reason}></li>
+                </ul>
+            <{elseif $de.status==5}>
+                <h2>退款成功</h2>
+            <{else}>
+                <{if $type == 'buyer'}>
+                    <{if $de.status==4}>
+                        <h2>卖家已拒绝，请修改退款申请</h2>
+                        <ul>
+                            <li><i>·</i>卖家已拒绝，请修改退款申请。</li>
+                            <li><i>·</i>拒绝原因：<{$de.refuse_reason}>。</li>
+                            <li><i>·</i>您修改退款申请后，卖家会重新处理。</li>
+                        </ul>
+                        <a class="btn" href="main.php?m=product&s=admin_apply&order_id=<{$de.order_id}>&id=<{$de.product_id}>">修改退款申请</a>
+                    <{else}>
+                        <h2>请您等待卖家处理</h2>
+                        <ul>
+                            <{if $de.order_status ==2 }>
+                                <li><i>·</i>如果卖家同意，将直接退款给您。</li>
+                                <li><i>·</i>如果卖家发货，退款将关闭，您可以再次发起申请。</li>
+                            <{else}>
+                                <li><i>·</i>如果卖家同意，会将退货地址发给您，需要您退货给卖家。</li>
+                                <li><i>·</i>如果卖家拒绝，需要您修改退货申请。</li>
+                            <{/if}>
+                        </ul>
+                    <{/if}>
+                    <div class="other-actions">
+                        您还可以：
+                        <a href="main.php?m=product&s=admin_apply&order_id=<{$de.order_id}>&id=<{$de.product_id}>">修改退款申请</a>
+                        <span>|</span>
+                        <a onclick="return confirm('取消退款申请后，本次退款将关闭，您还可以再次发起退款/退货。确定继续吗？')" href="main.php?m=product&s=admin_apply_detail&act=close&id=<{$de.refund_id}>">取消退款申请</a>
+                    </div>
+                <{/if}>
+                
+                <{if $type == 'seller'}>
+                	<{if $de.status==4}>
+                    	<h2>请等待买家修改退款申请</h2>
+                        <ul>
+                        	<li><i>·</i>买家修改退款申请后，需要您重新处理。</li>
+                        </ul>
+                    <{else}>
+                    <h2>请处理退款申请</h2>
+                        <{if $de.order_status ==2 }>
+                        <ul>
+                            <li><i>·</i>如果未发货，请点击同意来退款给买家。</li>
+                            <li><i>·</i>如果已发货，请主动与买家联系确认后再点击发货。</li>
+                        </ul>
+                        <form id="form" method="post">
+                        <input type="hidden" name="act" value="agree" />
+                        <input type="hidden" name="refund_id" value="<{$de.refund_id}>" />
+                        <a class="btn mt20" id="agree" href="#">同意</a>
+						<a class="btn mt20 white" href="main.php?m=product&s=admin_deliver&order_id=<{$de.order_id}>">发货</a>
+                        </form>
+                        <{else}>
+                        <ul>
+                        	<li><i>·</i>如果同意退货，请先告知买家退货地址。</li>
+                            <li><i>·</i>如果确认收货，将直接退款给买家。</li>
+                        </ul>
+                        <form id="form" method="post">
+                        <input type="hidden" name="act" value="agree" />
+                        <input type="hidden" name="refund_id" value="<{$de.refund_id}>" />
+                        <a class="btn mt20" id="agree" href="#">确认收货</a>
+                        <a class="btn mt20 white" href="#">拒绝退货申请</a>
+                        </form>
+                        <div class="refuse hidden">
+                        <form method="post">
+           			 		<input type="hidden" name="act" value="refuse" />	
+                        	<p>
+                            	<textarea placeholder="拒绝原因" name="refuse_reason"></textarea>
+                            </p>
+                            <p>
+                            	<input class="btn" type="submit" value="确定拒绝退货申请" />
+                        	</p>
+                        </form>    
+                        </div>
+                        <script type="text/javascript">
+                        $(".white").click(function(){
+							$(".refuse").show();
+						})
+                        </script>
+                        <{/if}>
+                        <script type="text/javascript">
+                        $("#agree").click(function(){
+							$("#form").submit();
+						})
+                        </script>
+                        </form>
+                     <{/if}>
+                <{/if}>
+            <{/if}>
+        </div>
+        <div class="review-panel">
+        	<div class="mt"><h2>留言板</h2></div>
+            <{if $de.status!=0&&$de.status!=5}>
+        	<div class="mc">
+            <form method="post">
+            <input type="hidden" name="act" value="review" />	
+                <p><textarea name="msg"></textarea></p>
+                <ul><li><img class="hidden" width="60" id="pic_img" /></li></ul>
+                <div class="control-bar">
+                    <span>
+                        <input type="hidden" name="pic" id="pic" value="" />
+                        <a href="javascript:uploadfile('上传凭证','pic',600,600,'apply')">上传凭证</a>
+                    </span>
+                    <em>单张不超过<{$image_config.image_size}>M，支持<{$image_config.image_extension}>格式</em>
+                    <p><input type="submit" class="btn" value="发表留言" /></p>    
+                </div>
+            </form>
+            </div>
+            <{/if}>
+            <div class="mb">
+            <{foreach item=list from=$talk}>
+           	 	<div class="reivew-item clearfix">
+            		<p><img width="38"  src="<{$list.logo}>" /></p>
+                    <dl>
+                    	<dt><em><{$list.user}></em> (<{$list.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}>)</dt>
+                        <dd><{$list.content}></dd>
+                    </dl>
+                    <{if $list.pic}>
+                    <ul>
+                        <li><a target="_blank" href="<{$list.pic}>"><img width="80" src="<{$list.pic}>" /></a></li>
+                    </ul>
+                    <{/if}>
+                </div>
+            <{/foreach}>
+            </div>
+        </div>	
+    </div>
+    <div class="apply_right">
+    	<h1><strong><{if $de.order_status==4}>售后申请<{else}>退款/退货申请<{/if}></strong></h1>
+        <table>
+        	<tr>
+            	<th><img src="<{$de.pic}>_60X60.jpg" /></th>
+                <td><a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$de.pid}>"><{$de.name}></a></td>
+            </tr>
+            <tr class="empty dotted">
+            	<th></th>
+            	<td></td>
+            </tr>
+            <tr class="empty">
+            	<th></th>
+            	<td></td>
+            </tr>
+            <tr>
+            	<th>买家要求：</th>
+                <td><em><strong><{if $de.type==1}>仅退款<{else}>退款退货<{/if}></strong></em></td>
+            </tr>
+            <tr>
+            	<th>退款金额：</th>
+                <td><em><{$de.refund_price}></em> 元</td>
+            </tr>
+            <tr>
+            	<th>原　　因：</th>
+                <td><{$de.reason}></td>
+            </tr>
+            <tr>
+            	<th>货物状态：</th>
+                <td><{if $de.goods_status==1}>已<{else}>未<{/if}>收到货</td>
+            </tr>
+            <tr>
+            	<th>退款编号：</th>
+                <td><{$de.refund_id}></td>
+            </tr>
+            <tr>
+            	<th>申请时间：</th>
+                <td><{$de.create_time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+            </tr>
+        </table>
+        <table class="seller">
+            <tr class="empty">
+            	<th></th>
+            	<td></td>
+            </tr>
+            <tr>
+            	<th>卖　　家：</th>
+            	<td><{$de.user}></td>
+            </tr>
+            <tr>
+            	<th>订单编号：</th>
+            	<td><a target="_blank" href=""><{$de.order_id}></a></td>
+            </tr>
+        	<tr>
+            	<th>单　　价：</th>
+            	<td><{$de.price}>元 * <{$de.num}>（数量）</td>
+            </tr>
+            <tr>
+            	<th>宝贝实付：</th>
+            	<td><b><{$de.product_price|number_format:2}></b> 元</td>
+            </tr>
+            <{if $de.status==400}>
+        	<tr>
+            	<th>运　　费：</th>
+            	<td><b><{if $de.status==4}><{$de.logistics_price|number_format:2}><{else}>0.00<{/if}></b> 元</td>
+            </tr>
+            <{/if}>
+        </table>
+    </div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+$("#pic_img").load(function(){
+	var src = $(this).attr("src");
+	if(src) $(this).show();	
+});
+</script>

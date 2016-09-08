@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <link href="<{$config.weburl}>/templates/default/user_admin/user_admin.css" rel="stylesheet" type="text/css" />
+        <script src="<{$config.weburl}>/script/jquery-1.4.4.min.js"></script>
+        <script src='<{$config.weburl}>/script/jquery.cookie.js'></script>
+    </head>
+    <body>
+    <style type="text/css">
+    *{font-size:12px;font-family: "宋体"}
+    button{width: 80px;height: 33px;padding:0px;}
+    #iscookied{position: relative;top:2px;}
+    </style>
+    	<p style="line-height:26px;padding:10px 8px">　　您还没有绑定邮箱，无法使用密码找回功能，是否现在去绑定邮箱？</p>
+    	<p style="line-height:26px;text-align:center;">
+    		<input type="checkbox" id="iscookied"> <label for="iscookied">不再提醒</label> 　　<button id="closebox">稍后再说</button>　<button id="turnUrl">现在就去</button>
+    	</p>	
+    </body>
+    <script>
+    	$("#closebox").click(function(){
+    		if($("#iscookied").attr("checked"))
+    		{
+    			$.cookie("alttips","1");
+    		}
+    		closeThis();
+    	})
+        
+        $("#turnUrl").click(function(){
+        	parent.document.location.href="<{$config.weburl}>/main.php?m=member&s=admin_member&type=email"
+        })    
+           
+        function closeThis(){
+            parent.document.body.removeChild(parent.document.getElementById("bgObj"));
+            parent.document.body.removeChild(parent.document.getElementById("msgObj"));
+        }
+    </script>
+</html>

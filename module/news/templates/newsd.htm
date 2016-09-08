@@ -1,0 +1,77 @@
+<div class="new_bg">
+	<div class="new_nei">
+        <h2>新闻</h2>
+        <div class="new_neiz">
+            <div class="new_xq">
+                <div class="new_xqh">
+                    <h3><{if $de.ftitle}><{$de.ftitle}><{else}><{$de.title}><{/if}></h3>
+                    <div class="new_xqsj"><{if $de.writer}><a>发布人：<{$de.writer}></a>&nbsp;<{/if}><a>时间：<{$de.uptime|date_format}></a>&nbsp;<a>阅读数：<{$de.onclick}></a></div>
+                </div>
+                <div class="new_xqzw"><{$de.con}></div>
+            </div>
+            <{if $vote}>
+            <div class="new_tp">
+                <h3>调查结果</h3>
+                <form action="<{$config.weburl}>/?m=vote&s=vote&id=<{$smarty.get.id}>" method="post">
+                <table>
+                <tbody>
+                <{foreach item=list name=name from=$vote}>
+                <tr><td style="font-weight:bold;"><{$smarty.foreach.name.iteration}>.<b><{$list.title}></b> <{if $list.end==1}><font color="#FF0000">(<{$lang.closed}>)</font><{/if}><{if $list.ip==1}><font color="#FF0000">(<{$lang.voted}>)</font><{/if}></td></tr>
+                <{foreach item=slist name=loop from=$list.item}>
+                <tr>
+                <td><{if $list.end!=1 and $list.ip!=1}><input type="<{if $list.votetype==0}>radio<{else}>checkbox<{/if}>" class="radio" value="<{$smarty.foreach.loop.iteration}>" name="vote<{$list.id}>[]"><{/if}><!--<{$smarty.foreach.loop.iteration}>.--><{$slist.0}></td>
+                </tr>
+                <{/foreach}>
+                <tr><td></td></tr>
+                <{/foreach}>
+                <tr>
+                    <td>
+                    <input type="submit" value="投 票" name="Submit" style="width:100px;height:30px;background:#ff6600; border:1px solid #ff6600 !important; color:#fff !important; margin-right:20px;  margin-top:10px; margin-bottom:10px;">
+                    <input type="button" onClick="javascript:window.open('<{$config.weburl}>/?m=vote&id=<{$smarty.get.id}>')"  value="查 看" name="Submit" style="width:100px;height:30px;background:#ff6600; border:1px solid #ff6600 !important; color:#fff !important; margin-top:10px; margin-bottom:10px;">
+					</td>
+                </tr>
+                </tbody>
+                </table>
+                </form>
+            </div>
+            <{/if}>
+        </div>
+        <div class="new_neiy">
+            <b>推荐阅读</b>
+            <ul><{insert name="label" type='news' temp='news_list' img='true' leng=16 limit = 8}></ul>
+            <div class="new_banner"><a href="#"><img src="image/new_banner1.jpg" /></a><a href="#"><img src="image/new_banner2.jpg" /></a></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<style>
+.menu{ margin-bottom:0px !important;}
+.new_bg{background:#F2F2F2; width:100%; padding:15px 0px;}
+.new_nei{margin:0 auto; width:1200px; background:#fff;}
+.new_nei h2{background:#fbfbfb; height:35px; line-height:35px; border-bottom:1px solid #f5f4f4; font-family:微软雅黑; font-size:16px; font-weight:normal; padding-left:20px;}
+.new_neiz{float:left; width:949px; border-right:1px solid #f5f4f4;}
+.new_neinr p{line-height:24px;}
+.new_xq{padding:20px;}
+.new_xqh{border-bottom:1px solid #f5f4f4; width:900px; margin:0 auto;}
+.new_xqh h3{font-family:微软雅黑; font-size:24px; text-align:center; padding:20px 0px;}
+.new_xqsj{color:#939393; text-align:center; padding-bottom:10px;}
+.new_xqzw{font-size:12px; color:#333333; padding:20px;}
+.new_xqzw p{line-height:26px;}
+.new_xqzw img{ text-align:center; padding-bottom:20px;}
+.new_tp{margin:0px 25px; border:1px solid #eeeeee; margin-bottom:30px; padding:20px; background-color:#f9f9f9;}
+.new_tp h3{font-size:18px; padding-bottom:15px; font-family:微软雅黑;}
+.new_tp td{ padding-top:5px; padding-right:80px;}
+
+.new_ym{padding-bottom:30px; padding-left:30px;}
+.clear{clear:both;}
+.new_neiy{float:right; width:250px; margin:0 auto; padding-top:20px;}
+.new_neiy b{ font-size:16px; padding:20px 15px 0px; font-family:微软雅黑; color:#333;}
+.new_neiy_a{width:100px;}
+.new_neiy_a img{width:100px; height:75px;}
+.new_neiy ul{list-style:none; padding:0px 15px;}
+.new_neiy li{margin: 15px 0 0;}
+.new_banner{ margin-top:30px; border-top:1px solid #F5F4F4;}
+.new_banner img{width:217px; padding:15px 15px 0;}
+.footer{margin-top:0px !important;}
+/*---http://democn.mall-builder.com/?m=news&s=newsd&id=1----*/
+</style>

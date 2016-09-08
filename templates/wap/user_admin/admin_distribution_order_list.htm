@@ -1,0 +1,109 @@
+<script src="<{$config.weburl}>/script/jquery-1.4.4.min.js" type="text/javascript"></script>
+<link href="<{$config.weburl}>/templates/wap/css/buyorder.css" rel="stylesheet" type="text/css" />
+<header>
+	<div class="nav-w">
+	<section class="nav-s iconfont"><a href="<{$config.weburl}>/main.php?cg_u_type=2&st=0"><font>&#xe60d</font></a></section>
+		<section class="nav-c">
+            <span class="select">
+                <{if     $smarty.get.status=='1'}>等待付款
+                <{elseif $smarty.get.status=='2'}>等待发货
+                <{elseif $smarty.get.status=='3'}>已经发货
+                <{elseif $smarty.get.status=='4'}>已经完成
+                <{elseif $smarty.get.status=='0'}>交易关闭
+              
+				<{/if}>
+                <em></em>
+            </span>
+            <div style="display:none;" class="i-select">
+                <ul>
+                   
+                    <li key="1"><a href="<{$config.weburl}>/main.php?m=distribution&s=admin_distribution_order_list&status=1">等待付款</a></li>
+                    <li key="2"><a href="<{$config.weburl}>/main.php?m=distribution&s=admin_distribution_order_list&status=2">等待发货</a></li>
+                    <li key="3"><a href="<{$config.weburl}>/main.php?m=distribution&s=admin_distribution_order_list&status=3">已经发货</a></li>
+                    <li key="4"><a href="<{$config.weburl}>/main.php?m=distribution&s=admin_distribution_order_list&status=4">已经完成</a></li>
+                    <li key="0"><a href="<{$config.weburl}>/main.php?m=distribution&s=admin_distribution_order_list&status=0">交易关闭</a></li>
+                </ul>
+            </div>
+        </section>
+        <section class="nav-e"></section>
+    </div>
+</header>
+<script>
+
+$(function(){
+	$(".select").click(function(){ 
+		var obj=$(this);
+		$(this).next().slideToggle("fast",function(){
+		if($(obj).next().is(":visible")){
+			$(document).one('click',function(){
+				$(".select").next().slideUp("fast");
+			});
+		}});
+	});
+	$(".i-select li").click(function(){
+		var str=$(this).html();
+		$(this).parent().parent().prev().html(str+" <em class='up'></em>");
+		$(this).parent().parent().slideToggle();
+	});
+});
+</script>
+
+
+<section class="order">
+
+   <{foreach item=sellist from=$slist.list}>
+   
+<div class="item">
+ 	<div class="top"><a href="shop.php?uid=<{$sellist.userid}>"><{$sellist.company}></a></div>	 
+		<{foreach item=psellist from=$sellist.product}>      
+    <a href="<{$config.weburl}>/?m=product&s=detail&id=<{$psellist.pid}>">
+
+       <dl class="clearfix">
+        <dt><img height="80" width="80" src="<{$psellist.pic}>"></dt>
+        <dd>
+            <p class="p-name"><{$psellist.name}></p>
+            <p class="p-price"><strong><{$config.money}><{$psellist.price}></strong> x <{$psellist.num}></p>
+			<p class="p-commissin">佣金 <strong> <{$psellist.commission_product_price_0|number_format:2}> </strong> 元</p>
+			<p class="p-commissin">运费 <strong> <{$sellist.logistics_price|number_format:2}> </strong> 元</p>
+        </dd>
+        </dl>
+		
+        </a>
+		<{/foreach}>
+ 	<div class="bottom">
+	   <{if $sellist.status==1}>
+	   
+    	待付款:&nbsp;&nbsp;<span class="p-name"><strong><{$config.money}><{$sellist.product_price+$sellist.logistics_price|number_format:2}></strong></span>
+        <span>
+        <a class="pay_button" target="_blank" href="<{$config.weburl}>/pay?m=payment&s=pay&tradeNo=<{$sellist.order_id}>">付款</a>             	
+         </span>
+		 <{elseif $sellist.status==2}>
+		总计:&nbsp;&nbsp;<span class="p-name"><strong><{$config.money}><{$sellist.product_price+$sellist.logistics_price|number_format:2}></strong></span>
+         <span>
+         <a class="pay_button" target="_blank" href="#">等待发货</a>
+         </span>
+		 
+		  <{elseif $sellist.status==3}>
+		  总计:&nbsp;&nbsp;<span class="p-name"><strong><{$config.money}><{$sellist.product_price+$sellist.logistics_price|number_format:2}></strong></span>
+		 <span> <a class="pay_button" target="_blank" href="#">已经发货</a> </span> 
+		 
+		  <{elseif $sellist.status==4}>
+		  总计:&nbsp;&nbsp;<span class="p-name"><strong><{$config.money}><{$sellist.product_price+$sellist.logistics_price|number_format:2}></strong></span>
+		   <span> <a class="pay_button" target="_blank" href="#">已经完成</a> </span> 
+		  <{elseif $sellist.status==0}>
+		  总计:&nbsp;&nbsp;<span class="p-name"><strong><{$config.money}><{$sellist.product_price+$sellist.logistics_price|number_format:2}></strong></span>
+		   <span> <a class="pay_button" target="_blank" href="#">交易关闭</a> </span> 
+		 <{/if}>
+		 
+    </div>	   
+</div>
+   <{foreachelse}>
+<div class="itemsNull">
+    <h3>无相关信息</h3>
+</div>
+
+   <{/foreach}>
+
+<{$slist.page}>
+
+</section>

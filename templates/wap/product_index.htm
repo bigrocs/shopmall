@@ -1,0 +1,159 @@
+<script type="text/javascript">
+	var web_url = "<{$config.weburl}>"
+</script>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery-1.11.2.min.js"></script>
+<link href="<{$config.weburl}>/templates/<{$config.temp}>/css/new_page.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" href="<{$config.weburl}>/script/owl-carousel/owl.carousel.css">
+<!-- Default Theme -->
+<link rel="stylesheet" href="<{$config.weburl}>/script/owl-carousel/owl.theme.css">
+<script src="<{$config.weburl}>/script/owl-carousel/owl.carousel.min.js"></script>
+
+<section id="J_search" class="in-search cc-search showoff">
+	<div class="main95">
+        <div class="s_left"></div>
+        <div class="s_main">
+            <input type="text" value="" autocomplete="off" placeholder="搜索宝贝、店铺" />
+        </div>
+    </div>
+</div>
+</section>
+<section class="m_main">
+	<div class="m w100">
+	    <div id="owl-demo" class="owl-carousel owl-theme">
+	        <div class="item"><script src='<{$config.weburl}>/api/ad.php?id=13&catid=1'></script></div>
+	        <div class="item"><script src='<{$config.weburl}>/api/ad.php?id=13&catid=2'></script></div>
+	        <div class="item"><script src='<{$config.weburl}>/api/ad.php?id=13&catid=3'></script></div>
+	    </div>
+    </div>
+</section>
+
+<section class="m_main">
+	<section class="m">
+		<ul class="mm_icon"><!--
+			<li>
+				<a href="#">
+					<div class="index_icon1 icon1"></div>
+					<div class="index_pline">今日活动</div>
+				</a>
+			</li>-->
+			<li>
+				<a href="<{$config.weburl}>/?m=tg">
+					<div class="index_icon1 icon2"></div>
+					<div class="index_pline">团购</div>
+				</a>
+			</li><!--
+			<li>
+				<a href="#">
+					<div class="index_icon1 icon3"></div>
+					<div class="index_pline">秒杀</div>
+				</a>
+			</li>-->
+			<li>
+				<a href="<{$config.weburl}>/cat.php">
+					<div class="index_icon1 icon4"></div>
+					<div class="index_pline">类目</div>
+				</a>
+			</li>
+			<li>
+				<a href="<{$config.weburl}>/?m=shop&s=list">
+					<div class="index_icon1 icon5"></div>
+					<div class="index_pline">周边</div>
+				</a>
+			</li>
+			<li>
+				<a href="<{$config.weburl}>/?m=points&s=list&type=voucher">
+					<div class="index_icon1 icon6"></div>
+					<div class="index_pline">优惠券</div>
+				</a>
+			</li>
+			<li>
+				<a href="<{$config.weburl}>/main.php?m=member&s=admin_buyer_card&cg_u_type=1">
+					<div class="index_icon1 icon7"></div>
+					<div class="index_pline">会员卡</div>
+				</a>
+			</li>
+			<li>
+				<a href="<{$config.weburl}>/?m=shop">
+					<div class="index_icon1 icon8"></div>
+					<div class="index_pline">商家列表</div>
+				</a>
+			</li>
+		</ul>
+	</section>
+</section>
+
+<section class="m_main">
+	<section class="m">
+	<h2 class="index_tt">精选频道</h2>
+	</section>
+</section>
+<section class="m_main">
+	<section class="m">
+    	<div class="slide clearfix">
+        </div>
+    	<div class="cates">
+            <ul class="cateul">
+			<{foreach item=cList name=cat key=num from=$categorys}>
+			<{if $smarty.foreach.cat.iteration lt 10}>
+            <li class="mm_flt">
+                <a href="<{$config.weburl}>/?m=product&s=list&id=<{$cList.catid}>" data-refresh-ajax="true">
+                <img src="<{if $cList.pic}><{$cList.pic}><{else}><{$config.weburl}>/image/wap/cate<{$smarty.foreach.cat.iterationv}>.png<{/if}>" class="cateimg"/>
+                <p class="catename"><{$cList.name|truncate:8:""}></p>
+                </a>
+            </li>
+             <{/if}>
+            <{/foreach}>
+            </ul>
+        </div>
+        <div class="avs">
+            <script src='<{$config.weburl}>/api/ad.php?id=14'></script>
+        </div>
+    </section>
+</section>
+
+<section class="m_main">
+	<div class="m">
+		<h2 class="index_tt">周边商家</h2>
+        <div class="shop nearShop clearfix">
+         <img src="image/default/loding.gif" width="50px" />
+        </div>
+	</div>
+</section>
+
+
+<section class="m_main">
+	<div class="m">
+		<h2 class="index_tt">更多精彩</h2>
+        <div class="shop clearfix">
+
+            <ul class="shoplist">
+            <{insert name="label" type="product" o=4 temp="product_list_li_0" limit=20}>
+            </ul>
+        </div>
+	</div>
+</section>
+
+<section class="s-page">
+	<div class="cc-search-hide">
+        <a class="cc-back">关闭</a>
+        <ul class="cc-search-tab">
+            <li data="product" data-s="list" class="cur" i="event_submit_do_new_search_auction">宝贝</li>
+            <li data="shop" data-s="index" i="event_submit_do_search_shop">店铺</li>
+        </ul>
+    </div>
+    <div id="J_dropdown" class="c-form-suggest">
+	<div class="c-form-search">
+		<form id="J_indexform" name="wapSearchForm" action="#" method="get" autocomplete="off">
+		<input id="m" name="m" type="hidden" value="product">
+		<input id="s" name="s" type="hidden" value="list">
+			<input id="J_searchtext" class="inp-search" name="key" value="" autocomplete="off" placeholder="搜索宝贝、店铺"><a id="J_cleartext" class="clearText"><span></span></a>
+            <input type="submit" value="" name="search-bton" class="bton-search">
+		</form>
+	</div>
+	<div class="suggest" style="display: block;">
+	</div>
+</section>
+<script src='<{$config.weburl}>/script/jquery.cookie.js' type='text/javascript'></script>
+<script src='http://api.map.baidu.com/api?v=2.0&ak=GAGiz9gdoRfTpImL6A2RZYxH' type='text/javascript'></script>
+<script type="text/javascript" src="http://developer.baidu.com/map/jsdemo/demo/convertor.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/wap_index.js"></script>

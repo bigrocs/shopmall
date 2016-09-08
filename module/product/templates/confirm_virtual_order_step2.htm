@@ -1,0 +1,103 @@
+<{include file="../../../templates/default/site_nav.htm"}>
+<link type="text/css" rel="stylesheet" href="<{$config.weburl}>/module/product/templates/order.css">
+<script type="text/javascript" src="<{$config.weburl}>/script/district.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/order.js"></script>
+<script type="text/javascript">
+weburl="<{$config.weburl}>";
+</script>
+<div class="header">
+	<div class="w fn-clear">
+        <div class="logo">
+        <a title="<{$config.company}>" href="<{$config.weburl}>"><img src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.gif<{/if}>" /></a>
+        </div>
+		<div class="search">
+            <form action="" class="form" method="get">
+            <div class="i-search">
+                <input type="hidden" value="product" name="m" id="m">
+                <input type="hidden" value="list" name="s" id="s">
+                <input type="text" class="text" name="key" id="key" value="<{$smarty.get.key}>" autocomplete="off">
+			</div>
+            <input type="submit" value="搜&nbsp;索" class="button">
+            </form>
+        </div>
+    </div>  
+</div>
+<div class="cart w">
+<form id="form" method="post" action="" class="step">
+    <div class="mall-receipt-info">
+      <div class="mall-receipt-info-title">
+        <h3>电子兑换码/券接收方式</h3></div>
+        <div id="invoice_list" class="mall-candidate-items">
+            <p>手机号码：<input name="buyer_phone" class="inputElem text" autocomplete="off" type="text" id="buyer_phone" value="<{$mobile}>" maxlength="11"><span class="a-tips"></span></p>
+            <p class="v-o-tips"><i class="icon-info-sign"></i>您本次购买的商品不需要收货地址，请正确输入接收手机号码，确保及时获得“电子兑换码”。可使用您已经绑定的手机或重新输入其它手机号码。</p>
+        </div>
+      </div>
+    
+        <table width="100%" cellpadding="0" cellspacing="0" class="cart-con">
+            <tbody>
+                <tr>
+                    <th class="first">产品</th>
+                    <th width="150">单价(元)</th>
+                    <th width="120">数量</th>
+                    <th width="140">总计(元)</th>
+                </tr>
+            
+                <tr class="shop">
+                    <td colspan="7">
+                    店铺:&nbsp;<a target="_blank" href="shop.php?uid=<{$re.seller_id}>"><{$re.company}></a>
+                    </td>
+                </tr>
+                <tr class="item">
+                    <td class="name">
+                        <div class="fl">
+                        <a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$re.id}>"><img height="60" alt="<{$re.name}>" src="<{$re.pic}>_60X60.jpg"></a>
+                        </div>
+                        <p><a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&id=<{$re.id}>"><{$re.name}><br />
+                        <{$re.setmeal}>
+                        </a></p>
+                    </td>
+                    <td><{$re.price}></td>
+                    <td><{$smarty.post.nums}></td>
+                    <td class="price"><b><{$smarty.post.nums*$re.price}></b></td>
+                </tr>
+                <tr class="other">
+                    <td colspan="2"  class="msg">
+                    <p>补充说明: <input placeholder="选填，可告诉卖家您的特殊要求" name="msg_1"></p>
+                    <input type="hidden" name="invoice_1" value="">
+                    </td>
+                    <td valign="top" colspan="2" style="padding-right:18px;" class="price v-t-price">
+                        商品总价：<b><{$config.money}><{$smarty.post.nums*$re.price}></b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="hidden" name="act"  value="step3" />
+        <input type="hidden" name="id"  value="<{$smarty.post.id}>" />
+        <input type="hidden" name="sid"  value="<{$smarty.post.sid}>" />
+        <input type="hidden" name="nums"  value="<{$smarty.post.nums}>" />
+        <input type="submit" class="order_submit" style="margin-top:8px;" />
+    </form>
+</div>
+<script type="text/javascript">
+    $(".order_submit").click(function(){
+        var num = $("#buyer_phone").val();
+        if(!num)
+        {
+            $("#buyer_phone").focus();
+            alert("请填写手机号码")
+            return false;
+        }
+        var partten = /^(1[3|4|5|8])[0-9]{9}$/;
+        if(partten.test(num))
+        {
+            return true;
+        }
+        else
+        {
+            $("#buyer_phone").focus();
+            alert("请填写正确的手机号码")
+            return false;
+        }
+    })
+</script>
+<{include file="../../../templates/default/footer.htm"}>

@@ -1,0 +1,42 @@
+<div class="path">
+    <div>
+        <a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span>
+        快递鸟在线下单
+    </div>
+</div>
+<div class="main">
+    <div class="wrap">
+        <form method="post" id="deliver_form" name="deliver_form">
+            <input type="hidden" name="act" value="create_kdniao_order" />
+            <input type="hidden" name="id" value="<{$smarty.get.order_id}>" />
+            <table class="table-list-style fast" style="width:auto;">
+                <tr>
+                    <td width="150" class="bdl">物流公司名称</td>
+                    <td width="10"></td>
+                    <td class="tl" width="350">运单号</td>
+                    <td width="90" class="bdr">操作</td>
+                </tr>
+
+                <{if $logistics_kdniao_connect}>
+                <tr>
+                    <td class="bdl">快递鸟-选择物流公司</td>
+                    <td class="bdl"></td>
+                    <td class="tl"><select name="logistics_code">
+                        <{foreach key=code item=label from=$kdniao_logistics_config}>
+                        <option   value ="<{$code}>" selected=''><{$label}></option>
+                        <{/foreach}>
+                    </select></td>
+                    <td class="bdl bdr"><a class="btn2" href="javascript:void(0);" values="<{$list.id}>" values1="<{$list.company}>" genre="send" >快递下单</a></td>
+                </tr>
+                <{/if}>
+            </table>
+        </form>
+        <script type="text/javascript">
+            $('a[genre="send"]').live('click',function(){
+
+                $('input[values="'+$(this).attr('values')+'"]').attr('disabled',false);
+                $('#deliver_form').submit();
+            });
+        </script>
+    </div>
+</div>

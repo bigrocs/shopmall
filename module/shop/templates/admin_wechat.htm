@@ -1,0 +1,40 @@
+
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span> 
+        <a href="main.php?m=shop&s=myshop">店铺设置</a> <span>&gt;</span> 
+        店铺设置
+    </div>
+</div>
+<div class="main">
+	<div class="wrap">
+        <div class="hd">
+            <ul class="tabs">
+                <li class="normal"><a href="main.php?m=shop&s=myshop">店铺设置</a></li>
+                <li class="normal"><a href="main.php?m=shop&s=admin_custom_service">客服中心</a></li>
+                <li class="normal"><a href="main.php?m=shop&s=admin_certification">认证设置</a></li>
+                <li class="normal"><a href="main.php?m=shop&s=admin_shop_set">幻灯片设置</a></li>
+                <li class="active"><a href="main.php?m=shop&s=admin_wechat">微信公共平台</a></li>
+                <li class="normal"><a href="main.php?m=shop&s=admin_wapset">wap端设置</a></li>
+			</ul>
+        </div>
+        
+        <div class="form-style">
+            <dl>
+                <dt><em>*</em>URL：</dt>
+                <dd>
+                <p><input readonly="readonly" class="w400" type="text" value="<{$config.weburl}>/api/wechat.php?uid=<{$buid}>" /></p>
+                </dd>
+            </dl>
+            <dl>
+                <dt>Token：</dt>
+                <dd>
+                	<p><input readonly="readonly" type="text" value="WeiXin" /></p>
+                    <p class="hint"><a target="_blank" href="http://mp.weixin.qq.com/wiki/index.php?title=%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97">什么是Token？</a></p>
+                </dd>
+            </dl>
+           
+        </div>  
+        
+   </div>
+</div>

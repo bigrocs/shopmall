@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>注册 - <{$config.company}></title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link href="templates/css/base.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../script/jquery.validation.min.js"></script>
+<script>
+$(function(){
+	$('#form').validate({
+		errorPlacement: function(error, element){
+			element.next('.form-error').append(error);
+		},      
+		rules : {
+			pass1:{
+				required:true,
+				minlength:"6",
+				maxlength:"16"
+			},
+			re_pass1:{
+				required:true,
+				equalTo: "#pass1" 
+			},
+			pass:{
+				required:true,
+				minlength:"6",
+				maxlength:"16"
+			},
+			re_pass:{
+				required:true,
+				equalTo: "#pass" 
+			},
+			
+			real_name:{
+				required:true
+			},
+			identity_card:{
+				required:true
+			}
+		},
+		messages : {
+			
+			pass1:{
+				required:'请输入登录密码。',
+				minlength:"支付登录长度应为6-16个字符。",
+				maxlength:"支付登录长度应为6-16个字符。"
+			},
+			re_pass1:{
+				required:'请输入登录密码。',
+				equalTo:'两次密码输入不一致。'
+			},
+			
+			pass:{
+				required:'请输入支付密码。',
+				minlength:"支付密码长度应为6-16个字符。",
+				maxlength:"支付密码长度应为6-16个字符。"
+			},
+			re_pass:{
+				required:'请输入支付密码。',
+				equalTo:'两次密码输入不一致。'
+			},
+			
+			real_name:{
+				required:'请输入您的姓名。'
+			},
+			identity_card:{
+				required:'请输入您的身份证号码。'
+			}
+		}
+	});
+});
+</script>
+</head>
+<body>
+<div class="header">
+	<div class="w">
+    	<div class="logo">
+            <a href="index.php"><img height="40" src="<{if $config.logo}><{$config.logo}><{else}>../image/logo.gif<{/if}>" /></a>
+            <strong>注册</strong>
+        </div>
+    </div>
+</div>
+<div class="container w">
+    <ol class="fn-clear step2">
+        <li class="fore1">  
+            <em class="icon">        
+                <i></i>
+                <strong></strong>
+                <b>1</b>
+            </em>
+            <span>验证身份</span>
+        </li>			
+        <li class="fore2">
+            <em class="icon">        
+                <i></i>
+                <strong></strong>
+                <b>2</b>
+            </em>
+            <span>设置身份信息</span>
+        </li>			
+        <li class="fore3">
+            <em class="icon">        
+                <i></i>
+                <b>3</b>
+            </em>
+            <span>成功</span>
+        </li>	
+    </ol>
+    <div class="m">
+    <form method="post" id="form">
+    <input type="hidden" value="submit" name="act" />
+    	<div class="item fn-clear">
+        	<label><{$config.company}>账户名</label>
+            <strong><{$de.pay_email}></strong>
+        </div>
+        <h3>
+            <strong>设置登录密码</strong>
+            <span>登录时需验证，保护账户信息</span>
+        </h3>
+        <div class="item fn-clear">
+        	<label>登录密码</label>
+            <input type="password" class="text" name="pass1" id="pass1" value="" />
+            <div class="form-error"></div>
+        </div>
+        <div class="item fn-clear">
+        	<label>再输入一次</label>
+            <input type="password" class="text" name="re_pass1" id="re_pass1" value="" />
+            <div class="form-error"></div>
+        </div>
+        <h3>
+            <strong>设置支付密码</strong>
+            <span>交易付款或账户信息更改时需输入，与登录密码不一样，安全级别更高</span>
+        </h3>
+        <div class="item fn-clear">
+        	<label>支付密码</label>
+            <input type="password" class="text" name="pass" id="pass" value="" />
+            <div class="form-error"></div>
+        </div>
+        <div class="item fn-clear">
+        	<label>再输入一次</label>
+            <input type="password" class="text" name="re_pass" id="re_pass" value="" />
+            <div class="form-error"></div>
+        </div>
+        <h3>
+            <strong>设置身份信息</strong>
+            <span><em>请务必准确填写本人的身份信息，注册后不能更改，</em>隐私信息未经本人许可严格保密</span>
+        </h3>
+        <div class="item fn-clear">
+        	<label>真实姓名</label>
+            <input type="text" class="text" name="real_name" id="real_name" value="" />
+            <div class="form-error"></div>
+        </div>
+        <div class="item fn-clear">
+        	<label>身份证号码</label>
+            <input type="text" class="text" name="identity_card" id="identity_card" value="" />
+            <div class="form-error"></div>
+        </div>
+       	<div class="item btn">
+        	<input type="submit" value="确 定" />
+        </div>
+    </form>    
+    </div>
+</div>
+<{include file="footer.htm"}>
+</body>
+</html>

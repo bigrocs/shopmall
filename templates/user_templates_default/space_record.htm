@@ -1,0 +1,48 @@
+<table width="100%" cellpadding="0" cellspacing="0" class="record">
+<thead>
+    <tr>
+        <td colspan="5">交易中<b><{$re.total1}></b>笔，交易成功<b><{$re.total2}></b>笔，纠纷退款<b><{$re.total3}></b>笔</td>
+    </tr>
+    <tr>
+        <td colspan="5">原价：<{$config.money}><em><{$de.price}></em><span>拍下价格的不同可能会由促销和打折引起的，详情可以咨询卖家。</span></td>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <th class="pl15">买家</th>
+        <th>拍下价格</th>
+        <th>数量</th>
+        <th>付款时间</th>
+        <th>款式和型号</th>
+    </tr>
+    <{foreach item=list from=$re.list}>
+    <tr>
+        <td class="pl15">
+        <p>&nbsp;<{$list.user}></p>
+        <p><img src="image/points/<{$list.buyerpoints}>" /></p>
+        </td>
+        <td><span><{$config.money}><b><{$list.price*$list.num|number_format:2}></b></span></td>
+        <td><{$list.num}></td>
+        <td><{$list.time|date_format:"%Y-%m-%d&nbsp;%H:%M:%S"}></td>
+        <td class="spec">
+        <{foreach item = slist from = $list.spec}>
+        <{$slist}>
+        <{/foreach}>
+        </td>
+    </tr>
+    <{foreachelse}>
+    <tr>
+        <td class="no-result" colspan="5">暂时还没有买家购买此商品</td>
+    </tr>
+    <{/foreach}>
+</tbody>  
+</table>
+<div class="pages"><{$re.page}></div>
+<script type="text/javascript">
+$(".pages a").click(function(){
+	$("body,html").animate({scrollTop:$(".inner-wrap").offset().top});
+	$('#deal-record').html('<div class="loading"><p>正在努力加载中...</p></div>');
+	$('#deal-record').load($(this).attr("href"));
+	return false;
+});
+</script>

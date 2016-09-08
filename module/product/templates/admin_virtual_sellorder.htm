@@ -1,0 +1,258 @@
+<{if $smarty.get.order_id && $smarty.get.act=='expand'}>
+<div class="time_expand">
+<p>延长收货时间可以让买家有更多时间来"确定收货"，而不会急于去申请退款。</p>
+<form action="" method="post">
+<label>延长本交易的"确认收货"期限为：</label>
+<select name="days">
+	<option value="3">3天</option>
+	<option value="5">5天</option>
+	<option value="7">7天</option>
+	<option value="10">10天</option>
+</select>
+<div>
+	<input type="hidden" name="act" value="expand" />
+	<input type="hidden" name="order_id" value="<{$smarty.get.order_id}>" />
+	<input type="submit" value="确定" />
+    <input type="button" value="取消" />
+</div>
+</form>
+<script type="text/javascript">
+$("input[type='button']").click(function(){
+	DialogManager.close("order");
+});
+</script>
+</div>
+<{elseif $smarty.get.order_id && $smarty.get.act=='edit_price'}>
+<div class="edit_price">
+<div class="original-price">
+	<em>订单原价</em>(不含运费)：<strong><{$de.product_price}></strong> 元
+</div>
+<form id="form" method="post">
+<input type="hidden" name="order_id" value="<{$de.order_id}>" />
+<input type="hidden" name="act" value="edit_price" />
+<table width="100%">
+	<tr>
+    	<th>商品</th>
+        <th width="80">单价(元)</th>
+        <th width="60">数量</th>
+        <th width="80">原价</th>
+        <th width="70">涨价或折扣</th>
+        <th width="50">邮费(元)</th>
+    </tr>
+	<{foreach item=list key=key from=$de.product}>
+    <tr>
+    	<td class="al"><{$list.name}></td>
+    	<td><{$list.price}></td>
+    	<td><{$list.num}></td>
+    	<td><{$list.num*$list.price|number_format:2}></td>
+        <td><input class="w50" type="text" name="price[<{$list.id}>]" value="" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d-.]/g,''))" onkeyup="value=value.replace(/[^\d-.]/g,'')"/></td>
+        <{if $key==0}>
+        <td class="bl" rowspan="<{$de.product|@count}>">
+        <input class="w50" maxlength="4" type="text" name="logistics_price" value="<{$de.logistics_price}>"  onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')"/><{if $de.product|@count>1}><p>直接输入<br>邮费金额</p><{/if}>
+        </td>
+        <{/if}>
+    </tr>
+    <{/foreach}>
+    <tr>
+    	<td colspan="4" class="al">
+        <ul>
+            <li>收货地址：<{$de.consignee_address}></li>
+            <!--<li>买家实付 = 
+            <em id="em"><{$de.product_price}></em> + 
+            <em id="em1"><{$de.logistics_price|number_format:2}></em>
+            <em id="em2"> + 0.00</em> =
+            <em id="em3"><{$de.product_price+$de.logistics_price|number_format:2}></em>
+            </li>
+            <li>买家实付 = 原价 + 运费 + 涨价或折扣</li>-->
+        </ul>
+        </td>
+        <td colspan="2" class="ar" valign="bottom">
+        <input type="submit" value="保存" />
+        <input type="button" value="关闭" />
+        </td>
+    </tr>
+</table>
+</form>
+<script type="text/javascript">
+$("input[type='button']").click(function(){
+	DialogManager.close("order");
+});
+</script>
+</div>
+<{else}>
+<div class="path">
+    <div>
+    	<a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span> 
+    	<a href="main.php?m=product&s=admin_virtual_sellorder">订单管理</a> <span>&gt;</span> <a href="#">虚拟订单</a> <span>&gt;</span> 
+        <{if $smarty.get.status=='1'}>等待付款
+        <{elseif $smarty.get.status=='2'}>等待确认
+        <{elseif $smarty.get.status=='4'}>已经完成
+        <{elseif $smarty.get.status=='5'}>等待退货
+        <{elseif $smarty.get.status=='6'}>退货完成
+        <{elseif $smarty.get.status=='-1'}>已经取消
+        <{elseif $smarty.get.status=='0'}>交易关闭
+        <{else}>所有订单<{/if}> 
+    </div>
+</div>
+<div class="main">
+	<div class="wrap">
+        <div class="searchbar top_searchbar">
+            <form method="get">
+                <input type="radio" name="type" value="admin_sellorder"/>实物订单
+                <input type="radio" name="type" checked="checked" value="admin_virtual_sellorder"/>虚拟订单
+                <input type="hidden" name="m" value="product" />
+                <input type="hidden" name="s" value="admin_virtual_sellorder" />
+                <span class="search-btn" style="float:right;"><input type="submit" value="订单搜索"></span>
+                <input type="text" class="w200" style="float:right;" placeholder="兑换码" name="key" value="<{$smarty.get.key}>" />
+            </form>
+        </div>
+        <div class="hd">
+            <ul class="tabs">
+               <li class="<{if $smarty.get.status!=''}>normal<{else}>active<{/if}>"><a href="main.php?m=product&s=admin_virtual_sellorder">所有订单</a></li>
+               <!--<li class="<{if $smarty.get.s !='admin_sellorder'}>normal<{else}>active<{/if}>"><a href="main.php?m=product&s=admin_sellorder">实物订单</a></li>-->
+                <li class="<{if $smarty.get.status=='1'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_virtual_sellorder&status=1">等待付款</a></li>
+                <li class="<{if $smarty.get.status=='2'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_virtual_sellorder&status=2">等待确认</a></li>
+                <li class="<{if $smarty.get.status=='4'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_virtual_sellorder&status=4">已经完成</a></li>
+          		<li class="<{if $smarty.get.status=='0'}>active<{else}>normal<{/if}>"><a href="main.php?m=product&s=admin_virtual_sellorder&status=0">交易关闭</a></li>
+            	<!--<li class="search-box">
+                    <form method="get">
+						<input type="hidden" name="m" value="product" />
+						<input type="hidden" name="s" value="admin_virtual_sellorder" />
+                        <input type="text" class="w200" placeholder="兑换码" name="key" value="<{$smarty.get.key}>" />
+                        <input type="submit" class="btn2" value="搜索" />
+                    </form>
+                </li>-->
+            </ul>
+        </div>
+
+        <table class="table-list-style order">
+        	<thead>
+            <tr>
+                <th width="10"></th>
+                <th width="280">商品详情</th>
+                <th width="80">单价</th>
+                <th width="80">数量</th>
+                <th width="80">售后</th>
+                <th width="120">买家</th>
+                <th width="120">订单总价</th>
+                <th width="120">状态与操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach item=sellist from=$slist.list}>
+            <tr>
+            	<td class="sep-row" colspan="20"></td>
+            </tr>
+            <tr>
+                <th colspan="20">
+                <span class="fl ml10">订单编号：<span style="color: #339900; font-family: Tahoma;"><{$sellist.order_id}></span></span>
+                <span class="fl ml20">下单时间：<span style="color: #999999; font-family: Tahoma;"><{$sellist.create_time|date_format:"%Y-%m-%d %H:%M:%S"}></span></span>
+                <span class="fl ml20"><a target="_blank" class="order_show" href="<{$config.weburl}>/main.php?m=product&s=admin_orderdetail&id=<{$sellist.order_id}>">查看订单</a></span>
+                <span class="fr"><a title="打印订单" target="_blank" href="#"><i class="order_print"></i></a></span>
+                </th>
+			</tr>
+            
+            <tr> 
+                <td class="bdl"></td>
+                <td colspan="4">
+                <table>
+                <{foreach item=plist from=$sellist.product}>
+                <tr>
+                    <td class="w80">
+                    <div class="pic-small">
+                        <a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&pid=<{$plist.id}>&id=<{$plist.pid}>&order_id=<{$sellist.order_id}>">
+                            <img width=60 height=60 src="<{if !$plist.pic }>image/default/nopic.gif<{else}><{$plist.pic}><{/if}>" alt="<{$list.pname}>" />
+                        </a>
+                    </div>
+                    </td>
+                    <td class="tl"><a target="_blank" href="<{$config.weburl}>/?m=product&s=detail&pid=<{$plist.id}>&id=<{$plist.pid}>&order_id=<{$sellist.order_id}>"><{$plist.name}></a>
+                    <{if $plist.spec}>
+                    <{foreach item= v from = $plist.spec}>
+                    <p><{$v}></p>
+                    <{/foreach}>
+                    <{/if}>
+                    </td>
+                    <td class="w80"><{$plist.price|number_format:2}></td>
+                    <td class="w80"><{$plist.num}></td>
+                    <td class="w80">
+                    
+                    <{if $plist.status == 4 }>
+                        <a class="org" href="main.php?m=product&s=admin_apply_detail&order_id=<{$sellist.order_id}>&pid=<{$plist.id}>">退款处理中</a>
+					<{elseif $plist.status == 5 }>
+                        <a class="black" target="_blank" href="main.php?m=product&s=admin_apply_detail&order_id=<{$sellist.order_id}>&pid=<{$plist.id}>">查看退款</a>
+                    <{/if}>    
+                    </td>
+                </tr>
+                <{/foreach}>
+                </table>
+                </td>
+                <td class="bdl">
+                <p><{$sellist.user}><a href="main.php?m=message&s=admin_message_sed&uid=<{$sellist.buyer_id}>" class="message" target="_blank"></a></p>
+				</td>
+                <td class="price bdl">
+                <p><b><{$sellist.product_price+$sellist.logistics_price|number_format:2}></b><{if $sellist.voucher_price gt 0}><br/>优惠券抵：<b><{$sellist.voucher_price|number_format:2}></b>元<{/if}><{if $sellist.discounts gt 0}><br/>店铺会员:<b><{$sellist.discounts}></b>折<{/if}></p>
+                <{if $sellist.logistics_price>0}>
+                <p>
+                含运费 <{$sellist.logistics_price|number_format:2}>
+                </p>
+                <{/if}>
+				
+                <{if $sellist.status==1}>
+                	<a data-param="{'order_id':'<{$sellist.order_id}>'}" class="edit_price" href="javascript:;">修改价格</a>
+                <{/if}>
+                </td>
+                <td class="bdl bdr">
+                
+                <p><a href="<{$config.weburl}>/main.php?m=product&s=admin_orderdetail&id=<{$sellist.order_id}>">订单详情</a></p>
+               
+                <{if $sellist.status==1}>
+                <p><a href="<{$config.weburl}>/main.php?m=product&s=admin_virtual_sellorder&id=<{$sellist.order_id}>&flag=0">取消</a></p>
+                <{/if}>
+               
+                <{if $sellist.status!=2&&$sellist.status!=4}><p><{$sellist.statu_text}></p><{/if}>
+				<{if $sellist.status==2}><p><a class="buttons" href="main.php?m=product&s=admin_virtual_sellorder&virtual_id=<{$sellist.order_id}>">确认完成</a></p><{/if}>
+                
+                <{if $sellist.status==3}><a data-param="{'order_id':'<{$sellist.order_id}>'}" class="expand" href="javascript:;">延长收货时间</a><{/if}>
+                <{if $sellist.status==5}><p><a class="buttons" href="main.php?m=product&s=admin_return_step&id=<{$sellist.order_id}>">退货详情</a></p><{/if}>
+                
+                <{if $sellist.status==4 and !$sellist.seller_comment}>
+                <p><a href="<{$config.weburl}>/?m=product&s=ucomment&uid=<{$buid}>&id=<{$sellist.order_id}>&bid=<{$sellist.buyer_id}>">评论</a></p>
+                <{elseif $sellist.buyer_comment!=1&&$sellist.seller_comment==1}>
+                <p>已评</p>
+                <{elseif $sellist.buyer_comment==1&&$sellist.seller_comment==1}>
+                <p>双方已评</p>
+                <{/if}>
+                </td>
+            </tr>
+            <{foreachelse}>
+            <tr>
+            	<td colspan="20" class="norecord">
+                	<i></i><span>暂无符合条件的数据记录</span>	
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="20"><div class="pagination"><{$slist.page}></div></td>
+            </tr>
+            </tfoot>
+        </table>
+     </div>
+</div>
+<script type="text/javascript">
+$("input[type='radio']").click(function(){
+    window.location.href = "<{$config.weburl}>/main.php?m=product&s="+$(this).val();
+});
+$('.expand').click(function(){	
+var data = $(this).attr('data-param');
+eval("data = "+data);
+ajax_form("order", '延长收货时间', '<{$config.weburl}>/main.php?m=product&s=admin_virtual_sellorder&act=expand&order_id='+data.order_id, 500);
+});
+$('.edit_price').click(function(){	
+var data = $(this).attr('data-param');
+eval("data = "+data);
+ajax_form("order", '修改价格', '<{$config.weburl}>/main.php?m=product&s=admin_virtual_sellorder&act=edit_price&order_id='+data.order_id, 800);
+});
+</script>
+<{/if}>

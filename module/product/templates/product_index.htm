@@ -1,0 +1,118 @@
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery.flexslider-min.js"></script>
+<link href="<{$config.weburl}>/script/jcarousel/skins/tango/skin.css" rel="stylesheet" type="text/css" />
+<link href="<{$config.weburl}>/templates/<{$config.temp}>/css/product.css" rel="stylesheet" type="text/css" />
+<div class="w fn-clear">
+	<div class="adv">
+    	<div class="adv787X327">
+			<script src='<{$config.weburl}>/api/ad.php?id=1&catid=<{$smarty.get.id}>&name=<{$smarty.get.key}>'></script>
+        </div>
+        <div class="adv787X161">
+        	<script src='<{$config.weburl}>/api/ad.php?id=2'></script>
+        </div>
+    </div>
+    <div class="right_side">
+		<{if $member.user}>
+        <div class="notice">
+        	<div class="notice-hd fn-clear">
+            	<ul>
+            		<li class="cur">公告</li>
+            	</ul>
+            </div>
+            <ul class="notice-bd fn-clear"><{insert name="getNotice" limit = 4}></ul>
+        </div> 
+        <dl class="member">
+          	<dt>
+                <a target="_blank" href="main.php">
+                <img width="60" height="60" src="<{$member.logo}>">
+                Hi! <strong><{$member.user}></strong> 
+                </a>
+                <img align="absmiddle" src="<{$member.pic}>">
+                <p class="fn-clear">
+                <a target="_blank" href="main.php">赚积分</a>
+                <a target="_blank" href="<{$config.weburl}>?m=points" class="last">积分商城</a>
+                </p>
+          	</dt>
+            <dd class="fn-clear">
+                <a href="main.php?m=product&s=admin_buyorder&status=3&cg_u_type=1" target="_blank"><strong><{$count.1}></strong>待收货</a>
+                <a class="pay" href="main.php?m=product&s=admin_buyorder&status=1&cg_u_type=1" target="_blank"><strong><{$count.0}></strong>待付款</a>
+                <a href="main.php?m=product&s=admin_buyorder&rate=1&cg_u_type=1" target="_blank"><strong><{$count.2}></strong>待评价</a>
+            </dd>
+		</dl>         
+		<{else}>
+		<dl class="right_side_1">
+            <dt>公告</dt>
+            <dd class="fore1"><{insert name="getNotice" limit = 4}></dd>
+            <dd class="fore2">
+                <a class="login" href="login.php"></a>
+                <a class="register" href="<{$config.regname}>"></a>
+            </dd>
+        </dl>
+		<{/if}>
+        <dl class="buying">
+            <dt>即时抢购</dt>
+            <dd class="adv196X110">
+            <script src='<{$config.weburl}>/api/ad.php?id=3'></script>
+            </dd>
+        </dl>
+	</div>
+</div>
+
+<div class="w mt20 fn-clear">
+    <dl class="hot">
+        <dt class="dt">
+        	<span class="current">疯狂抢购<b></b></span>
+        	<span>热卖产品<b></b></span>
+        	<span>新品上架<b></b></span>
+        </dt>    
+        <dd>
+            <div class="i-mc fn-clear"><{insert name="label" type="product" proid=$config.newpro temp="product_list_li_1" limit=3}></div>
+            <div class="i-mc fn-clear fn-hide"><{insert name="label" type="product" proid=$config.hotpro temp="product_list_li_1" limit=3}></div>
+            <div class="i-mc fn-clear fn-hide"><{insert name="label" type="product" temp="product_list_li_1" limit=3}></div>
+        </dd>
+    </dl>
+    <div class="right_side h470">
+    	<div class="adv226X470">
+    	<script src='<{$config.weburl}>/api/ad.php?id=4'></script>
+        </div>
+    </div>
+</div>
+
+<div class="w adv1200X119">
+    <script src='<{$config.weburl}>/api/ad.php?id=5'></script>
+</div>
+
+<div class="w mt20 fn-clear">
+	<div class="left fn-clear">
+    <{foreach item=slist key=key from=$categorys}>
+    <dl>
+    	<div class="i-m">
+            <dt style="border-left-color:<{$slist.color}>"><a target="_blank" href="<{$config.weburl}>?m=product&s=list&id=<{$slist.catid}>"><{$slist.name}></a></dt>
+            <dd class="fn-clear">
+                <ul class="fn-clear"><{insert name="label" catid=$slist.catid type="product" o=6 temp="product_list_li_2" limit=3}></ul>
+                <ul class="cat fn-clear">
+                <{foreach item=cat key=num from=$slist.scat}>
+                		<li><a target="_blank" href="<{$config.weburl}>?m=product&s=list&id=<{$cat.catid}>"><{$cat.cat}></a></li>
+				<{/foreach}>
+                </ul>        
+            </dd>
+		</div>
+    </dl>
+    <{/foreach}>
+	</div>
+    <div class="right">
+    	<dl class="sns">
+        	<dt class="fn-clear">
+            	<a target="_blank" href="<{$config.weburl}>/?m=sns">去广场看看</a>
+            	<h2>广场动态</h2>
+            </dt>
+            <dd><{insert name="label" type="sns" temp="sns_list_1" limit=7}></dd>
+        </dl>
+    </div>
+</div>
+<script type="text/javascript">
+$(".dt span").hover(function(){
+	var index=$(this).index();
+	$(this).addClass("current").siblings().removeClass("current");
+	$(this).parent().parent().find(".i-mc").eq(index).show().siblings(".i-mc").hide();
+});
+</script>

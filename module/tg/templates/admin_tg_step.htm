@@ -1,0 +1,98 @@
+<script language="javascript">
+var weburl="<{$config.weburl}>";
+</script>
+<div class="layout">
+    <div class="flow-chart"></div>
+    <div class="search_com">
+        <span class="icon"></span>
+        <span class="txt">分类搜索：<input type="text" class="text" maxlength="22" id="SEARCHVALUE"></span>
+        <a id="searchBtn" href="JavaScript:void(0);" class="btn_search">搜索</a>
+    </div>
+	<div class="search_sort">
+        <div class="search_title">
+            <div class="txt">您常用的商品分类：</div>
+            <select onchange="getid(this);" >
+                <option value=""><{$lang.selec_com_cat}></option>
+                <{foreach item=list key=num from=$get_user_common_cat}>
+                <option value="<{$num}>"><{$list}></option>
+                <{/foreach}>
+            </select>
+        </div>
+        <div class="dataLoading" id="dataLoading">
+        	<div class="data_loading">加载中...</div>
+        </div>
+        <div class="search_result"  style="display: none;">
+            <div class="back_to_sort">
+            	<a genre="return_choose_sort" href="JavaScript:void(0);">&lt;&lt;返回商品分类选择</a>
+            </div>
+            <div style="display:none;" id="searchNone" class="no_result">
+                <p>没有找到相关的商品分类。</p>
+                <p><a genre="return_choose_sort" href="JavaScript:void(0);">返回商品分类选择</a></p>
+            </div>
+            <div style=" display: block;" id="searchSome" class="has_result">
+                <div id="searchEnd"></div>
+                <div id="searchList" class="result_list">
+                <ul></ul>
+            	</div>
+            </div>    
+        </div>
+        <div class="sort_block">
+        	<div class="sort_list">
+                <div class="wp_category_list">
+                    <div class="category_list" id="class_div_1">
+                        <ul>
+                            <{foreach item=list from=$cat}>
+                            <li id="<{$list.catid}>|1" onclick="district(this);" class=""><a href="javascript:void(0)" class=""><span class="has_leaf"><{$list.cat}></span></a></li>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        	<div class="sort_list">
+                <div class="wp_category_list blank">
+                	<div class="category_list" id="class_div_2">
+                    	<ul></ul>
+                    </div>
+                </div>
+            </div>
+        	<div class="sort_list">
+                <div class="wp_category_list blank">
+                    <div class="category_list" id="class_div_3">
+                    	<ul></ul>
+                    </div>
+                </div>
+            </div>
+        	<div class="sort_list">
+                <div class="wp_category_list blank">
+                	<div class="category_list" id="class_div_4">
+                   		<ul></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div style="display: block; clear:both;" class="tips_choice">
+        <span class="tips_zt"></span>
+        <dl class="hover_tips_cont">
+            <dt id="commodityspan">
+                <span style="color:#F00;">请选择商品类别</span>
+            </dt>
+            <dt class="current_sort" style="display: none;" id="commoditydt">您当前选择的商品类别是：</dt>
+            <dd id="commoditydd"></dd>
+        </dl>
+    </div>
+    <div class="btn_confirm">
+    <form method="get">
+        <input type="hidden" name="m" value="tg" />
+        <input type="hidden" name="s" value="admin_tg" />
+        <input type="hidden" id="class_id" name="category_id" value="">
+        <input type="hidden" id="catid" name="catid" value="" />
+        <input type="hidden" id="tcatid" name="tcatid" value="" />
+        <input type="hidden" id="scatid" name="scatid" value="" />
+        <input type="hidden" id="sscatid" name="sscatid" value="" />
+		<input type="hidden" id="edit" name="edit" value="<{$smarty.get.editid}>" />
+		<input type="submit" value="下一步" id="button_next_step" disabled="">
+	</form>
+    </div>
+</div>
+<script type="text/javascript" charset="utf-8" src="<{$config.weburl}>/script/product_add_step.js" ></script>

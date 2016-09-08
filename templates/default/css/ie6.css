@@ -1,0 +1,7 @@
+@charset "utf-8";
+.ie6{height:633px;position:relative;width:856px;}
+.ie6 a{width:100px;height:100px;position:absolute;filter:alpha(opacity=0);background:#fff;}
+.ie6 .browser-taobao{width:200px;height:200px;left:200px;z-index:2;top:200px;}
+.ie6 .browser-chrome{left:500px;top:260px;}
+.ie6 .browser-ie8{left:616px;top:260px;}
+.ie6 .browser-firefox{left:730px;top:260px;}

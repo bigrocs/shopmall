@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <link href="<{$config.weburl}>/templates/default/user_admin/user_admin.css" rel="stylesheet" type="text/css" />
+        <script src="<{$config.weburl}>/script/jquery-1.4.4.min.js"></script>
+    </head>
+    <body>
+        <style>
+            .titleBar td{padding:5px;}
+        </style>
+        <{if $result eq 1}>
+            <p style="padding:50px 0 0 0; text-align:center; font-size:14px;">发放会员卡成功，<span id="goToTime" style="color:#ff0000;">3</span>秒后自动关闭</p>
+            <script>
+            pload();
+            function pload(){
+                    setTimeout(closeThis,3000);
+            }
+            function closeThis(){
+                    parent.document.body.removeChild(parent.document.getElementById("bgObj"));parent.document.body.removeChild(parent.document.getElementById("msgObj"));
+            }
+
+            var time = 3;
+            var int = setInterval(gotourl, 1000);
+            function gotourl()
+            {
+                    time--;
+                    document.getElementById('goToTime').innerHTML = time;
+                    if(time == 0){clearInterval(int); closeThis();}
+            }
+            </script>
+        <{elseif $result eq 2}>
+        <p style="padding:50px 0 0 0; text-align:center; font-size:14px;">发卡失败，该类型会员卡已发放完毕，<span id="goToTime" style="color:#ff0000;">3</span>秒后自动返回</p>
+            <script>
+            pload();
+            function pload(){
+                    setTimeout(closeThis,3000);
+            }
+            function closeThis(){
+                   history.go(-1)
+            }
+
+            var time = 3;
+            var int = setInterval(gotourl, 1000);
+            function gotourl()
+            {
+                    time--;
+                    document.getElementById('goToTime').innerHTML = time;
+                    if(time == 0){clearInterval(int); closeThis();}
+            }
+            </script>
+        <{else}>
+        <form action="<{$config.weburl}>/main.php?m=member&s=admin_sent_card" method="post" style="height:180px;padding:15px;line-height: 32px;" id="card_add">
+            <p><b>选择会员卡：</b><select class="select w200" name="card_s">
+                    <{foreach from=$de item=n}><option value="<{$n.id}>"><{$n.name}></option><{foreachelse}><option value=''>请先添加会员卡</option><{/foreach}>
+            </select></p>
+            <p><b>　会员名称：</b><input type="hidden" name="id" value="<{$detail.userid}>" /><{if $detail.name}><{$detail.name}><{else}><{$detail.user}><{/if}></p>
+            <p style="text-align:center;"><input type="hidden" name="act" value="add" /><input type="submit" value="提交" class="submit" /></p>
+        </form>
+        <script>
+            $("#card_add").submit(function(){
+                if(!$("select[name='card_s']").val())
+                {
+                    alert("请选择卡名称");
+                    return false;
+                }
+            })
+        </script>
+        <{/if}>
+    </body>
+</html>

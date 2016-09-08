@@ -1,0 +1,13 @@
+<div class="module_special">	
+    <h2><{$re.title}></h2>
+    <div class="content"><{$re.content}></div>
+	<ul class="list product">
+	 <{foreach item=pro from=$de}>
+		<li>
+            <div class="pic"><a target="_blank" title="<{$pro.name}>" href="<{$config.weburl}>/?m=product&s=detail&id=<{$pro.id}>"><img src="<{$pro.pic}>_220X220.jpg" width=220  height=220 alt="<{$pro.name}>" /></a></div>
+            <h3><a target="_blank" title="<{$pro.name}>" href="<{$config.weburl}>/?m=product&s=detail&id=<{$pro.id}>"><{$pro.name}></a></h3>
+            <p><{$config.money}> <{$pro.price}></p>
+        </li>
+	 <{/foreach}>
+	</ul>
+</div>

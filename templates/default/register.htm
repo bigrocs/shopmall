@@ -1,0 +1,102 @@
+<{include file="site_nav.htm"}>
+<link href="<{$config.weburl}>/templates/default/css/register.css" rel="stylesheet" type="text/css" />
+<script>
+var strongpw = new Array();
+<{if $config.strongpw}>
+<{assign var=array value=$config.strongpw|unserialize}>
+<{foreach item=list key=key from=$array}>
+strongpw[<{$key}>] = <{$list}>;
+<{/foreach}>
+<{/if}>
+var pwlength = "<{$config.pwlength}>";
+var user_reg = "<{$config.user_reg}>";
+var only_mobole_reg = false;
+</script>
+<div class="w">
+    <div class="header">
+        <a hidefocus="true" title="<{$config.company}>" href="<{$config.weburl}>"><img height="35" src="<{if $config.logo}><{$config.logo}><{else}><{$config.weburl}>/image/logo.gif<{/if}>" /></a>
+        <h2>账户注册</h2>
+    </div>
+    <{if $config.closetype==2}>
+    <div style="height:200px;padding-top:150px;border: 1px solid #A9B9D3;text-align:center;font-size:16px"><{$config.closecon}></div>
+    <{else}>
+    <div class="steps step-1">
+        <ol>
+            <li class="step1">1 填写账户信息</li>
+            <li class="step2">2 验证账户信息</li>
+            <li class="step3">3 注册成功</li>
+        </ol>	
+	</div>
+    <div class="register clearfix bg">
+        <form action="" method="post">
+            <div class="item fore1">
+                <span>账户名：</span>
+                <div class="item-ifo">
+                    <input name="user" type="text" id="user" class="text" placeholder="邮箱/用户名/手机号" />
+                    <div class="i-name ico"></div>
+                </div>
+                <div class="msg-box"><div></div></div>
+            </div>
+            
+			<div class="item fore2">
+                <span>请设置密码：</span>
+                <div class="item-ifo">
+                    <input type="password"  name="password" id="password" class="text" />
+                    <div class="i-pass ico"></div>
+                </div>
+                <div class="msg-box"><div></div></div>
+            </div>
+            
+            <div class="item fore3">
+                <span>请确认密码：</span>
+                <div class="item-ifo">
+                    <input type="password" name="re_password" id="re_password" class="text" />
+                    <div class="i-pass ico"></div>
+                </div>
+                <div class="msg-box"><div></div></div>
+            </div>
+            
+            <div class="item fore4">
+                <span>验证码：</span>
+                <div class="item-ifo">
+                    <input name="yzm" type="text" id="yzm" class="text w100" />
+                    <div class="yzm">
+                        <input type="button" class="send hidden" data-type="email" value="获取邮件验证码" />
+                        <img onclick="get_randfunc(this);" src='<{$config.weburl}>/includes/rand_func.php?h=37&w=100'/>
+                    </div>
+                </div>
+				<div class="msg-box"><div></div></div>
+            </div>
+            
+            <{if $config.user_reg_verf}>
+            <div class="item fore7">
+                <span>验证问题：</span>
+                <div class="item-ifo">
+                    <input onFocus="show_yzwt();" name="ckyzwt" type="text" id="ckyzwt" class="text w100" onclick="show_yzwt();"  />
+                    <span id="yzwt"></span>
+                </div>
+				<div class="msg-box"><div></div></div>
+            </div> 
+            <{/if}> 
+            
+            <div class="item register-btn">
+                <input type="button" class="submit" value="同意协议并注册" />
+                <p class="read"><em><{$config.company}>用户注册协议</em></p>
+                <div class='agreement hidden'><{$config.association}></div>
+                <input name="forward" type="hidden" id="forward" value="<{$smarty.get.forward}>" />
+                <input name="connect_id" type="hidden" id="forward" value="<{$smarty.get.connect_id}>" />
+            </div>
+        </form>
+    </div> 
+ 	<{/if}>
+</div>
+<script src="<{$config.weburl}>/script/register.js" type="text/javascript"></script>
+<div class="clear"></div>
+<div class="footer clearfix">
+    <div class="w">
+        <div class="links"><{$web_con}></div>
+        <div class="copyright"><{$bt}></div>
+    </div>
+</div>
+</body>
+</html>

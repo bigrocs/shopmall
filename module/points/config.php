@@ -1,0 +1,10 @@
+<?php
+$mem['running'][1][3]=array(
+	'积分商城',
+	array(
+		'points_cat.php,1,points,礼品分类',
+		'points.php,1,points,礼品管理',
+		'points_order.php,1,points,订单管理',
+	)
+);
+?>

@@ -1,0 +1,55 @@
+<{foreach item=slist from=$re.list}>
+<li style="width: 77%">
+    <div style="float: left;width: 76px;">
+        <input style="margin-top:15px" name="duoxuan" class="checkitem" value="<{$slist.id}>" type="checkbox"></div>
+    <div class="friend_img" style="margin-left: 28px;border: 1px solid #E7EFF8;border-radius: 5px 5px 5px 5px;float: left;height: 40px;padding: 1px;width: 40px;"><a target="_blank" href="<{$config.weburl}>/home.php?uid=<{$slist.fuid}>"><img width="40" height="40" src="<{if $slist.fuimg}><{$slist.fuimg}><{else}>image/default/user_admin/default_user_portrait.gif<{/if}>"></a></div>
+    <div style="margin-left: 40px;float: left;">
+        <p style="width: 80px;margin-left: 5px;"> <a class="friend_name" target="_blank" href="<{$config.weburl}>/home.php?uid=<{$slist.fuid}>"><{$slist.funame}></a>
+            <em class=""></em></p>
+        <{if $slist.buyerpointsimg}><img align="absmiddle" src="<{$config.weburl}>/image/points/<{$slist.buyerpointsimg}>" /><{else}><{$slist.buyerpoints}><{/if}>
+
+        <dd class="area"><{$slist.province}><{$slist.city}></dd>
+    </div>
+    <div style="margin-left: 15px;float: left;">
+        <p style="width: 90px;margin-top: 2px;margin-left: 25px;"> <{if !$slist.fnickname}><span><a href="javascript:void(0)"  class="nicheng" nid="<{$slist.id}>">点我修改昵称</a></span><{else}><span class="nick1"><{$slist.fnickname}> <a style="display: none" href="javascript:alertWin('修改昵称','',300,150,'main.php?m=sns&s=admin_nick&ope=upda&editid=<{$slist.id}>'); "><img src="<{$config.weburl}>/image/default/edi.png" alt="修改"></span></a>
+            <{/if}></p>
+    </div>
+    <div style="margin-left: 15px;float: left;">
+        <p style="width: 60px;margin-top: 2px;margin-left: 25px;"> <{$slist.name}></p>
+    </div>
+    <div style="margin-left: 5px;float: left;">
+        <p style="width: 90px;margin-top: 2px;margin-left: 40px;"> <{$slist.describe}></p>
+    </div>
+    <dd style="margin-top:2px;width: 100px;float: right">
+                             <span class="cancel">
+                                 <a class="btn2" href="javascript:void(0)" genre="cancelbtn" data-param="{'fid':'<{$slist.id}>'}">取消关注</a>
+                             <a class="message" target="_blank" href="main.php?m=message&s=admin_message_sed&uid=<{$slist.fuid}>">&nbsp;</a></span>
+    </dd>
+    </dl>
+    <hr style="width: 100%;float:left">
+
+</li>
+<{/foreach}>
+<{if !$re.list}>
+<tr>
+    <td colspan="20" class="norecord ntb nbt">
+        <i></i><span>暂无符合条件的数据记录</span>
+    </td>
+</tr>
+<{/if}>
+<script>
+    $(function(){
+        $(".nick1").hover(function(){
+            var index = $(this).index();
+            $(".nick1").find('a').eq(index).css('display','inline');
+        },function(){
+            var index = $(this).index();
+            $(".nick1").find('a').eq(index).css('display','none');
+        });
+
+    })
+    $('.nicheng').click(function(){
+        var data = $(this).attr('nid');
+        alertWin('添加昵称', '', 300, 150, 'main.php?m=sns&s=admin_nick');
+    })
+</script>

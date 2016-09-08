@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div class="main">
+    <div class="shop_other">
+        <ul>
+            <li class="info_qrcode">
+                <br />
+                <div style="width: 20%;float:left;">
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;店铺二维码</span><b></b>
+                    <p ><img src="api/share_qrcode.php?type=shop&shop_id=<{$shop_id}>&rand=<{math equation=rand(1,10000)}>" title="微信扫描店铺二维码，分享出去带来下级店铺，享受三级分佣！"></p>
+                </div>
+                <div style="width: 80%;float:right;"><br />
+                    微信扫描店铺二维码，分销出去带来下级店铺，享受三级分佣！<br /><br />
+                    ●多级分销模式，每个分销商都可以发展下级分销商<br /><br />
+                    ●演绎圈子裂变理论，覆盖更多人群<br /><br />
+                    ●每个分销商佣金来自两个部分：1、销售产品佣金 &nbsp;&nbsp;  2、发展下级分销商<br />
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="wrap">
+        <table class="table-list-style">
+            <thead>
+            <tr>
+                <th width="20%">总佣金</th>
+                <th width="20%">已结算佣金</th>
+                <th width="20%">未结算佣金</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><{$dist_user_row.distribution_user_amount|string_format:"%.2f"}></td>
+                <td><{$dist_user_row.distribution_user_settlement_amount|string_format:"%.2f"}></td>
+                <td>
+                    <a id="pay_dist">
+                        <{$dist_user_row.distribution_user_unsettlement_amount|string_format:"%.2f"}>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table-list-style">
+            <thead>
+            <tr>
+                <th width="20%">本店分销佣金</th>
+                <th width="20%">一级分销佣金</th>
+                <th width="20%">二级分销佣金</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><{$dist_user_row.distribution_shop_amount_0|string_format:"%.2f"}></td>
+                <td><{$dist_user_row.distribution_shop_amount_1|string_format:"%.2f"}></td>
+                <td><{$dist_user_row.distribution_shop_amount_2|string_format:"%.2f"}></td>
+            </tr>
+            </tbody>
+        </table>
+        <{if $distribution_visit_flag}>
+        <table class="table-list-style">
+            <thead>
+            <tr>
+                <th width="20%">本店流量佣金</th>
+                <th width="20%">一级流量佣金</th>
+                <th width="20%">二级流量佣金</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><{$dist_user_row.distribution_click_amount_0|string_format:"%.2f"}></td>
+                <td><{$dist_user_row.distribution_click_amount_1|string_format:"%.2f"}></td>
+                <td><{$dist_user_row.distribution_click_amount_2|string_format:"%.2f"}></td>
+            </tr>
+            </tbody>
+        </table>
+        <{/if}>
+        <{if $distribution_reg_flag}>
+        <table class="table-list-style">
+            <thead>
+            <tr>
+                <th width="20%">本店注册佣金</th>
+                <th width="20%">一级注册佣金</th>
+                <th width="20%">二级注册佣金</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><{$dist_user_row.distribution_reg_amount_0|string_format:"%.2f"}></td>
+                <td><{$dist_user_row.distribution_reg_amount_1|string_format:"%.2f"}></td>
+                <td><{$dist_user_row.distribution_reg_amount_2|string_format:"%.2f"}></td>
+            </tr>
+            </tbody>
+        </table>
+        <{/if}>
+        <{if $distribution_buy_flag}>
+        <table class="table-list-style">
+            <thead>
+            <tr>
+                <th width="20%">一级购买佣金</th>
+                <th width="20%">二级购买佣金</th>
+                <th width="20%">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><{$dist_user_row.distribution_buy_amount_1|string_format:"%.2f"}></td>
+                <td><{$dist_user_row.distribution_buy_amount_2|string_format:"%.2f"}></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        <{/if}>
+        <br />
+        <br />
+        <table class="table-list-style">
+            <thead>
+            <tr>
+                <th width="10%">用户等级</th>
+                <th width="10%">用户数量</th>
+                <th width="10%">分销佣金</th>
+
+                <{if $distribution_visit_flag}><th width="10%">流量佣金</th><{/if}>
+                <{if $distribution_reg_flag}><th width="10%">注册佣金</th><{/if}>
+                <{if $distribution_buy_flag}><th width="10%">消费佣金</th><{/if}>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>一级用户</td>
+                <td><{$dist_user_total_row.level_1.num|intval}></td>
+                <td><{$dist_user_total_row.level_1.shop_amount|string_format:"%.2f"}></td>
+                <{if $distribution_visit_flag}><td><{$dist_user_total_row.level_1.click_amount|string_format:"%.2f"}></td><{/if}>
+                <{if $distribution_reg_flag}><td><{$dist_user_total_row.level_1.reg_amount|string_format:"%.2f"}></td><{/if}>
+                <{if $distribution_buy_flag}><td><{$dist_user_total_row.level_1.buy_amount|string_format:"%.2f"}></td><{/if}>
+            </tr>
+            <tr>
+                <td>二级用户</td>
+                <td><{$dist_user_total_row.level_2.num|intval}></td>
+                <td><{$dist_user_total_row.level_2.shop_amount|string_format:"%.2f"}></td>
+                <{if $distribution_visit_flag}><td><{$dist_user_total_row.level_2.click_amount|string_format:"%.2f"}></td><{/if}>
+                <{if $distribution_reg_flag}><td><{$dist_user_total_row.level_2.reg_amount|string_format:"%.2f"}></td><{/if}>
+                <{if $distribution_buy_flag}><td><{$dist_user_total_row.level_2.buy_amount|string_format:"%.2f"}></td><{/if}>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        $("#shop_img").click(function(){
+            var width = $(this).width();
+            var height = $(this).height();
+
+            if(width==45)
+            {
+                $(this).width(250);
+                $(this).height(250);
+                $(this).css("position","absolute");
+                $(this).css("top", ( $(window).height() - $(this).height() ) / 2+$(window).scrollTop() + "px");
+                $(this).css("left", ( $(window).width() - $(this).width() ) / 2+$(window).scrollLeft() + "px");
+                $(this).animate({opacity:0.7},0);
+            }
+            else
+            {
+                $(this).width(45);
+                $(this).height(45);
+                $(this).removeAttr("style");
+            }
+        });
+
+
+
+        var html = '\
+    <div class="wrap" style="width:96%;margin:0px auto">\
+    <div class="form-style">\
+        <form id="form" method="post" enctype="multipart/form-data" action="./main.php?m=distribution&s=admin_distribution_settlement">\
+            <p class="shop_step_title">尚未结算佣金：<{$config.money}>&nbsp;<{$dist_user_row.distribution_user_unsettlement_amount|string_format:"%.2f"}> &nbsp;&nbsp;(结算最低额度：<{$distribution_config.distribution_commission_min|floor}>)&nbsp;&nbsp; <a href="./main.php?m=distribution&s=admin_distribution_settlement">结算记录</a></p>\
+            <p class="shop_step_title">申请结算佣金：<{$config.money}>&nbsp;<input type="text" name="distribution_user_settlement_value" value="<{$distribution_config.distribution_commission_min|floor}>" class="text"  style="width:50%; "/></p>\
+            <p class="shop_step_title"><input type="submit" value="提交" class="submit" /></p>\
+        </form>\
+    </div></div>\
+    ';
+
+        $("#pay_dist").click(function(e){
+            e.preventDefault();
+
+            html_form("buy", ' 提交佣金结算申请 ', html, 500);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<script src="script/my_lightbox.js" language="javascript"></script>
+<script type="text/javascript" charset="utf-8" src="<{$config.weburl}>/script/district.js" ></script>
+<script type="text/javascript" charset="utf-8" src="<{$config.weburl}>/script/jquery-1.4.4.min.js" ></script>
+<link href="<{$config.weburl}>/templates/wap/css/index.css" rel="stylesheet" type="text/css" />
+<header>
+    <div class="nav-w">
+        <section class="nav-s iconfont" onclick="javascript:history.back(-1)"><font>&#xe60d</font></section>
+        <section class="nav-c"><span>会员中心</span></section>
+        <section class="nav-e"></section>
+    </div>
+</header>
+	
+<div class="wrap" style="width:96%;margin:0px auto">
+    <div class="form-style">
+        <form action="" method="post" name="form" id="form">
+            <input type="hidden" value="edit" name="submit"/>
+            <div class="s_logo">
+                <div class="logo_info">
+                    <span class="tit">上传头像</span>
+                    <span class="des">建议尺寸200*200像素</span>
+                </div>
+                <div class="logo_div">
+                    <div class="logo_show">
+                        <input class="text w300 hidden" name="logo" type="text" id="logo" value="<{$de.logo}>">
+                        <a href="javascript:uploadfile('LOGO','logo',120,120,'member')">
+                            <img id="logo_img" src="<{if $de.logo}><{$de.logo}><{else}><{$config.weburl}>/image/default/user_admin/default_user_portrait.gif<{/if}>">
+                        </a>
+                    </div>
+                </div>
+                </div>
+            <div class="s_list">
+                <div class="s_line">
+                    <div class="s_text">
+                        用户名
+                    </div>
+                    <div class="s_input">
+                        <input type='text' value="<{$de.user}>" class="text" style="width:100%" disabled="disabled">
+                    </div>
+                </div>
+                <{if $de.mobile}>
+                <div class="s_line">
+                    <div class="s_text">
+                        手机
+                    </div>
+                    <div class="s_input">
+                        <input type='text' value="<{$de.mobile}>" class="text" style="width:100%" disabled="disabled">
+                    </div>
+                </div>
+                <{/if}>
+                <div class="s_line">
+                    <div class="s_text">
+                        昵称
+                    </div>
+                    <div class="s_input">
+                        <input name='name' type='text' id="name" value="<{$de.name}>"  class="text" style="width:100%">
+                    </div>
+                </div>
+                <div class="s_line">
+                    <div class="s_text">
+                        QQ
+                    </div>
+                    <div class="s_input">
+                        <input name='qq' type='text' id="qq" value="<{$de.qq}>"  class="text" style="width:100%">
+                    </div>
+                </div>
+                <div class="s_line">
+                    <div class="s_text">
+                        旺旺
+                    </div>
+                    <div class="s_input">
+                        <input name='ww' type='text' id="ww" value="<{$de.ww}>"  class="text" style="width:100%">
+                    </div>
+                </div>
+            </div>
+            <p class="shop_step_title"><input type="submit" value="<{$lang.submit}>" class="submit"></p>
+        </form>
+    </div>
+</div>

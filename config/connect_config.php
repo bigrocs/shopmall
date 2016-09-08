@@ -1,0 +1,1 @@
+<?php $connect_config = unserialize('a:9:{s:10:"qq_connect";s:1:"1";s:9:"qq_app_id";s:10:"1103589253";s:6:"qq_key";s:16:"hr9zyLs20oECfaBa";s:12:"sina_connect";s:1:"0";s:11:"sina_app_id";s:0:"";s:8:"sina_key";s:0:"";s:14:"weixin_connect";s:1:"1";s:13:"weixin_app_id";s:18:"wx9bae895dc6e671d4";s:10:"weixin_key";s:32:"1b7412b5d468465a443af81aafdc16c0";}');?>

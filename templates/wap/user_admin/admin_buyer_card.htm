@@ -1,0 +1,21 @@
+<link href="<{$config.weburl}>/templates/wap/css/main.css" rel="stylesheet" type="text/css" />
+<header>
+	<div class="nav-w">
+        <section class="nav-s iconfont" onclick="javascript:history.back(-1)"><font>&#xe60d</font></section>
+    	<section class="nav-c"><span>我的会员卡</span></section>
+    	<section class="nav-e"><!--<a href="#"><nav>设置</nav></a>--></section>
+    </div>
+</header>
+<ul class="v_card">
+	<{foreach from=$list.list item=vo}>
+	<li>
+		<div class="m-logo"><img src="<{$vo.logo}>" ></div>
+		<div class="m-sname"><font class="fsname"><a href="<{$config.weburl}>/shop.php?uid=<{$vo.shop_id}>"><{$vo.shop_name}></a></font><br/>全店<font class="dprice"><{$vo.discounts}></font>折</div>
+		<div class="m-cname"><{$vo.name}></div>
+	</li>
+	<{foreachelse}>
+	<div class="itemsNull">
+	    <h3>暂无符合条件的数据记录</h3>
+	</div>
+	<{/foreach}>
+</ul>

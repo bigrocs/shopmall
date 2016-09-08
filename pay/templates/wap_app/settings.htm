@@ -1,0 +1,54 @@
+<{include file="header.htm"}>
+<script type="text/javascript" src="script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('#form').submit(function(){
+		flag = true;
+		var pwd1 = $("#pass").val()
+		var pwd2 = $("#re_pass").val()
+
+		if(pwd1 != pwd2)
+		{
+			alert("两次密码设置不一致！");
+			return false;
+		}
+		if(pwd1.length < 6 || pwd2.length < 6)
+		{
+			alert("密码位数不能少于6位！");
+			return false;
+		}
+	})
+});
+</script>
+<section class="banner">
+	<div class="user cn-clear">
+    	<div class="img"><img height="72" src="<{if $de.logo}><{else}>templates/default/image/avatar.png<{/if}>" /></div>
+        <div class="img-cover"></div>
+        <div class="info">
+        	<div class="user_info">
+            <p>个人账户：</p>
+            <p><{$de.pay_email}></p>
+            </div>
+            <div class="user_account"><em><{$de.cash}></em>元</div>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <h2>账户信息</h2>
+    <{if !$de.pay_pass}>
+    <div class="tips"><span></span>温馨提示：请先设置支付密码。</div>
+    <{/if}>
+    <div class="form">
+	<form method="post" id="form">
+    <input type="hidden" name="act" value="act" />
+   	<p class="m1">设置支付密码：</p>
+   	<p><input type="password" name="pass" id="pass"  value=""><div class="form-error"></div></p>
+   	<p class="m1">确认支付密码：</p>
+   	<p><input type="password" value=""  name="re_pass" id="re_pass"><div class="form-error"></div></p>
+    <p class="m2"><input type="submit" class="submit" value="确定" /></p>
+    </form>    
+    </div>
+</section>
+</div>
+<{include file="footer.htm"}>

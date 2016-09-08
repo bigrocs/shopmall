@@ -1,0 +1,74 @@
+<link href="templates/default/css/pay.css" rel="stylesheet" type="text/css" />
+<div class="block fn-clear">
+	<div class="i-block payment">
+        
+        <div class="title">
+       		<span><strong><{$re.price|number_format:2}></strong>元</span>
+        	<div>
+            <h3><{$re.note}></h3>
+            <p>收款方：admin@systerm.com <!--<{if $re.real_name}><{$re.real_name}><{else}><{$re.seller_email}><{/if}>-->  (担保交易)</p>
+            </div>
+        </div>
+		
+        <{if $re.statu==1}>
+        <div class="form">
+        <form method="post">
+        <input type="hidden" name="act" value="pay" />
+        <input type="hidden" name="payment_type" id="payment_type" value="<{$pay.0.payment_type}>" />
+            <fieldset>
+            <dl>
+                <dt>支付方式：</dt>
+                <dd class="pay">
+                    <ul class="fn-clear">
+                    <{foreach item=list key=key from=$pay}>
+                    <li <{if $key==0}>class="checked"<{/if}> >
+                    <img title="<{$list.payment_name}>" alt="<{$list.payment_name}>" data-param="{'id':'<{$list.payment_type}>'}" src="image/payment/<{$list.payment_type}>.gif" /><i></i>
+                    </li>
+                    <{/foreach}>  
+                    </ul>
+                </dd>
+            </dl> 
+            </fieldset>
+            <{if $account!='false'}>
+            <fieldset class="fieldset">  
+            <dl class="free">
+                <dt>可用总额：</dt>
+                <dd><{$de.cash}> 元</dd>
+            </dl> 
+            <dl>
+                <dt>支付密码：</dt>
+                <dd><input type="password" class="text" name="password" value="" /></dd>
+            </dl>
+            </fieldset>
+            <{/if}>
+            <dl>
+                <dt></dt>
+                <dd>
+                <input type="submit" class="submit" value="确定支付" />
+                </dd>
+            </dl>
+        </form>   
+        </div>
+        <{/if}>
+    
+    </div>
+</div>
+    
+<script>
+$(".pay li").bind("click",function(){
+	var data = $(this).children('img').attr('data-param');
+	eval("data = "+data);
+	<{if $account!='false'}>
+	if(data.id=='account')
+	{
+		$('.fieldset').show();
+	}
+	else
+	{
+		$('.fieldset').hide();
+	}
+	<{/if}>
+	$("#payment_type").val(data.id);
+	$(this).addClass("checked").siblings().removeClass("checked");
+});
+</script>

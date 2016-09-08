@@ -1,0 +1,13 @@
+<?php
+$mem['website'][1][]=array(
+	'通知管理',
+	array(
+		'notice_template.php,1,sms,通知模版',
+		'newsletter.php,1,sms,站点通知',
+		'sms_config.php,1,sms,短信设置',
+		'mail_config.php,1,sms,邮件设置',
+		'wechat_push_config.php,1,sms,微信设置',
+		//'app_push_config.php,1,sms,推送设置',
+	)
+);
+?>

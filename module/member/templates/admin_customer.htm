@@ -1,0 +1,56 @@
+<script src="<{$config.weburl}>/script/my_lightbox.js"></script>
+<div class="path">
+  <div> <a href="main.php?cg_u_type=2">卖家中心</a> <span>&gt;</span> <a href="main.php?m=member&s=admin_customer">顾客管理</a></div>
+</div>
+<div class="main">
+  <div class="wrap">
+    <div class="hd">
+        <ul>
+            <li class="active"><a href="#">我的顾客</a></li>
+        </ul>
+    </div>    
+        <table class="table-list-style order custorm_T">
+            <thead>
+                <tr>
+                    <th width="50">顾客编号</th>
+                    <th width="200"  class="al">顾客名称（昵称/用户名）</th>
+                    <th width="80">下单次数</th>
+                    <th width="100">最近下单时间</th>
+                    <th width="80">消费总额(元)</th>
+                    <th width="80">操作</th>
+                </tr>
+            </thead>
+            <{foreach from=$customer.list item=n}>
+            <{if $n.buyer_id gt 0}>
+            <tr>
+                <td valign="middle"><{$n.buyer_id}></td>
+                <td class="al"><img class="img custorm_img" src="<{$n.info.logo}>" /><{if $n.info.name}><{$n.info.name}><{else}><{$n.info.user}><{/if}><br/>注册时间：<{$n.info.regtime}>
+                </td>
+                <td><{$n.nums}></td>
+                <td><{$n.create_time|date_format:"%Y-%m-%d %H:%M:%S"}></td>
+                <td><{if $n.price}><{$n.price}><{else}>0.00<{/if}></td>
+                <td><{if $n.card}><br/><{$n.card.name}><br/><a href="#" item="<{$n.buyer_id}>" class="consult_button">更改会员卡</a><{else}><a href="#" item="<{$n.buyer_id}>" class="consult_button">发放会员卡</a><{/if}></td>
+            </tr>
+            <{/if}>
+            <{foreachelse}>
+            <tr>
+                <td class="norecord" colspan="6"><i></i>暂无符合条件的记录！</td>
+            </tr>
+            <{/foreach}>
+            <{if $customer.page neq '   ' && $customer.page neq ''}>
+             <tr>
+                 <td colspan="6">
+                     <div class="pagination"><{$customer.page}></div>
+                 </td>
+             </tr>
+            <{/if}>
+      </table>
+  </div>
+</div>
+<script>
+    $(".consult_button").click(function(){
+    str = $(this).attr("item")
+    alertWin('发放会员卡', '', 352, 183, '<{$config.weburl}>/main.php?m=member&s=admin_sent_card&mid='+str);
+    return false;
+}) 
+</script>

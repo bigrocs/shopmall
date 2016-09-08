@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>会员管理</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="admin.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="../script/moderate.js"></script>
+    <script type="text/javascript" src="../script/Calendar.js"></script>
+    <script type="text/javascript">
+        var cdr = new Calendar("cdr");
+        document.write(cdr);
+        cdr.showMoreDay = true;
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="flow">
+        <div class="itemtitle">
+            <h3>佣金结算管理</h3>
+            <ul>
+                <li class="<?php if(isset($_GET['level']) && 0 == $_GET['level']){echo 'current';}else{echo 'normal';} ?>"><a href="?m=distribution&s=distribution_settlement.php&level=0"><span>待审核</span></a></li>
+                <li class="<?php if(isset($_GET['level']) && 1 == $_GET['level']){echo 'current';}else{echo 'normal';} ?>"><a href="?m=distribution&s=distribution_settlement.php&level=1"><span>已审核</span></a></li>
+                <li class="<?php if(!isset($_GET['level'])){echo 'current';}else{echo 'normal';} ?>"><a href="?m=distribution&s=distribution_settlement.php"><span>全部</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="h35"></div>
+    <div style="position: relative;" id="threadlist">
+            <table class="table">
+                <tbody>
+                <tr class="header">
+                    <th width="10%">申请用户</th>
+                    <th width="20%">申请额度</th>
+                    <th width="20%">申请日期</th>
+                    <th width="20%">
+                        处理状态
+                    </th>
+                    <th width="20%">
+                        操作
+                    </th>
+                </tr>
+                <?php
+                if ($dist_user_settlement_rows)
+                {
+                    foreach ($dist_user_settlement_rows as $k => $v)
+                    {
+                    ?>
+                    <tr>
+                        <td style="text-align: center;"><?php echo $v['user'] ?></td>
+                        <td style="text-align: center;"><?php echo $v['distribution_user_settlement_amount'] ?></td>
+                        <td style="text-align: center;"><?php echo date('Y-m-d', $v['distribution_user_settlement_apply_time']) ?></td>
+                        <td style="text-align: center;"><?php echo $v['state_label'] ?></td>
+                        <td style="text-align: center;">
+                            <?php if (0 == $v['distribution_user_settlement_state']){?><p><a onclick="return confirm('确定审核通过？');" href="?m=distribution&s=distribution_settlement.php&level=0&distribution_user_settlement_id=<?php echo $v['distribution_user_settlement_id'] ?>">通过审核</a></p><?php }?>
+                        </td>
+                    </tr>
+                    <?php
+                    }
+                }
+                else
+                {
+                ?>
+                <tr>
+                    <td class="norecord" colspan="4"><i></i><span>暂无符合条件的数据记录</span></td>
+                </tr>
+                <?php
+                }
+                ?>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="1" class="al">每页最多显示： 10条</td>
+                    <td colspan="3"><div class="page"><?=$page_str?></div></td>
+                </tr>
+                </tfoot>
+            </table>
+    </div>
+</div>
+<script>
+    $("#button").live('click',function(){
+        var key=$(this).attr("key")
+        $("#act").val(key);
+        $("#form")[0].submit();
+        return false;
+    });
+
+    $(function(){
+        $(".select").click(function(){
+            var obj=$(this);
+            $(this).next().slideToggle("fast",function(){
+                if($(obj).next().is(":visible")){
+                    $(document).one('click',function(){
+                        $(".select").next().slideUp("fast");
+                    });
+                }
+            });
+        });
+        $(".i-select li").click(function(){
+            var str=$(this).html();
+            $(this).parent().parent().prev().prev().attr("value",$(this).attr("key"));
+            $(this).parent().parent().prev().children().html(str);
+        });
+    });
+</script>
+</body>
+</html>

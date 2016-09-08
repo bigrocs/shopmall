@@ -1,0 +1,1 @@
+<?php $config = array_merge($config, unserialize('a:2:{s:5:"AppID";s:18:"wx3fef497c3b3235d4";s:9:"AppSecret";s:32:"6005110013a6eb35859e21a06c427c00";}'));?>

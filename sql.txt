@@ -1,0 +1,737 @@
+/*---------2013-02-27---------*/
+ALTER TABLE `mallbuilder_member`
+  DROP `position`,
+  DROP `email2`,
+  DROP `tel`;
+
+/*---------2013-03-05---------*/
+ALTER TABLE `mallbuilder_member` ADD `number` VARCHAR( 10 ) NULL DEFAULT '0' AFTER `userid` ;
+
+/*---------2013-03-06---------*/
+ALTER TABLE `mallbuilder_points_log` ADD `type` TINYINT( 1 ) NULL DEFAULT '0' AFTER `points` ;
+ALTER TABLE `mallbuilder_product_order_pro` ADD `rebate` FLOAT( 10, 2 ) NULL DEFAULT '0.00';
+
+ALTER TABLE `mallbuilder_products` ADD `rebate` FLOAT( 10, 2 ) NULL DEFAULT '0.00';
+
+/*---------2013-03-07---------*/
+ALTER TABLE `mallbuilder_member` CHANGE `logo` `logo` VARCHAR( 120 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'image/default/avatar.png' COMMENT 'LOGO';
+
+
+
+/*---------2013-04-30---------*/
+RENAME TABLE `mallbuilder_products` TO `mallbuilder_product` ;
+
+ALTER TABLE `mallbuilder_product`
+  DROP `point`,
+  DROP `credit`,
+  DROP `match`,
+  DROP `rebate`;
+
+
+ALTER TABLE `mallbuilder_product` CHANGE `id` `id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
+CHANGE `userid` `member_id` INT( 10 ) NULL DEFAULT NULL ,
+CHANGE `user` `member_name` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE `ptype` `type` TINYINT( 1 ) NULL DEFAULT '0',
+CHANGE `pname` `name` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
+CHANGE `promotion_tips` `subhead` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
+ALTER TABLE `mallbuilder_product` CHANGE `amount` `stock` MEDIUMINT( 8 ) NULL DEFAULT '1',
+CHANGE `sell_amount` `sales` MEDIUMINT( 8 ) NULL DEFAULT '0',
+CHANGE `stime_type` `start_time_type` TINYINT( 1 ) NULL DEFAULT '1',
+CHANGE `stime` `start_time` INT( 10 ) NULL DEFAULT NULL ,
+CHANGE `validTime` `valid_time` TINYINT( 1 ) NULL DEFAULT '0' ;
+
+ALTER TABLE `mallbuilder_product` CHANGE `weight` `weight` FLOAT( 10, 2 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `cubage` `cubage` FLOAT( 10, 2 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `freight` `freight_id` INT( 10 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `freight_type` `freight_type` TINYINT( 1 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `post_price` `post_price` FLOAT( 10, 2 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `express_price` `express_price` FLOAT( 10, 2 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `ems_price` `ems_price` FLOAT( 10, 2 ) UNSIGNED NULL DEFAULT NULL ;
+
+ALTER TABLE `mallbuilder_product` CHANGE `province` `province_id` INT( 10 ) NULL DEFAULT NULL ,
+CHANGE `city` `city_id` INT( 10 ) NULL DEFAULT NULL ,
+CHANGE `areaid` `area_id` INT( 10 ) NULL DEFAULT NULL ,
+CHANGE `area` `area` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+CHANGE `read_nums` `clicks` MEDIUMINT( 8 ) NULL DEFAULT '0' ;
+
+ALTER TABLE `mallbuilder_product` CHANGE `rank` `rank` MEDIUMINT( 8 ) NULL DEFAULT '0',
+CHANGE `statu` `status` TINYINT( 1 ) NOT NULL DEFAULT '1' COMMENT '-2，-1，0,1,2库存，违规，没审核，审核，推荐',
+CHANGE `custom_cat_id` `custom_cat_id` INT( 10 ) NULL DEFAULT NULL ,
+CHANGE `promotion_id` `promotion_id` INT( 10 ) NULL DEFAULT '0',
+CHANGE `goodbad` `goodbad` MEDIUMINT( 8 ) NULL DEFAULT '0' 
+
+
+ALTER TABLE `mallbuilder_product` ADD `is_shelves` TINYINT( 1 ) NULL DEFAULT '1' AFTER `status` ;
+
+
+ALTER TABLE `mallbuilder_product` ADD `province_id` INT( 10 ) NULL COMMENT '省' AFTER `cubage` ,
+ADD `city_id` INT( 10 ) NULL COMMENT '市' AFTER `province_id` ,
+ADD `area_id` INT( 10 ) NULL COMMENT '区' AFTER `city_id` ,
+ADD `area` VARCHAR( 255 ) NULL COMMENT '省市区' AFTER `area_id` ;
+
+
+
+
+
+/*---------2013-05-07---------*/
+RENAME TABLE `mallbuilder_property_value_template` TO `mallbuilder_spec` ;
+
+
+ALTER TABLE `mallbuilder_product_cart` CHANGE `id` `id` INT( 10 ) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+CHANGE `userid` `userid` INT( 10 ) NULL DEFAULT '0' COMMENT '会员ID',
+CHANGE `pid` `pid` INT( 10 ) NULL DEFAULT '0' COMMENT '产品ID',
+CHANGE `sell_userid` `sell_userid` INT( 10 ) NULL DEFAULT '0' COMMENT '卖家ID',
+CHANGE `price` `price` FLOAT( 10, 2 ) NULL DEFAULT '0.00' COMMENT '价格',
+CHANGE `num` `num` MEDIUMINT( 8 ) NULL DEFAULT '0' COMMENT '数量',
+CHANGE `time` `time` INT( 10 ) UNSIGNED NULL DEFAULT '0' COMMENT '创建时间',
+CHANGE `setmeal` `setmeal` INT( 10 ) NULL DEFAULT '0' COMMENT '套餐',
+CHANGE `code` `code` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '货号' ;
+
+
+ALTER TABLE `mallbuilder_product_cart` DROP `code`;
+
+ALTER TABLE `mallbuilder_product_cart` CHANGE `id` `id` INT( 10 ) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+CHANGE `userid` `buyer_id` INT( 10 ) NULL DEFAULT '0' COMMENT '会员ID',
+CHANGE `pid` `product_id` INT( 10 ) NULL DEFAULT '0' COMMENT '产品ID',
+CHANGE `sell_userid` `seller_id` INT( 10 ) NULL DEFAULT '0' COMMENT '卖家ID',
+CHANGE `price` `price` FLOAT( 10, 2 ) NULL DEFAULT '0.00' COMMENT '价格',
+CHANGE `num` `quantity` MEDIUMINT( 8 ) NULL DEFAULT '0' COMMENT '数量',
+CHANGE `time` `create_time` INT( 10 ) UNSIGNED NULL DEFAULT '0' COMMENT '创建时间',
+CHANGE `setmeal` `spec_id` INT( 10 ) NULL DEFAULT '0' COMMENT '规格' ;
+
+
+
+/*---------2013-05-09---------*/
+ALTER TABLE `mallbuilder_product_order_pro`
+  DROP `code`,
+  DROP `rebate`;
+
+DROP TABLE `mallbuilder_activity`;
+DROP TABLE `mallbuilder_activity_product_list`;
+DROP TABLE `mallbuilder_product_report`;
+DROP TABLE `mallbuilder_product_report_subject`;
+
+DROP TABLE `mallbuilder_product_invoice`;
+DROP TABLE `mallbuilder_product_consult_cat`;
+DROP TABLE `mallbuilder_vote`;
+DROP TABLE `mallbuilder_remind`;
+DROP TABLE `mallbuilder_remind_cat`;
+
+DROP TABLE `mallbuilder_auditing`;
+DROP TABLE `mallbuilder_product_delivery`;
+DROP TABLE `mallbuilder_comment`;
+
+ALTER TABLE `mallbuilder_product_order` DROP `invoice`;
+ALTER TABLE `mallbuilder_product_order` DROP `buyer_zip`;
+ALTER TABLE `mallbuilder_product_order` CHANGE `product_price` `product_price` FLOAT( 10, 2 ) NULL DEFAULT NULL COMMENT '订购价格';
+
+ALTER TABLE `mallbuilder_product_order` CHANGE `buyer_name` `consignee` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货人姓名',
+CHANGE `buyer_addr` `consignee_address` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货人地址',
+CHANGE `buyer_tel` `consignee_tel` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货人电话',
+CHANGE `buyer_mobile` `consignee_mobile` VARCHAR( 20 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收货人手机';
+
+ALTER TABLE `mallbuilder_product_order` CHANGE `id` `id` INT( 10 ) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+CHANGE `userid` `userid` INT( 10 ) NULL DEFAULT NULL COMMENT '会员ID',
+CHANGE `seller_id` `seller_id` INT( 10 ) NULL COMMENT '卖家ID',
+CHANGE `status` `status` TINYINT( 1 ) NULL DEFAULT NULL COMMENT '定单状态',
+CHANGE `creat_time` `create_time` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT '下定单时间',
+CHANGE `uptime` `uptime` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
+CHANGE `logistics` `logistics` INT( 10 ) NULL DEFAULT '0' COMMENT '物流';
+
+ALTER TABLE `mallbuilder_product_order`
+  DROP `logistics`,
+  DROP `deliver_id`,
+  DROP `deliver_addr_id`;
+
+
+ALTER TABLE `mallbuilder_product_order_pro` CHANGE `id` `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+CHANGE `order_id` `order_id` VARCHAR( 15 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '订单ID',
+CHANGE `buyer_id` `buyer_id` INT( 10 ) UNSIGNED NOT NULL COMMENT '买家ID',
+CHANGE `pid` `pid` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT '产品ID',
+CHANGE `name` `name` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '产品名',
+CHANGE `pic` `pic` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '产品图片',
+CHANGE `price` `price` FLOAT( 10, 2 ) UNSIGNED NULL DEFAULT '0.00' COMMENT '价格',
+CHANGE `num` `num` MEDIUMINT( 8 ) UNSIGNED NULL DEFAULT NULL COMMENT '数量',
+CHANGE `time` `time` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
+CHANGE `setmeal` `setmeal` INT( 10 ) NOT NULL DEFAULT '0' COMMENT '套餐';
+
+DROP TABLE `mallbuilder_tg`;
+DROP TABLE `mallbuilder_tg_cat`;
+DROP TABLE `mallbuilder_tg_member`; 
+DROP TABLE `mallbuilder_tg_order`;
+
+DROP TABLE `mallbuilder_payment_banks`;
+DROP TABLE `mallbuilder_payment_card`; 
+DROP TABLE `mallbuilder_payment_cashflow`;
+DROP TABLE `mallbuilder_payment_cashpickup`; 
+DROP TABLE `mallbuilder_payment_member`;
+DROP TABLE `mallbuilder_payment_service_fee`; 
+DROP TABLE `mallbuilder_payment_type`;
+
+
+
+/*---------2013-05-12---------*/
+
+CREATE TABLE `mallbuilder_shop_payment` (
+`id` INT( 10 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`payment_type` VARCHAR( 50 ) NULL ,
+`payment_name` VARCHAR( 50 ) NULL ,
+`payment_config` TEXT NULL ,
+`shop_id` INT( 10 ) NULL
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci 
+
+
+
+/*---------2013-05-13---------*/
+
+DROP TABLE IF EXISTS `mallbuilder_fast_mail`;
+CREATE TABLE IF NOT EXISTS `mallbuilder_fast_mail` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company` varchar(30) DEFAULT NULL,
+  `pinyin` varchar(18) NOT NULL COMMENT '物流',
+  `status` int(1) NOT NULL DEFAULT '0' COMMENT '状态',
+  `introduction` text,
+  `url` varchar(30) DEFAULT NULL,
+  `logo` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=147 ;
+
+--
+-- 转存表中的数据 `mallbuilder_fast_mail`
+--
+
+INSERT INTO `mallbuilder_fast_mail` (`id`, `company`, `pinyin`, `status`, `introduction`, `url`, `logo`) VALUES
+(1, 'AAE快递', 'aae', 1, NULL, NULL, NULL),
+(2, '安捷快递', 'anjie', 1, NULL, NULL, NULL),
+(3, '安信达快递', 'anxinda', 1, NULL, NULL, NULL),
+(4, 'Aramex国际快递', 'aramex', 1, NULL, NULL, NULL),
+(5, '巴伦支', 'balunzhi', 1, NULL, NULL, NULL),
+(6, '宝通达', 'baotongda', 1, NULL, NULL, NULL),
+(7, '成都奔腾国际快递', 'benteng', 1, NULL, NULL, NULL),
+(8, 'CCES快递', 'cces', 1, NULL, NULL, NULL),
+(9, '长通物流', 'changtong', 1, NULL, NULL, NULL),
+(10, '程光快递', 'chengguang', 1, NULL, NULL, NULL),
+(11, '城际快递', 'chengji', 1, NULL, NULL, NULL),
+(12, '城市100', 'chengshi100', 1, NULL, NULL, NULL),
+(13, '传喜快递', 'chuanxi', 1, NULL, NULL, NULL),
+(14, '传志快递', 'chuanzhi', 1, NULL, NULL, NULL),
+(15, '出口易物流', 'chukouyi', 1, NULL, NULL, NULL),
+(16, 'CityLinkExpress', 'citylink', 1, NULL, NULL, NULL),
+(17, '东方快递', 'coe', 1, NULL, NULL, NULL),
+(18, '城市之星', 'cszx', 1, NULL, NULL, NULL),
+(19, '大田物流', 'datian', 1, NULL, NULL, NULL),
+(20, '大洋物流快递', 'dayang', 1, NULL, NULL, NULL),
+(21, '德邦物流', 'debang', 1, NULL, NULL, NULL),
+(22, '德创物流', 'dechuang', 1, NULL, NULL, NULL),
+(23, 'DHL快递', 'dhl', 1, NULL, NULL, NULL),
+(24, '店通快递', 'diantong', 1, NULL, NULL, NULL),
+(25, '递达快递', 'dida', 1, NULL, NULL, NULL),
+(26, '叮咚快递', 'dingdong', 1, NULL, NULL, NULL),
+(27, '递四方速递', 'disifang', 1, NULL, NULL, NULL),
+(28, 'DPEX快递', 'dpex', 1, NULL, NULL, NULL),
+(29, 'D速快递', 'dsu', 1, NULL, NULL, NULL),
+(30, '百福东方物流', 'ees', 1, NULL, NULL, NULL),
+(31, 'EMS快递', 'ems', 1, NULL, NULL, NULL),
+(32, '凡宇快递', 'fanyu', 1, NULL, NULL, NULL),
+(33, 'Fardar', 'fardar', 1, NULL, NULL, NULL),
+(34, '国际Fedex', 'fedex', 1, NULL, NULL, NULL),
+(35, 'Fedex国内', 'fedexcn', 1, NULL, NULL, NULL),
+(36, '飞邦物流', 'feibang', 1, NULL, NULL, NULL),
+(37, '飞豹快递', 'feibao', 1, NULL, NULL, NULL),
+(38, '原飞航物流', 'feihang', 1, NULL, NULL, NULL),
+(39, '飞狐快递', 'feihu', 1, NULL, NULL, NULL),
+(40, '飞特物流', 'feite', 1, NULL, NULL, NULL),
+(41, '飞远物流', 'feiyuan', 1, NULL, NULL, NULL),
+(42, '丰达快递', 'fengda', 1, NULL, NULL, NULL),
+(43, '飞康达快递', 'fkd', 1, NULL, NULL, NULL),
+(44, '广东邮政物流', 'gdyz', 1, NULL, NULL, NULL),
+(45, '邮政国内小包', 'gnxb', 1, NULL, NULL, NULL),
+(46, '共速达物流|快递', 'gongsuda', 1, NULL, NULL, NULL),
+(47, '国通快递', 'guotong', 1, NULL, NULL, NULL),
+(48, '山东海红快递', 'haihong', 1, NULL, NULL, NULL),
+(49, '海盟速递', 'haimeng', 1, NULL, NULL, NULL),
+(50, '昊盛物流', 'haosheng', 1, NULL, NULL, NULL),
+(51, '河北建华快递', 'hebeijianhua', 1, NULL, NULL, NULL),
+(52, '恒路物流', 'henglu', 1, NULL, NULL, NULL),
+(53, '华诚物流', 'huacheng', 1, NULL, NULL, NULL),
+(54, '华翰物流', 'huahan', 1, NULL, NULL, NULL),
+(55, '华企快递', 'huaqi', 1, NULL, NULL, NULL),
+(56, '华夏龙物流', 'huaxialong', 1, NULL, NULL, NULL),
+(57, '天地华宇物流', 'huayu', 1, NULL, NULL, NULL),
+(58, '汇强快递', 'huiqiang', 1, NULL, NULL, NULL),
+(59, '汇通快递', 'huitong', 1, NULL, NULL, NULL),
+(60, '海外环球快递', 'hwhq', 1, NULL, NULL, NULL),
+(61, '佳吉快运', 'jiaji', 1, NULL, NULL, NULL),
+(62, '佳怡物流', 'jiayi', 1, NULL, NULL, NULL),
+(63, '加运美快递', 'jiayunmei', 1, NULL, NULL, NULL),
+(64, '金大物流', 'jinda', 1, NULL, NULL, NULL),
+(65, '京东快递', 'jingdong', 1, NULL, NULL, NULL),
+(66, '京广快递', 'jingguang', 1, NULL, NULL, NULL),
+(67, '晋越快递', 'jinyue', 1, NULL, NULL, NULL),
+(68, '急先达物流', 'jixianda', 1, NULL, NULL, NULL),
+(69, '嘉里大通物流', 'jldt', 1, NULL, NULL, NULL),
+(70, '康力物流', 'kangli', 1, NULL, NULL, NULL),
+(71, '顺鑫(KCS)快递', 'kcs', 1, NULL, NULL, NULL),
+(72, '快捷快递', 'kuaijie', 1, NULL, NULL, NULL),
+(73, '宽容物流', 'kuanrong', 1, NULL, NULL, NULL),
+(74, '跨越快递', 'kuayue', 1, NULL, NULL, NULL),
+(75, '乐捷递快递', 'lejiedi', 1, NULL, NULL, NULL),
+(76, '联昊通快递', 'lianhaotong', 1, NULL, NULL, NULL),
+(77, '成都立即送快递', 'lijisong', 1, NULL, NULL, NULL),
+(78, '龙邦快递', 'longbang', 1, NULL, NULL, NULL),
+(79, '民邦快递', 'minbang', 1, NULL, NULL, NULL),
+(80, '明亮物流', 'mingliang', 1, NULL, NULL, NULL),
+(81, '闽盛快递', 'minsheng', 1, NULL, NULL, NULL),
+(82, '尼尔快递', 'nell', 1, NULL, NULL, NULL),
+(83, '港中能达快递', 'nengda', 1, NULL, NULL, NULL),
+(84, 'OCS快递', 'ocs', 1, NULL, NULL, NULL),
+(85, '平安达', 'pinganda', 1, NULL, NULL, NULL),
+(86, '中国邮政平邮', 'pingyou', 1, NULL, NULL, NULL),
+(87, '品速心达快递', 'pinsu', 1, NULL, NULL, NULL),
+(88, '全晨快递', 'quanchen', 1, NULL, NULL, NULL),
+(89, '全峰快递', 'quanfeng', 1, NULL, NULL, NULL),
+(90, '全际通快递', 'quanjitong', 1, NULL, NULL, NULL),
+(91, '全日通快递', 'quanritong', 1, NULL, NULL, NULL),
+(92, '全一快递', 'quanyi', 1, NULL, NULL, NULL),
+(93, 'RPX保时达', 'rpx', 1, NULL, NULL, NULL),
+(94, '如风达快递', 'rufeng', 1, NULL, NULL, NULL),
+(95, '赛澳递', 'saiaodi', 1, NULL, NULL, NULL),
+(96, '三态速递', 'santai', 1, NULL, NULL, NULL),
+(97, '伟邦(SCS)快递', 'scs', 1, NULL, NULL, NULL),
+(98, '圣安物流', 'shengan', 1, NULL, NULL, NULL),
+(99, '晟邦物流', 'shengbang', 1, NULL, NULL, NULL),
+(100, '盛丰物流', 'shengfeng', 1, NULL, NULL, NULL),
+(101, '盛辉物流', 'shenghui', 1, NULL, NULL, NULL),
+(102, '申通快递', 'shentong', 1, NULL, NULL, NULL),
+(103, '顺丰快递', 'shunfeng', 1, NULL, NULL, NULL),
+(104, '速呈宅配', 'suchengzhaipei', 1, NULL, NULL, NULL),
+(105, '穗佳物流', 'suijia', 1, NULL, NULL, NULL),
+(106, '速尔快递', 'sure', 1, NULL, NULL, NULL),
+(107, '天天快递', 'tiantian', 1, NULL, NULL, NULL),
+(108, 'TNT快递', 'tnt', 1, NULL, NULL, NULL),
+(109, '通成物流', 'tongcheng', 1, NULL, NULL, NULL),
+(110, '通和天下物流', 'tonghe', 1, NULL, NULL, NULL),
+(111, 'UPS快递', 'ups', 1, NULL, NULL, NULL),
+(112, 'USPS快递', 'usps', 1, NULL, NULL, NULL),
+(113, '万博快递', 'wanbo', 1, NULL, NULL, NULL),
+(114, '万家物流', 'wanjia', 1, NULL, NULL, NULL),
+(115, '微特派', 'weitepai', 1, NULL, NULL, NULL),
+(116, '祥龙运通快递', 'xianglong', 1, NULL, NULL, NULL),
+(117, '新邦物流', 'xinbang', 1, NULL, NULL, NULL),
+(118, '信丰快递', 'xinfeng', 1, NULL, NULL, NULL),
+(119, '星程宅配快递', 'xingchengzhaipei', 1, NULL, NULL, NULL),
+(120, '希优特快递', 'xiyoute', 1, NULL, NULL, NULL),
+(121, '源安达快递', 'yad', 1, NULL, NULL, NULL),
+(122, '亚风快递', 'yafeng', 1, NULL, NULL, NULL),
+(123, '一邦快递', 'yibang', 1, NULL, NULL, NULL),
+(124, '银捷快递', 'yinjie', 1, NULL, NULL, NULL),
+(125, '音素快运', 'yinsu', 1, NULL, NULL, NULL),
+(126, '亿顺航快递', 'yishunhang', 1, NULL, NULL, NULL),
+(127, '优速快递', 'yousu', 1, NULL, NULL, NULL),
+(128, '北京一统飞鸿快递', 'ytfh', 1, NULL, NULL, NULL),
+(129, '远成物流', 'yuancheng', 1, NULL, NULL, NULL),
+(130, '圆通快递', 'yuantong', 1, NULL, NULL, NULL),
+(131, '元智捷诚', 'yuanzhi', 1, NULL, NULL, NULL),
+(132, '越丰快递', 'yuefeng', 1, NULL, NULL, NULL),
+(133, '誉美捷快递', 'yumeijie', 1, NULL, NULL, NULL),
+(134, '韵达快递', 'yunda', 1, NULL, NULL, NULL),
+(135, '运通中港快递', 'yuntong', 1, NULL, NULL, NULL),
+(136, '宇鑫物流', 'yuxin', 1, NULL, NULL, NULL),
+(137, '源伟丰', 'ywfex', 1, NULL, NULL, NULL),
+(138, '增益快递', 'zengyi', 1, NULL, NULL, NULL),
+(139, '宅急送快递', 'zhaijisong', 1, NULL, NULL, NULL),
+(140, '郑州建华快递', 'zhengzhoujianhua', 1, NULL, NULL, NULL),
+(141, '芝麻开门快递', 'zhima', 1, NULL, NULL, NULL),
+(142, '济南中天万运', 'zhongtian', 1, NULL, NULL, NULL),
+(143, '中铁快运', 'zhongtie', 1, NULL, NULL, NULL),
+(144, '中通快递', 'zhongtong', 1, NULL, NULL, NULL),
+(145, '忠信达快递', 'zhongxinda', 1, NULL, NULL, NULL),
+(146, '中邮物流', 'zhongyou', 1, NULL, NULL, NULL);
+
+ALTER TABLE `mallbuilder_fast_mail`
+  DROP `introduction`,
+  DROP `url`,
+  DROP `logo`;
+
+ALTER TABLE `mallbuilder_product_order` ADD `out_trade_no` VARCHAR( 20 ) NULL AFTER `order_id` ;
+
+
+ALTER TABLE `mallbuilder_product_order` CHANGE `deliver_name` `logistics_name` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '物流公司名称',
+CHANGE `deliver_code` `invoice_no` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '物流发货单号';
+
+/*---------2013-05-19---------*/
+ALTER TABLE `mallbuilder_product_comment` CHANGE `price` `price` FLOAT( 10, 2 ) NOT NULL COMMENT '产品名' ;
+
+ALTER TABLE `mallbuilder_member` DROP `number`;
+
+
+ALTER TABLE `mallbuilder_member` ADD `pay_id` INT( 10 ) NULL;
+
+UPDATE `mallbuilder_product` SET `start_time_type` = '1',
+`valid_time` = '2' , `is_shelves` = '1' ;
+
+
+/*---------2013-05-22---------*/
+ALTER TABLE `pay_card` DROP `give_price`;
+
+
+
+/*---------6.0---------*/
+/*---------2013-06-02---------*/
+ALTER TABLE `mallbuilder_logistics_temp` ADD `type` TINYINT( 1 ) NULL DEFAULT '1',
+ADD `province_id` INT( 10 ) NULL ,
+ADD `city_id` INT( 10 ) NULL ,
+ADD `area_id` INT( 10 ) NULL ,
+ADD `area` VARCHAR( 255 ) NULL ,
+ADD `consign_date` VARCHAR( 20 ) NULL;
+
+ALTER TABLE `pay_cashflow` ADD `is_refund` ENUM( "true", "false" ) NULL DEFAULT 'false' AFTER `statu` ;
+
+
+ALTER TABLE `mallbuilder_shop` CHANGE `template` `template` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '店铺模板';
+
+
+/*---------2013-06-05---------*/
+ALTER TABLE `mallbuilder_product_order` CHANGE `time_expand` `time_expand` TINYINT( 3 ) NULL DEFAULT '10' COMMENT '延长时间';
+
+/*---------2013-06-06---------*/
+ALTER TABLE `mallbuilder_product` ADD `is_invoice` ENUM( "true", "false" ) NULL DEFAULT 'false';
+
+ALTER TABLE `mallbuilder_product` ADD `return` ENUM( "true", "false" ) NOT NULL DEFAULT 'false' COMMENT '退换货承诺',
+ADD `services` ENUM( "true", "false" ) NOT NULL DEFAULT 'true' COMMENT '服务保障';
+
+ALTER TABLE `mallbuilder_product_order` ADD `invoice_title` VARCHAR( 255 ) NULL;
+
+
+/*---------2013-06-10---------*/
+
+ALTER TABLE `mallbuilder_product_order` ADD `payment_time` INT( 10 ) NULL COMMENT '支付时间' AFTER `create_time` ;
+
+ALTER TABLE `mallbuilder_product_order` ADD `payment_name` VARCHAR( 50 ) NULL COMMENT '支付名称' AFTER `invoice_title` ;
+
+ALTER TABLE `mallbuilder_product_order` ADD `return_status` TINYINT( 1 ) NULL DEFAULT '0' COMMENT '退货/款状态' AFTER `status`;
+
+ALTER TABLE `mallbuilder_product_order_pro` ADD `status` TINYINT( 1 ) NULL DEFAULT '1';
+
+ALTER TABLE `mallbuilder_product_order` CHANGE `deliver_time` `deliver_time` INT( 10 ) NULL COMMENT '配送时间' ;
+
+
+/*-----------6.0.1------------*/
+/*---------2013-07-03---------*/
+
+ALTER TABLE `mallbuilder_logistics_temp` ADD `uptime` INT( 10 ) NOT NULL COMMENT '最后编辑时间';
+ALTER TABLE `mallbuilder_logistics_temp` DROP `consign_date`;
+ALTER TABLE `mallbuilder_product`
+  DROP `return`,
+  DROP `services`;
+
+ALTER TABLE `mallbuilder_product_order_pro` ADD `freight` FLOAT( 10, 2 ) NULL DEFAULT '0.00' COMMENT '运费';
+
+
+/*---------2013-07-07---------*/
+ALTER TABLE `mallbuilder_shop` CHANGE `provinceid` `provinceid` INT( 10 ) NULL DEFAULT NULL COMMENT '省ID',
+CHANGE `cityid` `cityid` INT( 10 ) NULL DEFAULT NULL COMMENT '市ID',
+CHANGE `areaid` `areaid` INT( 10 ) NULL DEFAULT NULL COMMENT '区ID',
+CHANGE `stime` `stime` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT '开始时间',
+CHANGE `etime` `etime` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT '结束时间',
+CHANGE `uptime` `uptime` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间';
+ALTER TABLE `mallbuilder_shop` ADD `streetid` INT( 10 ) NULL;
+ALTER TABLE `mallbuilder_logistics_temp` ADD `street_id` INT( 10 ) NULL AFTER `area_id` ;
+ALTER TABLE `mallbuilder_product` ADD `street_id` INT( 10 ) NULL AFTER `area_id` ;
+ALTER TABLE `mallbuilder_member` ADD `streetid` INT( 10 ) NULL AFTER `areaid` ;
+ALTER TABLE `mallbuilder_admin` ADD `street` VARCHAR( 60 ) NULL AFTER `area` ;
+ALTER TABLE `mallbuilder_sub_domain` ADD `con4` VARCHAR( 60 ) NULL AFTER `con3` ;
+ALTER TABLE `mallbuilder_advs_con` ADD `street` VARCHAR( 50 ) NULL AFTER `area` ;
+
+ALTER TABLE `mallbuilder_member`
+  DROP `rand`,
+  DROP `skype`,
+  DROP `point`;
+ALTER TABLE `mallbuilder_member` CHANGE `msn` `ww` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '旺旺';
+
+
+/*---------2013-07-11---------*/
+CREATE TABLE `mallbuilder_member_grade` (
+  `id` int(11) NOT NULL auto_increment COMMENT 'ID',
+  `name` varchar(50) NOT NULL COMMENT '组名',
+  `pic` varchar(255) default NULL,
+  `pic1` varchar(255) default NULL,
+  `desc` text NOT NULL COMMENT '描述',
+  `create_time` int(10) NOT NULL COMMENT '创建时间',
+  `status` tinyint(1) NOT NULL default '1' COMMENT '状态 0,1',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='会员等级表' AUTO_INCREMENT=1;
+RENAME TABLE `mallbuilder_member_count` TO `mallbuilder_member_info` ;
+
+ALTER TABLE `mallbuilder_member` ADD `grade_id` INT( 10 ) NULL DEFAULT '1' AFTER `area` ;
+
+/*---------2013-07-16---------*/
+ALTER TABLE `mallbuilder_spec` CHANGE `item` `item` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '选项列表' ;
+ALTER TABLE `mallbuilder_product` ADD `is_tg` ENUM( "true", "false" ) NULL DEFAULT 'false';
+ALTER TABLE `mallbuilder_product_cart` ADD `is_tg` ENUM( "true", "false" ) NULL DEFAULT 'false';
+ALTER TABLE `mallbuilder_product_order_pro` ADD `is_tg` ENUM( "true", "false" ) NULL DEFAULT 'false';
+
+
+/*---------2013-07-23---------*/
+DROP TABLE `mallbuilder_shop_domin`;
+
+DROP TABLE `mallbuilder_user_group`;
+ALTER TABLE `mallbuilder_product_setmeal` CHANGE `setmeal` `setmeal` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '套餐名称';
+ALTER TABLE `mallbuilder_product_setmeal` ADD `spec_name` VARCHAR( 255 ) NULL AFTER `setmeal` ;
+
+
+ALTER TABLE `mallbuilder_product_order_pro` ADD `spec_value` VARCHAR( 255 ) NULL ;
+ALTER TABLE `mallbuilder_product_order_pro` ADD `spec_name` VARCHAR( 255 ) NULL ;
+
+
+CREATE TABLE `mallbuilder_product_snapshot` (
+  `id` int(10) NOT NULL auto_increment COMMENT 'ID',
+  `order_id` varchar(15) default NULL COMMENT '订单ID',
+  `product_id` int(10) default NULL COMMENT '商品ID',
+  `spec_id` int(10) NOT NULL COMMENT '规格ID',
+  `member_id` int(10) default '0' COMMENT '会员ID',
+  `shop_id` int(10) default NULL COMMENT '店铺ID',
+  `catid` int(10) default '0' COMMENT '分类ID',
+  `type` tinyint(1) default '0' COMMENT '类型',
+  `name` varchar(100) default NULL COMMENT '名称',
+  `subhead` varchar(255) default NULL COMMENT '标题',
+  `brand` varchar(100) default NULL COMMENT '品牌',
+  `price` float(10,2) default '0.00' COMMENT '价格',
+  `freight` float(10,2) default '0.00' COMMENT '运费',
+  `pic` varchar(255) default NULL COMMENT '图片',
+  `uptime` int(10) default NULL COMMENT '更新时间',
+  `spec_name` varchar(255) default NULL,
+  `spec_value` varchar(255) default NULL,
+  `detail` text,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='快照表' AUTO_INCREMENT=1 ;
+
+DROP TABLE IF EXISTS `mallbuilder_user_read_rec`;
+CREATE TABLE IF NOT EXISTS `mallbuilder_user_read_rec` (
+  `id` int(11) NOT NULL auto_increment COMMENT 'ID',
+  `userid` int(11) default NULL COMMENT '会员ID',
+  `tid` int(11) default NULL COMMENT '被访问者ID',
+  `type` int(1) default NULL COMMENT '类型',
+  `time` int(11) default NULL COMMENT '访问时间',
+  `ip` char(15) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `userid` (`userid`,`tid`,`type`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='会员访问记录表' AUTO_INCREMENT=1 ;
+
+
+
+
+
+
+/*-----------6.1.1------------*/
+/------------------------------/
+ALTER TABLE `mallbuilder_mail_mod` ADD `status` TINYINT( 1 ) NULL DEFAULT '1';
+
+ALTER TABLE `pay_cashflow` ADD `refund_amount` FLOAT( 10, 2 ) NULL DEFAULT '0.00' AFTER `is_refund` ;
+
+DROP TABLE `mallbuilder_return_goods`;
+DROP TABLE `mallbuilder_nav_menu`;
+
+
+CREATE TABLE `mallbuilder_nav` (
+  `id` smallint(6) NOT NULL auto_increment,
+  `parent_id` smallint(6) NOT NULL default '0',
+  `name` varchar(255) default NULL,
+  `url` varchar(255) default NULL,
+  `identifier` varchar(255) default NULL,
+  `type` tinyint(1) NOT NULL default '1',
+  `available` tinyint(1) NOT NULL default '1',
+  `displayorder` tinyint(3) NOT NULL default '0',
+  `navtype` tinyint(1) NOT NULL default '1',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+
+DROP TABLE IF EXISTS `mallbuilder_property`;
+CREATE TABLE IF NOT EXISTS `mallbuilder_property` (
+  `id` int(6) NOT NULL auto_increment COMMENT 'ID',
+  `name` varchar(100) NOT NULL COMMENT '属性名称',
+  `type_id` int(10) NOT NULL COMMENT '所属类型id',
+  `item` text NOT NULL COMMENT '属性值列',
+  `is_search` tinyint(1) default '0' COMMENT '是否被搜索。0为不搜索、1为搜索',
+  `format` enum('text','select','checkbox') NOT NULL COMMENT '显示类型',
+  `displayorder` tinyint(1) default '0' COMMENT '排序',
+  `taobao_property_id` int(10) default '0' COMMENT '淘宝属性ID',
+  PRIMARY KEY  (`id`),
+  KEY `catid` (`format`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='商品属性值表' AUTO_INCREMENT=1 ;
+
+
+DROP TABLE IF EXISTS `mallbuilder_property_value`;
+CREATE TABLE IF NOT EXISTS `mallbuilder_property_value` (
+  `id` int(10) unsigned NOT NULL auto_increment COMMENT 'ID',
+  `name` varchar(100) NOT NULL COMMENT '属性值名称',
+  `property_id` int(10) unsigned NOT NULL COMMENT '所属属性id',
+  `displayorder` tinyint(1) unsigned default '1' COMMENT '属性值排序',
+  `taobao_property_id` int(10) default '0' COMMENT '淘宝属性ID',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='商品属性值表' AUTO_INCREMENT=1 ;
+
+
+DROP TABLE IF EXISTS `mallbuilder_spec`;
+CREATE TABLE IF NOT EXISTS `mallbuilder_spec` (
+  `id` int(6) unsigned NOT NULL auto_increment COMMENT 'ID',
+  `name` varchar(100) NOT NULL COMMENT '规格名称',
+  `format` enum('text','image') NOT NULL COMMENT '显示类型',
+  `item` text NOT NULL COMMENT '规格值列',
+  `displayorder` tinyint(1) default '0' COMMENT '排序',
+  `taobao_spec_id` int(10) default '0' COMMENT '淘宝规格id',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='商品规格表' AUTO_INCREMENT=1 ;
+
+
+DROP TABLE IF EXISTS `mallbuilder_spec_value`;
+CREATE TABLE IF NOT EXISTS `mallbuilder_spec_value` (
+  `id` int(10) unsigned NOT NULL auto_increment COMMENT 'ID',
+  `name` varchar(100) NOT NULL COMMENT '规格值名称',
+  `spec_id` int(10) unsigned NOT NULL COMMENT '所属规格id',
+  `image` varchar(100) default NULL COMMENT '规格图片',
+  `displayorder` tinyint(1) default '1' COMMENT '排序',
+  `taobao_spec_id` int(10) default '0' COMMENT '淘宝规格ID',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='商品规格值表' AUTO_INCREMENT=1 ;
+
+
+DROP TABLE IF EXISTS `mallbuilder_type`;
+CREATE TABLE IF NOT EXISTS `mallbuilder_type` (
+  `id` int(11) NOT NULL auto_increment COMMENT 'ID',
+  `name` varchar(100) NOT NULL COMMENT '类型名称',
+  `taobao_type_id` int(10) default '0' COMMENT '淘宝分类ID',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='商品类型表' AUTO_INCREMENT=1;
+
+
+DROP TABLE IF EXISTS `mallbuilder_type_spec`;
+CREATE TABLE IF NOT EXISTS `mallbuilder_type_spec` (
+  `type_id` int(10) unsigned NOT NULL COMMENT '类型id',
+  `spec_id` int(10) unsigned NOT NULL COMMENT '规格id'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='商品类型与规格对应表';
+
+
+/*-----------6.11.3------------*/
+/------------------------------/
+
+ALTER TABLE `mallbuilder_product_order` add  `voucher_price` FLOAT( 10, 2 ) NOT NULL COMMENT '优惠价格计算';
+CREATE TABLE `mallbuilder_apply` (
+  `id` int(10) NOT NULL auto_increment COMMENT '申请编号',
+  `appid` int(10) default NULL COMMENT '功能编号',
+  `create_time` int(10) default NULL COMMENT '申请日期',
+  `member_id` int(10) default NULL COMMENT '会员id',
+  `member_name` varchar(50) default NULL COMMENT '会员名称',
+  `shop_id` int(10) default NULL COMMENT '店铺ID',
+  `shop_name` varchar(120) default NULL COMMENT '店铺名称',
+  `start_time` int(10) default NULL COMMENT '开始时间',
+  `end_time` int(10) default NULL COMMENT '结束时间',
+  `tlimit` int(10) default NULL COMMENT '活动次数限制',
+  `usedtimes` int(10) default '0' COMMENT '已使用的次数',
+  `status` int(1) default '1' COMMENT '状态 1可用,2取消,3结束',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='功能申请表'  ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `mallbuilder_voucher`
+--
+
+CREATE TABLE `mallbuilder_voucher` (
+  `id` int(11) NOT NULL auto_increment COMMENT '编号',
+  `serial` varchar(32) default NULL COMMENT '序列号',
+  `temp_id` int(10) default NULL COMMENT '模板编号',
+  `name` varchar(50) default NULL COMMENT '代金券名称',
+  `desc` varchar(255) default NULL COMMENT '代金券描述',
+  `start_time` int(11) default NULL COMMENT '开始时间',
+  `end_time` int(11) default NULL COMMENT '结束时间',
+  `price` int(11) default NULL COMMENT '面额',
+  `limit` double(10,2) default NULL COMMENT '使用时的最低消费限制',
+  `shop_id` int(11) default NULL COMMENT '店铺ID',
+  `status` tinyint(4) default NULL COMMENT '购物券状态 1-未用,2-已用,3-过期,4-收回',
+  `create_time` int(10) default NULL COMMENT '代金券领取日期',
+  `member_id` int(11) default NULL COMMENT '会员ID',
+  `member_name` varchar(50) default NULL COMMENT '会员名称',
+  `order_id` int(15) default NULL COMMENT '绑定订单ID',
+  `logo` varchar(255) NOT NULL COMMENT '图标',
+  `shop_name` varchar(200) NOT NULL COMMENT '店铺名称',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='代金券表'  ;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `mallbuilder_voucher_temp`
+--
+
+CREATE TABLE `mallbuilder_voucher_temp` (
+  `id` int(10) NOT NULL auto_increment COMMENT '编号',
+  `isindex` tinyint(1) NOT NULL default '0' COMMENT '推荐',
+  `name` varchar(200) default NULL COMMENT '代金券模板名称',
+  `desc` varchar(255) default NULL COMMENT '模板描述',
+  `start_time` int(10) default NULL COMMENT '开始时间',
+  `end_time` int(10) default NULL COMMENT '结束时间',
+  `price` int(10) default NULL COMMENT '面额',
+  `limit` double(10,2) default NULL COMMENT '使用时的消费金额限制',
+  `shop_id` int(10) default NULL COMMENT '店铺ID',
+  `shop_name` varchar(255) default NULL COMMENT '店铺名称',
+  `status` int(1) default '1' COMMENT '状态 1-有效,2-失效',
+  `total` int(10) default NULL COMMENT '数量',
+  `giveout` int(10) default '0' COMMENT '已发放数量',
+  `used` int(10) default '0' COMMENT '已使用数量',
+  `points` int(10) default '0' COMMENT '兑换所需积分',
+  `eachlimit` int(10) default NULL COMMENT '没人限制领取',
+  `logo` varchar(255) default NULL COMMENT 'LOGO图片',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='代金券模板表' ;
+
+
+CREATE TABLE `mallbuilder_member_card` (
+  `id` int(11) NOT NULL auto_increment COMMENT '编号',
+  `create_time` int(11) default NULL COMMENT '创建时间',
+  `blind_member_id` int(11) default '0' COMMENT '绑定会员ID',
+  `blind_member_name` varchar(50) character set utf8 collate utf8_estonian_ci default NULL COMMENT '绑定会员名称',
+  `discounts` float(2,1) default NULL COMMENT '折扣比例',
+  `logo` varchar(255) default NULL COMMENT '图标',
+  `used_time` int(10) default NULL COMMENT '使用日期',
+  `name` varchar(50) default NULL COMMENT '会员卡名称',
+  `temp_id` int(10) default NULL COMMENT '模板编号',
+  `shop_id` int(10) NOT NULL COMMENT '店铺编号',
+  `shop_name` varchar(255) NOT NULL COMMENT '店铺名称',
+  `serial` char(18) NOT NULL COMMENT '序列号',
+  `status` tinyint(1) NOT NULL default '1' COMMENT '卡状态',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='会员卡'  ;
+
+--
+-- 表的结构 `mallbuilder_member_card_temp`
+--
+
+CREATE TABLE `mallbuilder_member_card_temp` (
+  `id` int(11) NOT NULL auto_increment COMMENT '编号',
+  `create_time` int(10) default NULL COMMENT '创建日期',
+  `total` int(6) default NULL COMMENT '生成总数',
+  `used` int(6) default '0' COMMENT '已使用的卡数量',
+  `name` varchar(50) default NULL COMMENT '会员卡名称',
+  `discounts` int(2) default NULL COMMENT '折扣比例',
+  `logo` varchar(255) default NULL COMMENT '会员卡图标',
+  `shop_id` int(10) NOT NULL COMMENT '店铺编号',
+  `shop_name` varchar(255) NOT NULL COMMENT '店铺名称',
+  `status` tinyint(1) NOT NULL COMMENT '卡模板状态',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='会员卡模板' ;
+
+
+ ALTER TABLE `mallbuilder_product_cart` add `discounts` FLOAT( 2, 1 ) NOT NULL DEFAULT '0.0' COMMENT '会员折扣' 
+ ALTER TABLE `mallbuilder_product_order` add `discounts` FLOAT( 2, 1 ) NOT NULL DEFAULT '0.0' COMMENT '会员折扣' 
+
+
+ ALTER TABLE `mallbuilder_product_order` ADD INDEX `seller_id` ( `seller_id` ) 
+
+ ALTER TABLE `mallbuilder_product_order` ADD INDEX `order_id` (`order_id`) 
+
+ ALTER TABLE `mallbuilder_product_order` ADD INDEX `buyer_id` ( `buyer_id` ) 

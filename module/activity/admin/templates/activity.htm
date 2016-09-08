@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>活动</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script language="javascript" src="../script/Calendar.js"></script>
+<script type="text/javascript" src="../script/jquery.validation.min.js"></script>
+<script>
+$(function(){
+	$('#form').validate({
+		errorPlacement: function(error, element){
+			element.next('.form-error').append(error);
+		},      
+		rules : {
+			title:{
+				required:true
+			},
+			stime:{
+				required:true
+			},
+			etime:{
+				required:true
+			},
+		},
+		messages : {
+			title:{
+				required:'请填写标题',
+			},
+			etime:{
+				required:'请填写开始时间',
+			},
+			stime:{
+				required:'请填写结束时间',
+			}
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>活动</h3>
+                <ul>
+                    <li <{if $smarty.get.operation==''}>class="current"<{/if}>><a href="?m=activity&s=activity.php"><span>管理</span></a></li>
+                    <li <{if $smarty.get.operation=='add'}>class="current"<{/if}>><a href="?m=activity&s=activity.php&operation=add"><span>添加</span></a></li>
+                    <{if $smarty.get.operation=='edit'}>
+                    <li class="current"><a href="#"><span>修改</span></a></li>
+                    <{/if}>
+                </ul>
+            </div>
+        </div>
+        <div class="h35"></div>  
+        <{if $smarty.get.operation=='add' or $smarty.get.operation=='edit' }>
+            <form name="form" id="form" method="post">
+            <input name="id" type="hidden" id="id" value="<{$de.id}>">
+            <table class="table table1">
+                <thead>
+                    <tr>
+                        <th class="partition" colspan="99">活动</th>
+                    </tr>
+                </thead>
+                <tbody>
+				<tr>
+                    <td width="100">活动类型</td>
+                    <td>
+						<select name="activity_rule" id="sel_rule" class="activity_create">
+							<option value="" selected="selected">请选择活动规则</option>
+							<option value="11" <{if $de.activity_rule eq "11"}>selected="selected"<{/if}>>满减-》按金额满减</option>
+							<option value="12" <{if $de.activity_rule eq "12"}>selected="selected"<{/if}>>满减-》按数量满减</option>
+							<option value="21" <{if $de.activity_rule eq "21"}>selected="selected"<{/if}>>满赠-》按金额满赠</option>
+							<option value="22" <{if $de.activity_rule eq "22"}>selected="selected"<{/if}>>满赠-》按数量满赠</option>
+						</select>
+					</td>
+                </tr>
+				
+				<tr class="hidden" id="activity_11">
+					<td>满减金额</td>
+					<td>
+						<input type="text" name="full_cut_money" value="<{$de.meet_money}>" placeholder="请设置满减金额" class="rule"> --
+						<input type="text" name="cut_buy_money" value="<{$de.cut_money}>" placeholder="请设置优惠金额" class="rule">
+					</td>
+				</tr>
+				<tr class="hidden" id="activity_12">
+					<td>满减数量</td>
+					<td>
+						<input type="text" name="full_cut_num" value="<{$de.meet_num}>" placeholder="请设置满减数量" class="rule"> --
+						<input type="text" name="cut_buy_num" value="<{$de.cut_money}>" placeholder="请设置优惠金额" class="rule">
+					</td>
+				</tr>
+				<tr class="hidden" id="activity_21">
+					<td>满赠金额</td>
+					<td>
+						<input type="text" name="full_gift_money" value="<{$de.meet_money}>" placeholder="请设置满赠金额" class="rule">
+					</td>				
+				</tr>
+				<tr class="hidden" id="activity_22">
+					<td>满赠数量</td>
+					<td>
+						<input type="text" name="full_gift_num" value="<{$de.meet_num}>" placeholder="请设置满赠件数" class="rule w100">
+					</td>
+				</tr>
+						
+                <tr>
+                    <td width="100">标题</td>
+                    <td>
+                    <input name="title" id="title" type="text" class="w350" value="<{$de.title}>"><div id="form-error" class="form-error"></div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>起止时间</td>
+                    <td>
+                    <script language="javascript">
+                    var cdr = new Calendar("cdr");
+                    document.write(cdr);
+                    cdr.showMoreDay = true;
+                    </script>
+                    <input onFocus="cdr.show(this);" class="ltext" type="text" name="stime" id="stime" value="<{$de.start_time|date_format}>"> - 
+                    <input onFocus="cdr.show(this);" class="rtext" type="text" name="etime" id="etime" value="<{$de.end_time|date_format}>">
+                    <div id="form-error" class="form-error"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>广告代码</td>
+                    <td>
+                        <input type="text" name="ads_code" class="w350" value="<{$de.ads_code}>" >
+                    </td>
+				</tr>
+                <tr>
+                    <td>展示模版</td>
+                    <td>
+                        <select class="select"  name="templates">
+                        <option  <{if $de.templates=='default_index.htm'}>selected="selected"<{/if}>  value="default_index.htm">默认模版</option>
+                        <option  <{if $de.templates=='promotion_index.htm'}>selected="selected"<{/if}>value="promotion_index.htm">秒杀模版</option>
+                        </select>
+                    </td>
+                </tr>
+              
+                <tr>
+                    <td>活动详情</td>
+                    <td>
+                    	<script charset="utf-8" src="../lib/kindeditor/kindeditor-min.js"></script>
+                    	<script>
+						var editor;
+						KindEditor.ready(function(K) {
+							editor = K.create('textarea[name="desc"]', {
+								
+							});
+						});
+						</script>
+                        <textarea style="width:80%; height:300px" name="desc"><{$de.desc}></textarea>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>展示状态</td>
+                    <td>
+                    <input type="radio" name="status" value="1" id="open" <{if $de.status==1}>checked="checked"<{/if}>/><label for="open">开启</label>
+                    <input type="radio" name="status" value="0" id="close" <{if $de.status!=1}>checked="checked"<{/if}>/><label for="close">关闭</label>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                    <input class="submit" type="submit" value="提交" onclick="return Check_form();">
+                    <input name="act" type="hidden" id="action" value="<{if !$smarty.get.editid}>save<{else}>edit<{/if}>">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
+			<script>
+				<{if $de.activity_rule}>
+					var val=<{$de.activity_rule}>;
+					$("#activity_"+val).removeClass("hidden");
+				<{/if}>
+				$(".activity_create").change(function(){
+					var value=$(this).val();
+					$("#activity_11").toggle(value==11);
+					$("#activity_12").toggle(value==12);
+					$("#activity_21").toggle(value==21);
+					$("#activity_22").toggle(value==22);
+				});
+					
+				function Check_form(){
+					var flag=true;
+					var msg="";
+					var select_value=$("#sel_rule option:selected").val();
+					if(select_value==11){
+						var full_cut_money = $('input[name="full_cut_money"]').val();
+						var cut_buy_money  = $('input[name="cut_buy_money"]').val();
+						if(full_cut_money=='' && cut_buy_money==''){
+							flag=false;
+						}
+					}
+					else if(select_value==12){
+						var full_cut_num = $('input[name="full_cut_num"]').val();
+						var cut_buy_num  = $('input[name="cut_buy_num"]').val();
+						if(full_cut_num=='' && cut_buy_num==''){
+							flag=false;
+						}
+					}
+					else if(select_value==21){
+						var full_gift_money = $('input[name="full_gift_money"]').val();
+						if(full_gift_money==''){
+							flag=false;
+						}
+					}
+					else if(select_value==22){
+						var full_gift_num = $('input[name="full_gift_num"]').val();
+						if(full_gift_num==''){
+							flag=false;
+						}
+					}
+					if(!flag){
+						alert("活动规则值不可以为空！");
+					}
+					return flag;
+				}
+			</script>
+        <{else}>
+		<script type="text/javascript">
+        $(function(){
+            /* 全选 */
+             $('.checkall').click(function(){
+                var _self = this;
+                $('.checkitem').each(function(){
+                    if (!this.disabled)
+                    {
+                        $(this).attr('checked', _self.checked);
+                    }
+                });
+                $('.checkall').attr('checked', this.checked);
+            });	 
+        });
+        </script>
+        <form action="" method="post">
+        <table class="table">
+            <tbody>
+                <tr class="header">
+                    <th width="30"></th>
+                    <th width="70">显示顺序</th>
+                    <th class="al">标题</th>
+                    <th width="200">起止时间</th>
+                    <th width="100">申请产品</th>
+                    <th width="100">状态</th>
+                    <th width="250">调用代码</th>
+                    <th width="100"></th>
+                </tr>
+                <{foreach item=list from=$de.list}>
+                <tr>
+                    <td><input type="checkbox" value="<{$list.id}>" class="checkitem" name="chk[]"></td>
+                    <td><input type="text" class="w50" maxlength="3" name="displayorder[<{$list.id}>]" value="<{$list.displayorder}>" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))" onkeyup="value=value.replace(/[^\d]/g,'')" /></td>
+                    <td class="al"><{$list.title}></td>
+                    <td><{$list.start_time|date_format}> - <{$list.end_time|date_format}></td>
+                    <td>&nbsp;<{$list.num}></td>
+                    <td><{if $list.status}>开启<{else}>关闭<{/if}></td>
+                    <td><input readonly="readonly" type="text" class="w200" value="?m=activity&id=<{$list.id}>"/></td>
+                    <td>
+                    <a href="?m=activity&s=activity.php&operation=edit&editid=<{$list.id}>"><{$editimg}></a> 
+                    <a onclick="return confirm('确定删除吗');" href="?m=activity&s=activity.php&delid=<{$list.id}>"><{$delimg}></a> 
+                    <a href='?m=activity&s=activity_product_list.php&editid=<{$list.id}>'><{$setimg}></a>
+                    </td>
+                </tr>
+                <{foreachelse}>
+                <tr>
+                    <td class="norecord" colspan="99"><i></i><span>暂无符合条件的数据记录</span></td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+            <tfoot>
+                <tr>
+                	<td colspan="2">
+                        <input type="checkbox" class="checkall" id="del">
+                        <input type="hidden" name="act" value="op" />
+                        <input type="submit" value="提交" />
+                    </td>
+                    <td colspan="99"><div class="page"><{$de.page}></div></td>
+                </tr>
+            </tfoot>
+        </table>
+        </form>
+        <{/if}>
+    </div>
+</body>
+</html>

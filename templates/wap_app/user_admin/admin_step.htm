@@ -1,0 +1,28 @@
+<{include file="../header.htm"}>
+<link href="<{$config.weburl}>/templates/wap_app/css/index.css" rel="stylesheet" type="text/css" />
+<link href="<{$config.weburl}>/templates/default/user_admin.css" rel="stylesheet" type="text/css" />
+<{if !$smarty.get.noheader}>
+<header>
+	<div class="nav-w">
+    	<section class="nav-s iconfont"><a href="<{$config.weburl}>"><nav>&#xe60d</nav></a></section>
+    	<section class="nav-c"><span>申请开店</span></section>
+    	<section class="nav-e"></section>
+    </div>
+</header>
+<{/if}>
+<section style="width:100%;margin-top:18px;"><img width="100%" src="<{$config.weburl}>/image/wap/mobile_shop_step.png" /></section>
+
+<div class="shop_grade">
+	<table>
+	    <tbody>
+			<{foreach item=list key=num from=$re}>  
+	        <tr>
+	            <th width="40%"><{$list.name}></th>
+	            <td><{$list.desc}></td>
+	            <td width="30%"><a class="btn2" href="main.php?m=shop&s=admin_step&grade=<{$list.id}><{if $smarty.get.noheader}>&noheader=<{$smarty.get.noheader}><{/if}>">立即开店</a></td>
+	    	</tr>
+	    <{/foreach}>   
+	    </tbody>
+	</table>
+</div>    
+<{include file="../footer.htm"}>

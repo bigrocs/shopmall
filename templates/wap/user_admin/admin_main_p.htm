@@ -1,0 +1,58 @@
+<header>
+	<div class="nav-w">
+        <section class="nav-s iconfont"><a href="<{$config.weburl}>"><font>&#xe619</font></a></section>
+    	<section class="nav-c"><span>个人中心</span></section>
+    	<section class="nav-e"><!--<a href="#"><nav>设置</nav></a>--></section>
+    </div>
+</header>
+<link href="<{$config.weburl}>/templates/wap/css/main.css" rel="stylesheet" type="text/css" />
+<section>
+    <dl class="user"></dl>
+</section>
+<section>
+    <dl class="duser">
+         <dt><a href="<{$config.weburl}>/main.php?m=member&s=admin_member&cg_u_type=1"><img width="60" height="60" src="<{if $cominfo.plogo}><{$cominfo.plogo}><{else}>image/wap/avatar.png<{/if}>"></a></dt>
+        <dd><{$cominfo.user}><br><img align="absmiddle" src="<{$config.weburl}>/image/points/<{$cominfo.buyerpointsimg}>" title="<{$cominfo.buyerpoints}>" alt="<{$cominfo.buyerpoints}>"></dd>
+    </dl>
+	<div class="info clearfix">
+        <ul>
+            <li><a <{if $shop_count.0}>class="color"<{/if}> href="main.php?m=product&s=admin_buyorder&status=1"><strong><{$shop_count.0}></strong>待付款</a></li>
+            <li><a <{if $shop_count.1}>class="color"<{/if}> href="main.php?m=product&s=admin_buyorder&status=2"><strong><{$shop_count.1}></strong>待发货</a></li>
+            <li><a <{if $shop_count.2}>class="color"<{/if}> href="main.php?m=product&s=admin_buyorder&status=3"><strong><{$shop_count.2}></strong>待收货</a></li>
+            <li><a <{if $shop_count.3}>class="color"<{/if}> href="main.php?m=product&s=admin_buyorder&status=4"><strong><{$shop_count.3}></strong>待评价</a></li>
+        </ul>
+    </div>
+</section>
+<section class="m clearfix">
+	<a href="main.php?m=product&s=admin_buyorder"><dl class="fore1"><dt class="iconfont">&#xe632;</dt><dd>全部订单</dd></dl></a>
+	<a href="main.php?m=sns&s=admin_share_shop"><dl class="fore2"><dt class="iconfont">&#xe617;</dt><dd>我的收藏</dd></dl></a>
+    <a href="main.php?m=voucher&s=admin_buyvoucher"><dl class="fore9"><dt class="iconfont">&#xe630;</dt><dd>优惠券</dd></dl></a>
+    <a href="main.php?m=member&s=admin_buyer_card"><dl class="fore10"><dt class="iconfont">&#xe62c;</dt><dd>会员卡</dd></dl></a>
+	<a href="index.php?m=product&s=cart"><dl class="fore4"><dt class="iconfont">&#xe62b;</dt><dd>购物车</dd></dl></a>
+	<a href="main.php?m=member&s=admin_orderadder"><dl class="fore5"><dt class="iconfont">&#xe62d;</dt><dd>收货地址</dd></dl></a>
+	<a href="<{$config.pay_url}>"><dl class="fore10"><dt class="iconfont">&#xe62a;</dt><dd><{$config.pay_name}></dd></dl></a>
+	<{if $cominfo.shop_type eq 1}>
+	<a href="<{$config.weburl}>/main.php?cg_u_type=2&st=0"><dl class="fore10"><dt class="iconfont">&#xe633;</dt><dd>分销中心</dd></dl></a>
+	<a href="<{$config.weburl}>/main.php?m=shop&s=admin_step&shop_type=2&cg_u_type=2"><dl class="fore10"><dt class="iconfont">&#xe634;</dt><dd>申请开店</dd></dl></a>
+	<{else}>
+        <{if $cominfo.shop_type eq 3}>
+        <a href="<{$config.weburl}>/main.php?cg_u_type=2&st=0"><dl class="fore10"><dt class="iconfont">&#xe633;</dt><dd>分销中心</dd></dl></a>
+        <{/if}>
+        <a href="<{if $cominfo.shop_type gt 1}><{$config.weburl}>/main.php?cg_u_type=2&st=1<{else}><{$config.weburl}>/main.php?m=shop&s=admin_step&shop_type=2&cg_u_type=2<{/if}>"><dl class="fore10"><dt class="iconfont">&#xe628;</dt><dd>卖家中心</dd></dl></a>
+	<{/if}>
+</section>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery-1.11.2.min.js"></script>
+<script>
+    // js获取屏幕宽度，自动调节相应模块的宽高比例
+    var w=window.innerWidth|| document.documentElement.clientWidth|| document.body.clientWidth;
+    if(w <=540)
+    {
+        var rate = w/540;
+        var h = 152*100*rate/100;
+        $(".user").height(h+"px")
+    }
+    else
+    {
+       $(".user").height("151px")
+    }
+</script>

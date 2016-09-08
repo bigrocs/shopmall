@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>站点通知</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../script/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../script/Calendar.js"></script>
+<script type="text/javascript" src="../script/district.js" ></script>
+<script type="text/javascript">
+var weburl="<{$config.weburl}>";
+var cdr = new Calendar("cdr");
+document.write(cdr);
+cdr.showMoreDay = true;
+</script>
+</head>
+<body>
+	<div class="container">
+        <div class="flow">
+            <div class="itemtitle">
+                <h3>站点通知</h3>
+                <ul class="stepstat">
+                	<li <{if $smarty.get.operation!='send'}>class="current"<{/if}>>1.选取目标用户</li>
+                	<li <{if $smarty.get.operation=='send'}>class="current"<{/if}>>2.填写通知内容</li>
+                </ul>    
+            </div>
+        </div>
+        <div class="h35"></div> 
+        <{if $smarty.get.operation=='send'}>
+        <form name="form" id="form" action="?<{$getstr}>" method="post">
+        <input type="hidden" name="act" value="send" />
+        <table class="table2">
+        	<tbody>
+            <tr>
+            	<td class="td">
+                <div style="padding:10px 0 15px;">通知会员
+                <span style="margin-left:20px;font-weight:normal;">共搜索到 <b style="color:#F00;"><{$count}></b> 名符合条件的用户 <a href="module.php?m=sms&s=newsletter.php">重新搜索</a></span>
+                </div>
+                </td>
+            </tr>
+            </tbody>
+            <tbody id="tbody">
+            <tr>
+                <td class="td">通知标题:</td>
+            </tr>
+            <tr>
+                <td><input type="text" class="w350" name="title" id="title" /></td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <td class="td">通知内容:</td>
+            </tr>
+            <tr>
+            	<td>
+                <script charset="utf-8" src="../lib/kindeditor/kindeditor-min.js"></script>
+				<script>
+                var editor;
+                KindEditor.ready(function(K) {
+                    editor = K.create('textarea[name="con"]', {
+                        filterMode: false,
+                    });
+                });
+                </script>
+                <textarea style="width:80%;;" rows="15" name="con" id="con"></textarea>
+                </td>
+            </tr>
+            <tr>
+            	<td class="td">通知发送方式:</td>
+            </tr>
+            <tr>
+            	<td>
+                <p class="clearfix" style="padding:5px 0;"><label><input type="radio" name="type" value="1" checked="checked"/>站内信</label></p>
+                <p class="clearfix" style="padding:5px 0;"><label><input type="radio" name="type" value="2" />邮件</label></p>
+                <{if $sms_config.sms_account&&$sms_config.sms_pass}>
+                <p class="clearfix" style="padding:5px 0;"><label><input type="radio" name="type" value="3" />短信</label></p>
+				<script>
+                $("input[name='type']").click(function(){
+                    if($(this).val()=='3')
+                    {
+                        $("#tbody").hide();	
+                    }
+                    else
+                    {
+                        $("#tbody").show();	
+                    }
+                })
+                </script>
+                <{/if}>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <input class="submit" type="submit" value="发送">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+        <{else}>
+		<form name="form" id="form" method="get">
+        <input name="m" type="hidden" id="m" value="<{$smarty.get.m}>">
+        <input name="s" type="hidden" id="s" value="<{$smarty.get.s}>">
+        <input name="operation" type="hidden" id="operation" value="send">
+        <table class="table2">
+        	<tbody>
+            <tr>
+                <td class="td" colspan="2">会员名:</td>
+            </tr>
+            <tr>
+                <td><input type="text" class="w350" name="name" id="name" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td class="td" colspan="2">会员ID:</td>
+            </tr>
+            <tr>
+                <td><input type="text" class="w350" name="id" id="id" /></td>
+                <td></td>
+            </tr>
+            <tr>  
+                <td class="td" colspan="2">会员等级:</td>
+            </tr>
+            <tr>
+                <td>
+                <select name="grade[]" class="w350" size="10" style="height:auto;" multiple="multiple">
+                    <{foreach item=list from=$grade}>
+                    <option value="<{$list.id}>"><{$list.name}></option>
+                    <{/foreach}>
+                </select>
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+            <tbody  id="tbody" class="hidden">
+            	<tr>
+                	<td class="td" width="50%">是否通过Email认证:</td>
+                    <td class="td">是否通过手机认证:</td>
+                </tr>
+                <tr>
+                	<td>
+                    <label><input type="radio" name="email_verify" value="1" />是</label>
+                    <label><input type="radio" name="email_verify" value="2" />否</label>
+                    </td>
+                	<td>
+                    <label><input type="radio" name="mobile_verify" value="1" />是</label>
+                    <label><input type="radio" name="mobile_verify" value="2" />否</label>
+                    </td>
+                </tr>
+                
+                <tr>
+                	<td class="td">昵称:</td>
+                    <td class="td">性别:</td>
+                </tr>
+                <tr>
+                	<td><input type="text" class="w350" name="real_name" /></td>
+                	<td>
+                    <label><input type="radio" name="sex" value="1" />男</label>
+                    <label><input type="radio" name="sex" value="2" />女</label>
+                    </td>
+                </tr>
+                
+                <tr>
+                	<td class="td">所在地区:</td>
+                    <td class="td">管理员:</td>
+                </tr>
+                <tr>
+                	<td>
+                    <input type="hidden" name="t" id="t" />
+                    <input type="hidden" name="province" id="id_1" />
+                    <input type="hidden" name="city" id="id_2" />
+                    <input type="hidden" name="area" id="id_3"  />
+                    <input type="hidden" name="street" id="id_4" />
+                    <select id="select_1" name="select_1" onChange="district(this);"><option value=""></option><{$prov}></select>
+                    <select id="select_2" name="select_2" onChange="district(this);" class="hidden"></select>
+                    <select id="select_3" name="select_3" onChange="district(this);" class="hidden"></select>
+                    <select id="select_4" name="select_4" onChange="district(this);" class="hidden"></select>
+                    </td>
+                	<td>
+                       <select name="invite" class="w350">
+                       <option value=""></option>
+                       <{foreach item=list from = $invite}>
+                       <option value="<{$list.name}>"><{$list.name}></option>
+                       <{/foreach}>
+                       </select>
+                    </td>
+                </tr>
+                
+                <tr>
+                	<td class="td" width="50%">Email:</td>
+                    <td class="td">手机:</td>
+                </tr>
+                <tr>
+                	<td><input type="text" class="w350" name="email" /></td>
+                	<td><input type="text" class="w350" name="mobile" /></td>
+                </tr>
+                
+                <tr>
+                	<td class="td" width="50%">注册日期介于:</td>
+                    <td class="td">最后登录时间介于:</td>
+                </tr>
+                <tr>
+                	<td>
+                    <input type="text" onfocus="cdr.show(this);" class="cdr w168" name="rstime" />
+                    -
+                    <input type="text" onfocus="cdr.show(this);" class="cdr w168" name="retime" />
+                    </td>
+                	<td>
+                    <input type="text" onfocus="cdr.show(this);" class="cdr w168" name="lstime" />
+                    -
+                    <input type="text" onfocus="cdr.show(this);" class="cdr w168" name="letime" />
+                    </td>
+                </tr>
+                
+                <tr>
+                	<td class="td" width="50%">QQ:</td>
+                    <td class="td">阿里旺旺:</td>
+                </tr>
+                <tr>
+                	<td><input type="text" class="w350" name="qq" /></td>
+                	<td><input type="text" class="w350" name="ww" /></td>
+                </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <td>
+                <input class="submit fl" type="submit" value="提交">
+                <label class="more"><input type="checkbox" />更多选项</label>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+        <{/if}>
+        <script type="text/javascript">
+        $(".more input[type='checkbox']").click(function(){
+			if($(this).attr("checked")==true)
+				$("#tbody").show();
+			else
+				$("#tbody").hide();
+		});
+        </script>
+    </div>
+</body>
+</html>

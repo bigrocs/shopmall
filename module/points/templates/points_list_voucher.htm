@@ -1,0 +1,62 @@
+<{include file="points_header.htm"}>
+<div class="w clearfix">
+	<div class="bannbar fl"><script src='<{$config.weburl}>/api/ad.php?id=10'></script></div>
+    <div class="launch fr"><h2></h2><div><script src='<{$config.weburl}>/api/ad.php?id=11'></script></div></div>
+</div>
+<div class="w">
+
+    <div class="m all">
+    	<div class="mt  mt-voucher">
+          
+        </div>
+        <div class="mc clearfix">
+            <ul class="voucher-list">
+                <{foreach item=list key=key from=$pl.list}>
+            	<li <{if ($key+1)%3==0}>class="fr"<{elseif ($key+2)%3==0}>class="fl_middle"<{else}>class="fl_left"<{/if}> >
+                    <div class="voucher">
+                    <div class="cut"></div>
+                    <div class="info"><a class="store" href="<{$config.weburl}>/shop.php?uid=<{$list.shop_id}>"><{$list.shop_name}></a>
+                      <p class="pline"><{$list.name}></p>
+                      <div class="pic"><img onerror="'" src="<{$list.logo}>"></div>
+                    </div>
+                    <dl class="value">
+                      <dt>¥<em><{$list.price}></em></dt>
+                      <dd>购物满 <{$list.limit}> 元可用</dd>
+                      <dd class="time">有效期至<{$list.end_time|date_format:"%Y-%m-%d"}></dd>
+                    </dl>
+                    <div class="point">
+                      <p class="required w120">需<em><{$list.points}> </em>积分</p>
+                      <p class="w120">每人限领<em><{$list.eachlimit}></em>张</p>
+                        <p class="w120">已发放<em><{$list.giveout}></em>张</p>
+                    </div>
+                    <div class="button"><a class="ncp-btn ncp-btn-red" data-param="<{$list.id}>,<{$list.shop_id}>" nc_type="exchangebtn" href="javascript:void(0);" target="_blank">立即兑换</a></div>
+                  </div>
+                </li>
+		<{/foreach}>
+                
+            </ul>
+            <div class="mc clearfix">
+              <div class="page"><{$pl.page}></div>
+            </div>
+            
+        </div>
+    </div>
+	
+</div>
+<script type="text/javascript" src="<{$config.weburl}>/script/jquery.ui.js"></script>
+<script type="text/javascript" src="<{$config.weburl}>/script/dialog/dialog.js" id="dialog_js"></script>
+<script>
+$(".ncp-btn-red").live('click',function(){
+	var uname='<{$smarty.cookies.USER}>';
+        var key = $(this).attr("data-param")
+	if(uname=='')
+	{
+		alert('请登录以后再进行本操作！');
+		window.location.href='<{$config.weburl}>/login.php?forward='+encodeURIComponent("index.php/?m=points&s=detail&id=1");
+		return false;
+	}					
+	ajax_form("buy", '代金券兑换', '<{$config.weburl}>/index.php?m=points&s=voucher_order&data='+key,500);
+	return false;
+});
+</script>
+<{include file="points_footer.htm"}>
